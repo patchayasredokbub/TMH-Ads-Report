@@ -1,0 +1,1465 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<base target="_top">
+<meta charset="utf-8">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --bg:#eef5fd; --panel:#ffffff; --fg:#152238; --muted:#627089; --line:#dce8f6; --line-soft:#edf3fb;
+  --accent:#1a73e8; --accent-dark:#0b4f9c; --accent-soft:#e3effd; --tint:#d8e9fc; --tint-line:#b8d5f6;
+  --ok:#0f9f74; --ok-bg:#dff6ee; --warn:#c06a00; --warn-bg:#fff1dc; --bad:#d6452b; --bad-bg:#fde7e2; --idle:#627089; --idle-bg:#edf1f7;
+  --g1:#e0ebfb; --g1h:#1d4f91; --g2:#e8f1fc; --g2h:#2f67b0; --g3:#eef5fd; --g3h:#4f86cc; --g4:#f4f8fe; --g4h:#7aa6dc;
+  --g5:#e7f7ef; --g5h:#1f9d68; --g6:#d6f0e3; --g6h:#0d7a4f; --g7:#f1ecfc; --g7h:#6b45c6;
+  --shadow:0 6px 24px rgba(26,115,232,.07);
+  --font:"Prompt", system-ui, -apple-system, "Segoe UI", sans-serif; --code:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0d1522; --panel:#152033; --fg:#e6eefa; --muted:#93a3bd; --line:#24344d; --line-soft:#1c2a40;
+  --accent:#5aa2ff; --accent-dark:#3b8af0; --accent-soft:#16304f; --tint:#13263e; --tint-line:#24406a;
+  --ok:#3fd1a1; --ok-bg:#123329; --warn:#f3b04f; --warn-bg:#3a2a12; --bad:#ff8a73; --bad-bg:#3d1f1a; --idle:#93a3bd; --idle-bg:#1e2b40;
+  --g1:#1a2c48; --g1h:#9cc2ff; --g2:#182a43; --g2h:#a9c8f5; --g3:#17273e; --g3h:#b4cff2; --g4:#16243a; --g4h:#c2d6f0;
+  --g5:#14332a; --g5h:#5fd8a6; --g6:#123f2f; --g6h:#7ee6b8; --g7:#271f42; --g7h:#c2a8ff;
+  --shadow:0 6px 24px rgba(0,0,0,.25); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0d1522; --panel:#152033; --fg:#e6eefa; --muted:#93a3bd; --line:#24344d; --line-soft:#1c2a40;
+  --accent:#5aa2ff; --accent-dark:#3b8af0; --accent-soft:#16304f; --tint:#13263e; --tint-line:#24406a;
+  --ok:#3fd1a1; --ok-bg:#123329; --warn:#f3b04f; --warn-bg:#3a2a12; --bad:#ff8a73; --bad-bg:#3d1f1a; --idle:#93a3bd; --idle-bg:#1e2b40;
+  --g1:#1a2c48; --g1h:#9cc2ff; --g2:#182a43; --g2h:#a9c8f5; --g3:#17273e; --g3h:#b4cff2; --g4:#16243a; --g4h:#c2d6f0;
+  --g5:#14332a; --g5h:#5fd8a6; --g6:#123f2f; --g6h:#7ee6b8; --g7:#271f42; --g7h:#c2a8ff;
+  --shadow:0 6px 24px rgba(0,0,0,.25); color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:14px;line-height:1.45}
+button{font:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+code{font-family:var(--code);font-size:.92em}
+.muted{color:var(--muted)}
+.app{display:grid;grid-template-columns:250px minmax(0,1fr);min-height:100vh}
+.side{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:22px;padding:22px 16px;background:linear-gradient(180deg,var(--tint),color-mix(in srgb,var(--tint) 55%,var(--bg)));border-right:1px solid var(--tint-line)}
+.brand{display:flex;align-items:center;gap:12px;padding:0 4px}
+.logo{width:48px;height:48px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(135deg,#2b8cff,#0b5fd0);color:#fff;font-weight:700;font-size:.9rem;box-shadow:0 6px 16px rgba(26,115,232,.3);flex:none}
+.brand b{display:block;font-weight:600;font-size:1rem;line-height:1.2}.brand small{display:block;color:var(--muted);font-size:.75rem}
+.nav{display:flex;flex-direction:column;gap:12px}
+.nav button{display:flex;align-items:center;gap:10px;text-align:left;border:0;border-radius:14px;padding:14px 16px;background:var(--accent);color:#fff;font-size:.92rem;font-weight:500;cursor:pointer;box-shadow:0 4px 12px rgba(26,115,232,.18)}
+.nav button[aria-pressed="true"]{background:var(--accent-dark);box-shadow:0 8px 20px rgba(11,79,156,.35)}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.online{margin-top:auto;display:flex;align-items:center;gap:8px;padding:12px 14px;border-radius:14px;background:var(--ok-bg);color:var(--ok);font-size:.78rem;font-weight:600}
+.wrap{min-width:0;display:flex;flex-direction:column;gap:18px;padding-block:0 48px;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+header.top{display:flex;flex-wrap:wrap;align-items:center;gap:12px 24px;background:var(--panel);border-bottom:1px solid var(--line);margin-inline:calc(-1 * max(24px,env(safe-area-inset-left,0px))) calc(-1 * max(24px,env(safe-area-inset-right,0px)));padding:20px max(24px,env(safe-area-inset-right,0px)) 18px max(24px,env(safe-area-inset-left,0px))}
+.ttl{flex:1 1 320px;min-width:0}
+h1{font-weight:400;font-size:1.65rem;margin:0;text-wrap:balance}
+.sub{color:var(--muted);font-size:.82rem;font-weight:300;margin:2px 0 0}
+.upd{display:flex;flex-direction:column;align-items:flex-end;text-align:right;line-height:1.3}
+.upd small{font-size:.68rem;color:var(--muted)}.upd b{font-size:.82rem;font-weight:600}.upd span{font-size:.7rem;color:var(--ok);font-weight:500;cursor:help}
+.refresh{display:inline-flex;align-items:center;gap:8px;border:1px solid var(--tint-line);background:var(--panel);color:var(--accent-dark);cursor:pointer;padding:9px 14px;border-radius:12px;font-weight:500}
+.refresh:hover{background:var(--accent-soft)}.refresh:disabled{opacity:.7;cursor:default}
+.refresh.spin svg{animation:spin 1s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}
+.status{padding:10px 14px;border-radius:14px;border:1px solid var(--line);background:var(--panel);font-size:.86rem}
+.status.err{border-color:var(--bad);background:var(--bad-bg);color:var(--bad)}
+.progress{display:flex;flex-wrap:wrap;gap:4px 14px;font-size:.76rem;color:var(--muted)}
+.bar{display:flex;flex-wrap:wrap;gap:14px 16px;align-items:flex-end;background:var(--tint);border:1px solid var(--tint-line);border-radius:20px;padding:16px 18px}
+.field{display:flex;flex-direction:column;gap:5px;min-width:0}
+.field>span{font-size:.78rem;color:var(--accent-dark);font-weight:600;display:flex;align-items:center;gap:8px}
+.grow{flex:1 1 260px}
+.bar input[type=date],.bar select{font:inherit;font-size:.9rem;font-weight:600;border:0;border-radius:10px;padding:10px 14px;background-color:var(--accent);color:#fff;color-scheme:dark;min-height:42px;max-width:100%}
+.bar select,.filters select{appearance:none;-webkit-appearance:none;padding-right:38px;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;background-size:16px}
+select option{color:#152238;background:#fff}
+input[type=search]{font:inherit;font-size:.9rem;border-radius:10px;padding:10px 14px;border:1px solid var(--line);background:var(--panel);color:var(--fg);min-height:42px;width:100%}
+.bar input[type=search]{border-color:var(--tint-line)}
+.seg{display:inline-flex;border-radius:10px;background:var(--panel);padding:3px;gap:3px;min-height:42px;border:1px solid var(--tint-line)}
+.seg button{border:0;border-radius:8px;background:none;color:var(--accent-dark);font-weight:500;padding:6px 14px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.sec{background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);min-width:0}
+.sec>summary{list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;padding:16px 20px;cursor:pointer;user-select:none}
+.sec>summary::-webkit-details-marker{display:none}
+.sec>summary::before{content:"▾";color:var(--accent);font-size:1rem;width:14px;transition:transform .15s;display:inline-block}
+.sec:not([open])>summary::before{transform:rotate(-90deg)}
+.sec>summary h2{font-weight:500;font-size:1.15rem;margin:0}
+.sec>summary span{font-size:.8rem;color:var(--muted)}
+.sec-body{padding:0 20px 20px;min-width:0}
+.sec.flush .sec-body{padding:0}
+.empty{padding:22px;text-align:center;color:var(--muted)}
+/* funnel */
+.funnels{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px}
+.fcard{border:1px solid var(--line);border-left:5px solid var(--accent);border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.fc-head{display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.fc-head h3{font-weight:500;font-size:1.1rem;margin:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.fspend{font-weight:600;text-align:right;white-space:nowrap}.fspend small{display:block;font-weight:400;font-size:.7rem;color:var(--muted)}
+.fstep{display:grid;grid-template-columns:88px minmax(50px,1fr) 92px 104px;gap:4px 10px;align-items:center}
+.fstep .lab{font-size:.82rem;font-weight:500}
+.fbar{height:12px;border-radius:999px;background:var(--line-soft);position:relative;overflow:hidden}
+.fbar i{position:absolute;inset:0 auto 0 0;border-radius:999px;background:linear-gradient(90deg,var(--accent),#6ec1ff)}
+.fstep.crm-s .fbar i{background:linear-gradient(90deg,var(--accent),var(--g5h))}
+.fstep.crm-s2 .fbar i{background:linear-gradient(90deg,var(--g5h),var(--g6h))}
+.fstep .cnt{font-weight:600;text-align:right;font-variant-numeric:tabular-nums}.fstep .cnt small{display:block;font-weight:400;color:var(--muted);font-size:.68rem}
+.fstep .cost{text-align:right;font-size:.8rem;font-variant-numeric:tabular-nums}.fstep .cost small{display:block;color:var(--muted);font-size:.66rem}
+@media (max-width:520px){.fstep{grid-template-columns:76px 1fr 80px}.fstep .cost{grid-column:2/-1;text-align:left}}
+/* summary */
+.kflow{display:grid;grid-template-columns:repeat(7,minmax(130px,1fr));grid-template-rows:auto auto;gap:12px;padding-bottom:4px}
+.kcol{display:grid;grid-template-rows:subgrid;grid-row:span 2;gap:10px;min-width:0;align-content:start}
+.kpi{position:relative;overflow:hidden;border:1px solid var(--line);border-radius:16px;padding:14px 16px 16px;background:var(--panel)}
+.kpi::after{content:"";position:absolute;right:-28px;bottom:-34px;width:92px;height:92px;border-radius:50%;background:var(--accent-soft);opacity:.7}
+.kpi>*{position:relative;z-index:1}
+.kpi span{display:block;font-size:.76rem;font-weight:500;color:var(--muted)}
+.kpi b{display:block;font-weight:600;font-size:1.35rem;margin-top:2px;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi small{display:block;font-size:.72rem;color:var(--muted);margin-top:2px}
+.kpi.kf{background:var(--g7);border-color:transparent;padding:10px 14px}.kpi.kf::after{display:none}
+.kpi.kf span{color:var(--g7h)}.kpi.kf b{font-size:1.05rem;color:var(--g7h)}
+.k-g1{border-top:4px solid var(--g1h)}.k-g2{border-top:4px solid var(--g2h)}.k-g3{border-top:4px solid var(--g3h)}.k-g4{border-top:4px solid var(--g4h)}
+.k-g5{border-top:4px solid var(--g5h)}.k-g6{border-top:4px solid var(--g6h)}.k-sp{border-top:4px solid var(--fg)}
+.k-g5 b{color:var(--g5h)}.k-g6 b{color:var(--g6h)}
+@media (max-width:1100px){.kflow{grid-template-columns:repeat(4,minmax(130px,1fr));grid-template-rows:none}}
+@media (max-width:560px){.kflow{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* account tabs */
+.tabs{display:flex;gap:12px;flex-wrap:wrap}
+.tab{border:1px solid var(--line);background:var(--panel);color:var(--fg);padding:12px 18px;border-radius:16px;cursor:pointer;text-align:left;display:flex;flex-direction:column;box-shadow:var(--shadow);font-weight:500;max-width:100%}
+.tab small{color:var(--muted);font-family:var(--code);font-size:.72rem}
+.tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--accent-dark);box-shadow:inset 0 0 0 1px var(--accent)}
+/* filters */
+.filters{display:flex;flex-direction:column;gap:14px}
+.frow{display:flex;flex-wrap:wrap;gap:14px 16px;align-items:flex-end}
+.filters .field>span{color:var(--muted);font-weight:500}
+.filters select{font:inherit;font-size:.9rem;font-weight:600;border:0;border-radius:10px;padding:10px 14px;background-color:var(--accent);color:#fff;min-height:42px}
+.toggles,.btns{display:flex;gap:8px;flex-wrap:wrap}
+.tg,.btn{border:1px solid var(--tint-line);background:var(--panel);color:var(--accent-dark);border-radius:10px;padding:9px 14px;min-height:42px;cursor:pointer;font-weight:500}
+.tg[aria-pressed="true"]{background:var(--g5);border-color:var(--g5h);color:var(--g5h)}
+.tg.con[aria-pressed="true"]{background:var(--g6);border-color:var(--g6h);color:var(--g6h)}
+.chips,.daychips{display:flex;flex-wrap:wrap;gap:8px}
+.chip,.dchip{border-radius:999px;padding:5px 12px;font-weight:500;border:1px solid var(--line);background:var(--panel);color:var(--muted);cursor:pointer;font-size:.8rem;max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.chip[aria-pressed="true"],.dchip[aria-pressed="true"]{color:#fff;background:var(--accent);border-color:var(--accent)}
+.daychips{max-height:120px;overflow:auto}
+.mini{border:1px solid var(--tint-line);background:var(--panel);color:var(--accent-dark);border-radius:999px;padding:1px 10px;font-size:.72rem;cursor:pointer}
+.mini[aria-pressed="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+.stale{font-size:.8rem;color:var(--warn);padding:0 20px 10px}
+/* performance table */
+.tablebox{overflow:auto;max-height:78vh;border-top:1px solid var(--line)}
+table{border-collapse:separate;border-spacing:0;width:max-content;min-width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:9px 12px;border-bottom:1px solid var(--line-soft);white-space:nowrap;text-align:right;font-size:.84rem}
+th{position:sticky;top:0;z-index:2;background:var(--panel);font-size:.74rem;font-weight:600;color:var(--muted)}
+tr.grp th{top:0;font-size:.7rem;text-align:center;padding:6px 12px;border-bottom:0}
+thead tr:nth-child(2) th{top:29px;border-bottom:2px solid var(--line)}
+th.l,td.l{text-align:left}
+th:first-child,td:first-child{position:sticky;left:0;z-index:1;background:var(--panel)}
+th:first-child{z-index:3}
+th.sp{color:var(--fg)}th.g1{background:var(--g1);color:var(--g1h)}th.g2{background:var(--g2);color:var(--g2h)}th.g3{background:var(--g3);color:var(--g3h)}th.g4{background:var(--g4);color:var(--g4h)}
+th.g5{background:var(--g5);color:var(--g5h)}th.g6{background:var(--g6);color:var(--g6h)}th.g7{background:var(--g7);color:var(--g7h)}
+td.g1{color:var(--g1h);font-weight:500}td.g2{color:var(--g2h)}td.g3{color:var(--g3h)}td.g4{color:var(--g4h)}
+td.g5{background:color-mix(in srgb,var(--g5) 55%,transparent);color:var(--g5h)}td.g6{background:color-mix(in srgb,var(--g6) 55%,transparent);color:var(--g6h)}td.g7{background:color-mix(in srgb,var(--g7) 45%,transparent);color:var(--g7h)}
+td.sp{font-weight:600}
+td.zero{color:var(--muted)!important;font-size:.78rem}td.zero small{display:block;font-size:.68rem}
+tr.campaign td{background:color-mix(in srgb,var(--accent-soft) 55%,var(--panel))}tr.campaign td:first-child{background:color-mix(in srgb,var(--accent-soft) 55%,var(--panel))}
+tr.campaign td.nm .t{font-weight:600}
+tr.day td{font-size:.78rem;color:var(--muted)}
+.name{display:flex;align-items:flex-start;gap:8px;max-width:420px;white-space:normal}
+.nmw{display:flex;flex-direction:column;gap:2px;min-width:0}
+.nmw .t{font-weight:500;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.idl{font-size:.7rem;color:var(--muted)}.idl code{user-select:all}
+.tags{display:flex;flex-wrap:wrap;gap:4px 6px;align-items:center}
+.lvl{font-family:var(--code);font-size:.64rem;padding:1px 6px;border-radius:6px;background:var(--accent-soft);color:var(--accent-dark);font-weight:500;flex:none;margin-top:3px}
+.caret{width:24px;height:24px;padding:0;border-radius:8px;border:1px solid var(--tint-line);background:var(--panel);color:var(--accent-dark);cursor:pointer;flex:none;line-height:1}
+.caret.empty{visibility:hidden;display:inline-block}
+.pill{display:inline-block;font-size:.68rem;font-weight:600;padding:1px 9px;border-radius:999px}
+.s-on{background:var(--ok-bg);color:var(--ok)}.s-off{background:var(--idle-bg);color:var(--idle)}
+.pg{font-size:.7rem;font-weight:500;color:var(--accent);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dates{display:flex;flex-direction:column;line-height:1.25}.dates small{color:var(--muted);font-size:.68rem}
+mark{background:var(--warn-bg);color:inherit;border-radius:2px}
+/* calibration */
+.cal-only{display:flex;flex-direction:column;gap:14px}
+.cal-only[hidden]{display:none}
+.qchips{display:flex;flex-wrap:wrap;gap:10px}
+.qchips button{border:1px solid var(--tint-line);background:var(--panel);color:var(--accent-dark);border-radius:999px;padding:9px 16px;cursor:pointer;font-weight:500;box-shadow:var(--shadow)}
+.qchips button[aria-pressed="true"]{background:var(--accent-dark);color:#fff;border-color:var(--accent-dark)}
+.vstrip{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}
+.vs{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 16px;box-shadow:var(--shadow);min-width:0}
+.vs span{display:block;font-size:.78rem;font-weight:600}.vs b{font-size:1.5rem;font-weight:600}.vs small{display:block;font-size:.72rem;color:var(--muted)}
+.v-best{border-top:4px solid var(--ok)}.v-best span{color:var(--ok)}.v-good{border-top:4px solid var(--accent)}.v-good span{color:var(--accent)}
+.v-watch{border-top:4px solid var(--warn)}.v-watch span{color:var(--warn)}.v-cut{border-top:4px solid var(--bad)}.v-cut span{color:var(--bad)}.v-new{border-top:4px solid var(--idle)}.v-new span{color:var(--idle)}
+@media (max-width:640px){.vstrip{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.cal-scroll{overflow:auto;max-height:80vh;background:var(--panel);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow)}
+.cgrid{display:grid;grid-template-columns:minmax(240px,1.6fr) repeat(7,minmax(118px,1fr));min-width:1100px}
+.cgrid>div,.crow>div{padding:12px 14px;border-bottom:1px solid var(--line-soft);min-width:0}
+.ch{position:sticky;top:0;z-index:2;background:var(--g7);color:var(--g7h);font-size:.76rem;font-weight:600;cursor:pointer;user-select:none;border-bottom:2px solid var(--line)!important}
+.ch small{display:block;font-weight:400;font-size:.7rem;color:var(--muted)}
+.ch.nm{background:var(--panel);color:var(--fg);cursor:default}
+.ch[data-ck="reg"]{background:var(--g5);color:var(--g5h)}.ch[data-ck="sub"],.ch[data-ck="cps"]{background:var(--g6);color:var(--g6h)}
+.ch.on{box-shadow:inset 0 -3px 0 currentColor}
+.crow{display:contents}
+.crow:hover>div{background:var(--accent-soft)}
+.ent{display:flex;flex-direction:column;gap:3px}
+.ent .t{font-weight:500;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.ent .par{font-size:.7rem;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ent .why{font-size:.7rem;color:var(--muted)}
+.spent{font-size:.72rem;font-weight:600}
+.vb{align-self:flex-start;font-size:.7rem;font-weight:600;padding:2px 10px;border-radius:999px}
+.vb.v-best{background:var(--ok-bg);color:var(--ok);border:0}.vb.v-good{background:var(--accent-soft);color:var(--accent-dark);border:0}.vb.v-watch{background:var(--warn-bg);color:var(--warn);border:0}.vb.v-cut{background:var(--bad-bg);color:var(--bad);border:0}.vb.v-new{background:var(--idle-bg);color:var(--idle);border:0}
+.mc{display:flex;flex-direction:column;justify-content:center;gap:6px}
+.mc .v{font-weight:600;font-variant-numeric:tabular-nums;font-size:.9rem}.mc .v small{display:block;font-weight:400;color:var(--muted);font-size:.68rem}.mc em{font-style:normal;font-weight:400;color:var(--muted);font-size:.76rem}
+.track{position:relative;height:10px;background:var(--line-soft);border-radius:999px}
+.fill{position:absolute;inset:0 auto 0 0;border-radius:999px}
+.fill.good{background:var(--ok)}.fill.mid{background:var(--accent)}.fill.bad{background:var(--bad)}.fill.reg{background:var(--g5h)}.fill.sub{background:var(--g6h)}
+.mk{position:absolute;top:-4px;bottom:-4px;width:0}
+.mk.avg{border-left:2px dashed var(--fg);opacity:.7}.mk.best{border-left:2px solid var(--ok)}.mk.cut{border-left:2px solid var(--bad)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:.78rem;color:var(--muted);align-items:center}
+.lg{display:inline-block;width:0;height:12px;vertical-align:middle;margin-right:6px}
+.lg.avg{border-left:2px dashed var(--fg)}.lg.best{border-left:2px solid var(--ok)}.lg.cut{border-left:2px solid var(--bad)}
+.pblock{border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:flex;flex-direction:column;gap:12px;min-width:0}
+.pblock+.pblock{margin-top:14px}
+.pb-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 12px}.pb-head h3{margin:0;font-weight:500;font-size:1.05rem}.pb-head span{font-size:.78rem;color:var(--muted)}
+.pblock .kpi b{font-size:1.15rem}
+.benchnote{font-size:.82rem;color:var(--muted)}.benchnote b{color:var(--accent-dark);font-weight:600;margin-right:6px}
+.bm{display:flex;align-items:center;gap:0;font-size:.68rem;color:var(--muted);white-space:nowrap}
+.legend b{color:var(--accent-dark);font-weight:600}
+.tablebox tfoot td{position:sticky;bottom:0;z-index:1;background:var(--accent-soft);border-top:2px solid var(--accent);font-weight:600}
+.tablebox tfoot td:first-child{z-index:2;background:var(--accent-soft)}
+.tablebox tfoot td.g5,.tablebox tfoot td.g6,.tablebox tfoot td.g7{background:var(--accent-soft)}
+.win-only{display:flex;flex-direction:column;gap:16px}.win-only[hidden]{display:none}
+.winbody{display:flex;flex-direction:column;gap:16px}
+#winMonth button{min-width:64px}
+#winChannel:disabled{opacity:1}
+.wflow{display:flex;flex-wrap:wrap;align-items:stretch;gap:12px}.wflow .kpi{flex:1 1 200px}
+.wflow .arrow{align-self:center;font-size:1.6rem;color:var(--muted)}
+.k-run{border-top:4px solid var(--accent)}.k-run b{color:var(--accent-dark)}
+.k-bad{border-top:4px solid var(--bad)}.k-bad b{color:var(--bad)}.k-good{border-top:4px solid var(--ok)}.k-good b{color:var(--ok)}
+.wtables{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,420px),1fr));gap:16px}
+.tablebox.wt{border:1px solid var(--line);border-radius:14px;max-height:none}
+.wt table{width:100%}.wt td.l small{display:block;color:var(--muted);font-size:.68rem}
+.dl{font-weight:600}.dl.up{color:var(--ok)}.dl.down{color:var(--bad)}
+.wnote{font-size:.76rem;color:var(--muted);margin:10px 0 0}
+.wform{display:flex;flex-wrap:wrap;gap:14px 16px;align-items:flex-end;background:var(--tint);border:1px solid var(--tint-line);border-radius:16px;padding:14px 16px;margin-bottom:16px}
+.wform input{font:inherit;font-size:.95rem;font-weight:600;border:1px solid var(--tint-line);border-radius:10px;padding:10px 12px;min-height:42px;width:170px;max-width:100%;background:var(--panel);color:var(--fg)}
+.wform em{font-style:normal;font-weight:400;color:var(--muted);font-size:.7rem}
+.wgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.wgrid .kpi small.ok{color:var(--ok)}.wgrid .kpi small.bad{color:var(--bad)}
+.wh{font-weight:500;font-size:1rem;margin:18px 0 10px}
+.winlink{font-weight:600;color:var(--accent-dark);padding:10px 0}
+.rules{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:12px 16px;font-size:.82rem}
+.rules summary{cursor:pointer;font-weight:500;color:var(--accent-dark)}.rules ul{margin:8px 0 0;padding-left:18px;display:grid;gap:4px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:20px}
+@media (max-width:900px){
+  .app{display:block}
+  .side{position:sticky;top:0;z-index:20;height:auto;flex-direction:row;align-items:center;gap:12px;padding:10px max(16px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));overflow-x:auto;border-right:0;border-bottom:1px solid var(--tint-line)}
+  .brand div,.online{display:none}.logo{width:40px;height:40px;border-radius:12px}
+  .nav{flex-direction:row;gap:8px}.nav button{white-space:nowrap;padding:10px 14px;border-radius:12px;font-size:.82rem}
+  .wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  header.top{margin-inline:calc(-1 * max(16px,env(safe-area-inset-left,0px))) calc(-1 * max(16px,env(safe-area-inset-right,0px)))}
+}
+@media (max-width:520px){.upd{align-items:flex-start;text-align:left}h1{font-size:1.35rem}.name{max-width:220px}.sec>summary,.sec-body{padding-inline:14px}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app">
+<aside class="side">
+  <div class="brand"><span class="logo">TMH</span><div><b>True Move H Ads</b><small>Performance Report</small></div></div>
+  <nav class="nav" id="viewSeg" aria-label="หน้า">
+    <button data-v="perf" aria-pressed="true"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg>Active Ads Performance</button>
+    <button data-v="cal" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Ad Calibration</button>
+    <button data-v="win" aria-pressed="false"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4M7 4h10v5a5 5 0 0 1-10 0zM17 6h3a3 3 0 0 1-3 4M7 6H4a3 3 0 0 0 3 4"/></svg>Winning Performance Benchmark</button>
+  </nav>
+  <div class="online"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg>Meta Ads · Google Sheets</div>
+</aside>
+<div class="wrap">
+  <header class="top">
+    <div class="ttl"><h1 id="viewTitle">Active Ads Performance</h1><p class="sub" id="viewSub"></p></div>
+    <div class="upd"><small>อัปเดตล่าสุด</small><b id="updAt">–</b><span id="updSrc"></span></div>
+    <button class="refresh" id="refresh" title="ดึงข้อมูลใหม่จาก Meta ทั้ง 2 บัญชี และชีต CRM + Regis&amp;Connect"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11a8 8 0 0 0-14.6-4.5L4 8M4 4v4h4M4 13a8 8 0 0 0 14.6 4.5L20 16M20 20v-4h-4"/></svg>Refresh Data</button>
+  </header>
+  <div id="progress" class="progress" hidden></div>
+  <div id="msg" class="status" hidden></div>
+
+  <div class="bar" id="controls">
+    <label class="field"><span>ตั้งแต่</span><input type="date" id="since"></label>
+    <label class="field"><span>ถึง</span><input type="date" id="until"></label>
+    <div class="field"><span>ช่วงด่วน</span><div class="seg" id="quick"><button data-q="7">7 วัน</button><button data-q="30">30 วัน</button><button data-q="month">เดือนนี้</button></div></div>
+    <div class="field cal-only" hidden><span>มุมมอง</span><div class="seg" id="calMode"><button data-cm="orig">Original</button><button data-cm="win">Winning calculator</button></div></div>
+    <label class="field cal-only cal-orig" hidden><span>บัญชีโฆษณา</span><select id="acctSel"></select></label>
+    <label class="field cal-only" hidden><span>ระดับ</span><select id="calLevel"><option value="campaign">Campaign</option><option value="adset">Ad set</option><option value="ad" selected>Ad</option></select></label>
+    <label class="field cal-only cal-orig" hidden><span>ค่าอ้างอิง (benchmark)</span><select id="bench"><option value="range">ช่วงวันที่ที่เลือก</option><option value="all">All time</option></select></label>
+    <label class="field cal-only grow" hidden><span>ค้นหาชื่อหรือ ID</span><input type="search" id="calQ" placeholder="เช่น Condo, 499, 120253201249900730" autocomplete="off"></label>
+    <div class="field cal-only cal-orig grow" hidden style="flex-basis:100%"><span>เพจ</span><div class="chips" id="calPages"></div></div>
+    <div class="field cal-only cal-win grow" hidden style="flex-basis:100%"><span>ใช้ตามแท็บ Winning</span><div class="winlink" id="calWinNote"></div></div>
+  </div>
+
+  <details class="sec perf-only" data-sec="funnel" open><summary><h2>Funnel รวม 2 บัญชีโฆษณา</h2><span id="funnelMeta"></span></summary><div class="sec-body" id="topFunnel"></div></details>
+  <details class="sec perf-only" data-sec="sum" open><summary><h2 id="sumTitle">สรุปรวม</h2><span id="sumMeta"></span></summary><div class="sec-body" id="kpis"></div></details>
+  <details class="sec perf-only" data-sec="pages" open><summary><h2>แยกตามเพจ</h2><span id="pagesMeta"></span></summary><div class="sec-body" id="pageSplit"></div></details>
+
+  <div class="tabs perf-only" role="tablist" id="tabs"></div>
+
+  <details class="sec perf-only" data-sec="filter" open><summary><h2>ตัวกรอง</h2></summary><div class="sec-body filters">
+    <div class="frow">
+      <div class="field"><span>แถวรายวัน</span><div class="seg" id="daySeg"><button data-d="cum" aria-pressed="true">สะสม</button><button data-d="daily" aria-pressed="false">ต่อวัน</button></div></div>
+      <label class="field grow"><span>ค้นหาชื่อหรือ ID</span><input type="search" id="q" placeholder="ชื่อ Campaign / Ad set / Ad หรือ ID" autocomplete="off"></label>
+      <label class="field"><span>เรียงลำดับ</span><select id="sortSel">
+        <option value="spend_hi">Spend มาก → น้อย</option><option value="spend_lo">Spend น้อย → มาก</option>
+        <option value="start_new">Start ล่าสุดก่อน</option><option value="start_old">Start เก่าสุดก่อน</option>
+        <option value="cpr_hi">Cost/result สูง → ต่ำ</option><option value="cpr_lo">Cost/result ต่ำ → สูง</option></select></label>
+      <div class="field"><span>แสดงเฉพาะ</span><div class="toggles"><button class="tg" id="onlyReg" aria-pressed="false">มี Register</button><button class="tg con" id="onlyCon" aria-pressed="false">มี Connect</button></div></div>
+      <div class="field"><span>&nbsp;</span><div class="btns"><button class="btn" id="expandAll">ขยายทั้งหมด</button><button class="btn" id="collapseAll">ย่อทั้งหมด</button></div></div>
+    </div>
+    <div class="field" id="dayPickField" hidden><span>เลือกวัน <button class="mini" id="dayAll" aria-pressed="true">ทุกวัน</button></span><div class="daychips" id="dayPick"></div></div>
+    <div class="field"><span>เพจ</span><div class="chips" id="pageChips"></div></div>
+  </div></details>
+
+  <details class="sec flush perf-only" data-sec="table" open><summary><h2 id="tableTitle">Active Ads</h2><span id="tableMeta"></span></summary>
+    <div class="stale" id="staleNote" hidden>กำลังโหลดข้อมูลของช่วงวันที่ใหม่…</div>
+    <div class="tablebox"><table><thead id="thead"></thead><tbody id="tbody"></tbody><tfoot id="tfoot"></tfoot></table></div>
+  </details>
+
+  <section class="cal-only" id="calBox" hidden></section>
+  <section class="win-only" id="winBox" hidden>
+    <div class="bar">
+      <label class="field"><span>Channel</span><select id="winChannel"><option>Facebook</option></select></label>
+      <div class="field"><span>เดือน</span><div class="seg" id="winMonth"></div></div>
+    </div>
+    <div class="tabs" role="tablist" id="winPages"></div>
+    <div id="winBody" class="winbody"></div>
+  </section>
+</div>
+</div>
+
+<script>
+const ACCOUNTS=[
+  {id:"1093811509479768",label:"TRUE MOVE H UNIVERSAL COMMUNICATION CO.,LTD.",sub:"1093811509479768"},
+  {id:"983107730972192",label:"บริษัท ทรู มูฟ เอช ยูนิเวอร์แซล คอมมิวนิเคชั่น จำกัด",sub:"983107730972192"},
+  {id:"ALL",label:"รวมทั้ง 2 บัญชี",sub:"Consolidated"}
+];
+const REAL_IDS=ACCOUNTS.filter(a=>a.id!=="ALL").map(a=>a.id);
+/* CRM funnel: Facebook "Sub Channel" in the SSO CRM sheet → Facebook Page id */
+const CRM_PAGES={"ทรูภาคใต้":"694326127098793","เน็ตบ้านทรูฯ สมัครง่าย":"993241830549021"};
+const CRM_PAGE_IDS=new Set(Object.values(CRM_PAGES));
+const CRM_FILES={crm:"1Vj3tYDCtuoVDgKq0B5FoQZ9EoxsujrQ6xBBTaBMQHjo",regis:"1fbSGCShZfoOpAs5nwj4o1FEtzy9EsZEYl6oLXCXuu0o"};
+const GD_SERVER="Google Drive",GD_TOOL="read_file_content";
+/* counts only (no customer data): {pageId:{date:{sr,reg,sub}}} built from the files attached on 9 Nov 2026 */
+const CRM_SNAPSHOT={"694326127098793":{"2026-11-01":{"sr":11,"reg":2,"sub":1},"2026-11-02":{"sr":11,"reg":2,"sub":0},"2026-11-03":{"sr":12,"reg":1,"sub":1},"2026-11-04":{"sr":18,"reg":5,"sub":1},"2026-11-05":{"sr":18,"reg":5,"sub":2},"2026-11-06":{"sr":14,"reg":3,"sub":3},"2026-11-07":{"sr":14,"reg":5,"sub":5},"2026-11-08":{"sr":11,"reg":1,"sub":2},"2026-11-09":{"sr":10,"reg":4,"sub":0},"2026-10-17":{"sr":11,"reg":2,"sub":0},"2026-10-18":{"sr":10,"reg":2,"sub":0},"2026-10-19":{"sr":17,"reg":0,"sub":0},"2026-10-20":{"sr":13,"reg":5,"sub":0},"2026-10-21":{"sr":12,"reg":2,"sub":0},"2026-10-22":{"sr":9,"reg":1,"sub":0},"2026-10-23":{"sr":9,"reg":0,"sub":0},"2026-10-24":{"sr":8,"reg":0,"sub":0},"2026-10-25":{"sr":12,"reg":1,"sub":0},"2026-10-26":{"sr":8,"reg":2,"sub":0},"2026-10-27":{"sr":7,"reg":2,"sub":0},"2026-10-28":{"sr":13,"reg":1,"sub":0},"2026-10-29":{"sr":11,"reg":2,"sub":0},"2026-10-30":{"sr":13,"reg":3,"sub":0},"2026-10-31":{"sr":10,"reg":1,"sub":0}},"993241830549021":{"2026-11-02":{"sr":13,"reg":3,"sub":1},"2026-11-03":{"sr":15,"reg":1,"sub":1},"2026-11-04":{"sr":5,"reg":2,"sub":1},"2026-11-05":{"sr":10,"reg":1,"sub":1},"2026-11-06":{"sr":10,"reg":0,"sub":1},"2026-11-07":{"sr":6,"reg":0,"sub":1},"2026-11-08":{"sr":8,"reg":1,"sub":0},"2026-11-09":{"sr":4,"reg":1,"sub":0},"2026-10-17":{"sr":7,"reg":2,"sub":0},"2026-10-18":{"sr":12,"reg":1,"sub":0},"2026-10-19":{"sr":9,"reg":1,"sub":0},"2026-10-20":{"sr":6,"reg":2,"sub":0},"2026-10-21":{"sr":12,"reg":2,"sub":0},"2026-10-22":{"sr":13,"reg":2,"sub":0},"2026-10-23":{"sr":8,"reg":2,"sub":0},"2026-10-24":{"sr":12,"reg":5,"sub":0},"2026-10-25":{"sr":4,"reg":0,"sub":0},"2026-10-26":{"sr":12,"reg":2,"sub":0},"2026-10-27":{"sr":11,"reg":2,"sub":0},"2026-10-28":{"sr":17,"reg":1,"sub":0},"2026-10-29":{"sr":17,"reg":2,"sub":0},"2026-10-30":{"sr":1,"reg":0,"sub":0},"2026-10-31":{"sr":9,"reg":2,"sub":0}}};
+const CRM_SNAPSHOT_AD={"_none":{"2026-11-01":{"sr":3,"reg":3,"sub":1},"2026-11-02":{"sr":9,"reg":2,"sub":0},"2026-11-03":{"sr":5,"reg":0,"sub":0},"2026-11-04":{"sr":7,"reg":4,"sub":0},"2026-11-05":{"sr":7,"reg":0,"sub":1},"2026-11-06":{"sr":5,"reg":2,"sub":1},"2026-11-07":{"sr":2,"reg":2,"sub":4},"2026-11-08":{"sr":6,"reg":0,"sub":2},"2026-11-09":{"sr":5,"reg":0,"sub":0},"2026-10-17":{"sr":6,"reg":2,"sub":0},"2026-10-18":{"sr":3,"reg":1,"sub":0},"2026-10-19":{"sr":4,"reg":0,"sub":0},"2026-10-20":{"sr":6,"reg":0,"sub":0},"2026-10-21":{"sr":7,"reg":1,"sub":0},"2026-10-22":{"sr":5,"reg":1,"sub":0},"2026-10-23":{"sr":2,"reg":1,"sub":0},"2026-10-24":{"sr":1,"reg":1,"sub":0},"2026-10-25":{"sr":3,"reg":0,"sub":0},"2026-10-26":{"sr":7,"reg":0,"sub":0},"2026-10-28":{"sr":5,"reg":2,"sub":0},"2026-10-29":{"sr":5,"reg":1,"sub":0},"2026-10-30":{"sr":5,"reg":1,"sub":0},"2026-10-31":{"sr":3,"reg":0,"sub":0}},"120251531875880730":{"2026-11-01":{"sr":3,"reg":0,"sub":0},"2026-11-02":{"sr":1,"reg":0,"sub":0},"2026-11-04":{"sr":2,"reg":0,"sub":0},"2026-11-06":{"sr":1,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-19":{"sr":2,"reg":0,"sub":0},"2026-10-21":{"sr":3,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":2,"reg":0,"sub":0},"2026-10-25":{"sr":1,"reg":0,"sub":0},"2026-10-28":{"sr":5,"reg":1,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0},"2026-10-30":{"sr":1,"reg":1,"sub":0},"2026-10-31":{"sr":1,"reg":0,"sub":0}},"120253518876100730":{"2026-11-01":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0}},"120253201249900730":{"2026-11-01":{"sr":2,"reg":0,"sub":0},"2026-11-02":{"sr":2,"reg":1,"sub":0},"2026-11-03":{"sr":4,"reg":1,"sub":0},"2026-11-04":{"sr":6,"reg":2,"sub":1},"2026-11-05":{"sr":3,"reg":2,"sub":1},"2026-11-06":{"sr":2,"reg":1,"sub":1},"2026-11-07":{"sr":1,"reg":1,"sub":1},"2026-11-08":{"sr":1,"reg":0,"sub":0},"2026-11-09":{"sr":4,"reg":4,"sub":0},"2026-10-17":{"sr":2,"reg":0,"sub":0},"2026-10-18":{"sr":2,"reg":1,"sub":0},"2026-10-19":{"sr":3,"reg":0,"sub":0},"2026-10-20":{"sr":2,"reg":1,"sub":0},"2026-10-21":{"sr":2,"reg":0,"sub":0},"2026-10-22":{"sr":2,"reg":0,"sub":0},"2026-10-23":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":3,"reg":0,"sub":0},"2026-10-25":{"sr":5,"reg":1,"sub":0},"2026-10-26":{"sr":3,"reg":2,"sub":0},"2026-10-27":{"sr":2,"reg":1,"sub":0},"2026-10-28":{"sr":4,"reg":0,"sub":0},"2026-10-29":{"sr":2,"reg":0,"sub":0},"2026-10-30":{"sr":5,"reg":3,"sub":0},"2026-10-31":{"sr":4,"reg":0,"sub":0}},"120252476899670730":{"2026-11-01":{"sr":1,"reg":0,"sub":0},"2026-11-02":{"sr":1,"reg":0,"sub":0},"2026-11-04":{"sr":2,"reg":1,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":1},"2026-11-08":{"sr":2,"reg":0,"sub":0},"2026-10-17":{"sr":1,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-23":{"sr":2,"reg":0,"sub":0},"2026-10-25":{"sr":1,"reg":0,"sub":0}},"120251156560100730":{"2026-11-01":{"sr":2,"reg":0,"sub":1},"2026-11-02":{"sr":2,"reg":1,"sub":0},"2026-11-03":{"sr":2,"reg":0,"sub":1},"2026-11-05":{"sr":3,"reg":1,"sub":0},"2026-11-06":{"sr":3,"reg":0,"sub":1},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-08":{"sr":3,"reg":0,"sub":0},"2026-10-17":{"sr":3,"reg":0,"sub":0},"2026-10-18":{"sr":6,"reg":0,"sub":0},"2026-10-19":{"sr":7,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-21":{"sr":2,"reg":1,"sub":0},"2026-10-23":{"sr":3,"reg":0,"sub":0},"2026-10-24":{"sr":2,"reg":0,"sub":0},"2026-10-25":{"sr":3,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":3,"reg":1,"sub":0},"2026-10-28":{"sr":4,"reg":1,"sub":0},"2026-10-29":{"sr":2,"reg":0,"sub":0},"2026-10-30":{"sr":1,"reg":0,"sub":0},"2026-10-31":{"sr":4,"reg":1,"sub":0}},"120259611953530746":{"2026-11-01":{"sr":1,"reg":0,"sub":0},"2026-11-05":{"sr":4,"reg":2,"sub":0},"2026-11-06":{"sr":4,"reg":1,"sub":1},"2026-11-07":{"sr":5,"reg":2,"sub":2},"2026-11-08":{"sr":1,"reg":0,"sub":1},"2026-11-09":{"sr":2,"reg":0,"sub":0}},"120252497577200730":{"2026-11-02":{"sr":2,"reg":0,"sub":0},"2026-11-04":{"sr":2,"reg":1,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":0},"2026-11-06":{"sr":1,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":1,"sub":0},"2026-11-08":{"sr":1,"reg":1,"sub":0},"2026-10-23":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0}},"120252763235660730":{"2026-11-02":{"sr":2,"reg":0,"sub":0},"2026-11-03":{"sr":4,"reg":0,"sub":0},"2026-11-04":{"sr":3,"reg":0,"sub":0},"2026-11-05":{"sr":5,"reg":0,"sub":0},"2026-11-06":{"sr":3,"reg":0,"sub":0},"2026-11-07":{"sr":3,"reg":0,"sub":0},"2026-11-08":{"sr":3,"reg":1,"sub":0},"2026-10-17":{"sr":2,"reg":1,"sub":0},"2026-10-18":{"sr":5,"reg":1,"sub":0},"2026-10-19":{"sr":5,"reg":1,"sub":0},"2026-10-20":{"sr":2,"reg":3,"sub":0},"2026-10-21":{"sr":4,"reg":1,"sub":0},"2026-10-22":{"sr":6,"reg":2,"sub":0},"2026-10-23":{"sr":4,"reg":1,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-25":{"sr":2,"reg":0,"sub":0},"2026-10-26":{"sr":3,"reg":1,"sub":0},"2026-10-27":{"sr":5,"reg":1,"sub":0},"2026-10-28":{"sr":5,"reg":0,"sub":0},"2026-10-29":{"sr":8,"reg":0,"sub":0},"2026-10-30":{"sr":1,"reg":0,"sub":0},"2026-10-31":{"sr":4,"reg":0,"sub":0}},"120248910794010730":{"2026-11-02":{"sr":3,"reg":1,"sub":0},"2026-11-03":{"sr":5,"reg":0,"sub":1},"2026-11-04":{"sr":1,"reg":1,"sub":0},"2026-11-05":{"sr":2,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0},"2026-11-09":{"sr":1,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":1,"sub":0},"2026-10-21":{"sr":4,"reg":1,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-28":{"sr":3,"reg":0,"sub":0},"2026-10-29":{"sr":3,"reg":2,"sub":0}},"120252889625460730":{"2026-11-02":{"sr":1,"reg":0,"sub":0},"2026-10-22":{"sr":3,"reg":0,"sub":0},"2026-10-23":{"sr":2,"reg":0,"sub":0},"2026-10-24":{"sr":1,"reg":1,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":2,"reg":0,"sub":0},"2026-10-28":{"sr":3,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":1,"sub":0}},"120259425914620746":{"2026-11-02":{"sr":2,"reg":0,"sub":0},"2026-11-04":{"sr":1,"reg":1,"sub":0},"2026-10-23":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":1,"sub":0},"2026-10-27":{"sr":2,"reg":0,"sub":0},"2026-10-29":{"sr":2,"reg":1,"sub":0},"2026-11-05":{"sr":0,"reg":0,"sub":1}},"120251091282840730":{"2026-11-03":{"sr":2,"reg":0,"sub":0},"2026-11-04":{"sr":1,"reg":0,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":0},"2026-11-06":{"sr":2,"reg":0,"sub":0},"2026-10-17":{"sr":3,"reg":2,"sub":0},"2026-10-18":{"sr":6,"reg":0,"sub":0},"2026-10-19":{"sr":1,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-21":{"sr":2,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":1,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0},"2026-10-31":{"sr":2,"reg":1,"sub":0}},"120252763235650730":{"2026-11-03":{"sr":3,"reg":0,"sub":0},"2026-11-04":{"sr":1,"reg":1,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":0},"2026-11-06":{"sr":2,"reg":0,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0},"2026-10-18":{"sr":2,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":1,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":2,"reg":1,"sub":0},"2026-10-28":{"sr":1,"reg":0,"sub":0}},"120253147503540730":{"2026-11-03":{"sr":2,"reg":1,"sub":0},"2026-11-04":{"sr":1,"reg":0,"sub":1},"2026-10-17":{"sr":1,"reg":0,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-19":{"sr":2,"reg":0,"sub":0},"2026-10-20":{"sr":2,"reg":2,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":4,"reg":2,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":1,"reg":0,"sub":0},"2026-10-28":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0},"2026-10-31":{"sr":1,"reg":1,"sub":0},"2026-11-02":{"sr":0,"reg":0,"sub":1}},"120259426026520746":{"2026-11-03":{"sr":2,"reg":0,"sub":0},"2026-11-06":{"sr":2,"reg":0,"sub":0},"2026-11-09":{"sr":1,"reg":1,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-21":{"sr":1,"reg":1,"sub":0},"2026-10-24":{"sr":2,"reg":1,"sub":0},"2026-10-28":{"sr":2,"reg":0,"sub":0},"2026-10-29":{"sr":3,"reg":0,"sub":0}},"120253603407820730":{"2026-11-03":{"sr":1,"reg":0,"sub":0},"2026-11-06":{"sr":1,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0}},"120247848482840730":{"2026-11-03":{"sr":1,"reg":0,"sub":0},"2026-11-04":{"sr":1,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":1,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0},"2026-10-17":{"sr":2,"reg":0,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-19":{"sr":3,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":1,"sub":0},"2026-10-23":{"sr":1,"reg":0,"sub":0},"2026-10-25":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-28":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0},"2026-10-30":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":0,"reg":1,"sub":0}},"120253617848880730":{"2026-11-04":{"sr":2,"reg":0,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":0}},"120253482620630730":{"2026-11-04":{"sr":1,"reg":0,"sub":0},"2026-11-05":{"sr":1,"reg":0,"sub":0},"2026-10-27":{"sr":2,"reg":0,"sub":0}},"120259409621020746":{"2026-11-04":{"sr":1,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0}},"120259610892040746":{"2026-11-05":{"sr":2,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-09":{"sr":1,"reg":0,"sub":0}},"120259610432400746":{"2026-11-05":{"sr":1,"reg":1,"sub":0},"2026-11-06":{"sr":1,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0}},"120251091858740730":{"2026-11-05":{"sr":1,"reg":0,"sub":0},"2026-11-06":{"sr":2,"reg":0,"sub":0},"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0}},"120251050572330730":{"2026-11-06":{"sr":1,"reg":0,"sub":0},"2026-10-29":{"sr":1,"reg":0,"sub":0}},"120252996628220730":{"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0},"2026-10-30":{"sr":2,"reg":0,"sub":0}},"120247771041510730":{"2026-11-07":{"sr":1,"reg":0,"sub":0}},"120253661799940730":{"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0}},"120259609457030746":{"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-10-18":{"sr":1,"reg":0,"sub":0}},"120253657672010730":{"2026-11-07":{"sr":1,"reg":0,"sub":0},"2026-11-08":{"sr":1,"reg":0,"sub":0},"2026-11-09":{"sr":1,"reg":0,"sub":0}},"120253619379380730":{"2026-11-07":{"sr":1,"reg":0,"sub":0}},"120259409786450746":{"2026-10-18":{"sr":1,"reg":0,"sub":0},"2026-10-22":{"sr":1,"reg":0,"sub":0},"2026-10-23":{"sr":1,"reg":0,"sub":0},"2026-10-25":{"sr":2,"reg":0,"sub":0},"2026-10-28":{"sr":1,"reg":0,"sub":0},"2026-10-30":{"sr":1,"reg":1,"sub":0}},"120253203426480730":{"2026-10-20":{"sr":1,"reg":0,"sub":0}},"120251533142470730":{"2026-10-20":{"sr":1,"reg":0,"sub":0}},"120252513820480730":{"2026-10-20":{"sr":1,"reg":0,"sub":0},"2026-10-24":{"sr":1,"reg":0,"sub":0}},"120259409644170746":{"2026-10-21":{"sr":1,"reg":0,"sub":0},"2026-10-25":{"sr":1,"reg":0,"sub":0}},"120259405267970746":{"2026-10-21":{"sr":1,"reg":1,"sub":0}},"120259409321140746":{"2026-10-24":{"sr":1,"reg":0,"sub":0},"2026-10-26":{"sr":1,"reg":0,"sub":0}},"120247830168690730":{"2026-10-25":{"sr":1,"reg":0,"sub":0}}};
+const CRM_SNAPSHOT_EV=[["2026-11-01","sr",["_none"]],["2026-11-01","sr",["120251531875880730"]],["2026-11-01","sr",["120251531875880730"]],["2026-11-01","sr",["120253518876100730"]],["2026-11-01","sr",["120253201249900730"]],["2026-11-01","sr",["120252476899670730"]],["2026-11-01","sr",["120251156560100730"]],["2026-11-01","sr",["120253201249900730"]],["2026-11-01","sr",["120251156560100730"]],["2026-11-01","sr",["_none"]],["2026-11-01","sr",["_none"]],["2026-11-01","sr",["120251531875880730","120259611953530746"]],["2026-11-02","sr",["120251156560100730","120252497577200730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120252497577200730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120252763235660730"]],["2026-11-02","sr",["120252763235660730"]],["2026-11-02","sr",["120251531875880730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120248910794010730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120253201249900730"]],["2026-11-02","sr",["120252476899670730"]],["2026-11-02","sr",["120253201249900730"]],["2026-11-02","sr",["120251156560100730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120252889625460730"]],["2026-11-02","sr",["120259425914620746"]],["2026-11-02","sr",["120259425914620746"]],["2026-11-02","sr",["120248910794010730"]],["2026-11-02","sr",["_none"]],["2026-11-02","sr",["120248910794010730"]],["2026-11-03","sr",["120251091282840730","120252763235660730"]],["2026-11-03","sr",["120253201249900730"]],["2026-11-03","sr",["120253201249900730"]],["2026-11-03","sr",["120248910794010730"]],["2026-11-03","sr",["120252763235650730","120253147503540730"]],["2026-11-03","sr",["120252763235650730"]],["2026-11-03","sr",["120248910794010730"]],["2026-11-03","sr",["_none"]],["2026-11-03","sr",["120259426026520746"]],["2026-11-03","sr",["120252763235660730"]],["2026-11-03","sr",["120248910794010730"]],["2026-11-03","sr",["120248910794010730"]],["2026-11-03","sr",["_none"]],["2026-11-03","sr",["120253201249900730"]],["2026-11-03","sr",["_none"]],["2026-11-03","sr",["_none"]],["2026-11-03","sr",["_none"]],["2026-11-03","sr",["120251156560100730"]],["2026-11-03","sr",["120248910794010730","120252763235650730"]],["2026-11-03","sr",["120251091282840730","120253603407820730"]],["2026-11-03","sr",["120252763235660730"]],["2026-11-03","sr",["120259426026520746"]],["2026-11-03","sr",["120252763235660730"]],["2026-11-03","sr",["120251156560100730"]],["2026-11-03","sr",["120247848482840730"]],["2026-11-03","sr",["120253147503540730"]],["2026-11-03","sr",["120253201249900730"]],["2026-11-04","sr",["120252763235660730"]],["2026-11-04","sr",["120253201249900730"]],["2026-11-04","sr",["120247848482840730"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["120251531875880730"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["120252476899670730"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["120251531875880730"]],["2026-11-04","sr",["120252497577200730","120253201249900730"]],["2026-11-04","sr",["120253201249900730","120253617848880730"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["120253482620630730"]],["2026-11-04","sr",["120253201249900730"]],["2026-11-04","sr",["120253201249900730"]],["2026-11-04","sr",["_none"]],["2026-11-04","sr",["120252476899670730","120253201249900730"]],["2026-11-04","sr",["120259425914620746"]],["2026-11-04","sr",["120253147503540730","120259409621020746"]],["2026-11-04","sr",["120252763235660730"]],["2026-11-04","sr",["120252763235660730"]],["2026-11-04","sr",["120248910794010730","120251091282840730","120252763235650730"]],["2026-11-04","sr",["120252497577200730","120253617848880730"]],["2026-11-04","sr",["_none"]],["2026-11-05","sr",["120259610892040746"]],["2026-11-05","sr",["120252763235660730"]],["2026-11-05","sr",["120252763235650730"]],["2026-11-05","sr",["120252476899670730"]],["2026-11-05","sr",["120259610432400746"]],["2026-11-05","sr",["120253201249900730","120253617848880730"]],["2026-11-05","sr",["120259610892040746"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120259611953530746"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120251156560100730"]],["2026-11-05","sr",["120251156560100730"]],["2026-11-05","sr",["120259611953530746"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120253201249900730"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120259611953530746"]],["2026-11-05","sr",["120253482620630730"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120252497577200730"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120251091282840730","120252763235660730"]],["2026-11-05","sr",["120251156560100730"]],["2026-11-05","sr",["120252763235660730"]],["2026-11-05","sr",["120259611953530746"]],["2026-11-05","sr",["120248910794010730","120251091858740730"]],["2026-11-05","sr",["120248910794010730"]],["2026-11-05","sr",["120252763235660730"]],["2026-11-05","sr",["120252763235660730"]],["2026-11-05","sr",["_none"]],["2026-11-05","sr",["120253201249900730"]],["2026-11-06","sr",["120251156560100730"]],["2026-11-06","sr",["120252763235650730"]],["2026-11-06","sr",["120259611953530746"]],["2026-11-06","sr",["120251531875880730"]],["2026-11-06","sr",["_none"]],["2026-11-06","sr",["120252763235660730"]],["2026-11-06","sr",["120251091282840730","120252763235660730"]],["2026-11-06","sr",["120251050572330730","120251091282840730","120251091858740730","120259610432400746"]],["2026-11-06","sr",["120259426026520746"]],["2026-11-06","sr",["120253201249900730"]],["2026-11-06","sr",["120252763235660730"]],["2026-11-06","sr",["120252497577200730"]],["2026-11-06","sr",["120251156560100730"]],["2026-11-06","sr",["120253201249900730"]],["2026-11-06","sr",["120259611953530746"]],["2026-11-06","sr",["_none"]],["2026-11-06","sr",["120251091858740730","120252763235650730","120253603407820730"]],["2026-11-06","sr",["_none"]],["2026-11-06","sr",["120259611953530746"]],["2026-11-06","sr",["120251156560100730"]],["2026-11-06","sr",["120259426026520746"]],["2026-11-06","sr",["_none"]],["2026-11-06","sr",["_none"]],["2026-11-06","sr",["120259611953530746"]],["2026-11-07","sr",["120259611953530746"]],["2026-11-07","sr",["120251156560100730","120252996628220730"]],["2026-11-07","sr",["120252497577200730"]],["2026-11-07","sr",["120253603407820730","120259610432400746"]],["2026-11-07","sr",["120253201249900730"]],["2026-11-07","sr",["120247771041510730","120259611953530746"]],["2026-11-07","sr",["_none"]],["2026-11-07","sr",["120252763235660730"]],["2026-11-07","sr",["120248910794010730","120253661799940730"]],["2026-11-07","sr",["120252763235660730"]],["2026-11-07","sr",["120259611953530746"]],["2026-11-07","sr",["120259611953530746"]],["2026-11-07","sr",["120252763235660730"]],["2026-11-07","sr",["120251531875880730"]],["2026-11-07","sr",["120247848482840730","120259611953530746"]],["2026-11-07","sr",["120259610892040746"]],["2026-11-07","sr",["120251091858740730"]],["2026-11-07","sr",["120259609457030746"]],["2026-11-07","sr",["120253657672010730"]],["2026-11-07","sr",["_none"]],["2026-11-07","sr",["120253619379380730"]],["2026-11-08","sr",["120247848482840730","120252476899670730"]],["2026-11-08","sr",["_none"]],["2026-11-08","sr",["120248910794010730","120252763235660730"]],["2026-11-08","sr",["_none"]],["2026-11-08","sr",["_none"]],["2026-11-08","sr",["120251156560100730","120253201249900730"]],["2026-11-08","sr",["_none"]],["2026-11-08","sr",["120251091858740730"]],["2026-11-08","sr",["120252763235660730"]],["2026-11-08","sr",["120252497577200730"]],["2026-11-08","sr",["120253657672010730"]],["2026-11-08","sr",["120253661799940730"]],["2026-11-08","sr",["120259611953530746"]],["2026-11-08","sr",["120251156560100730"]],["2026-11-08","sr",["120251156560100730"]],["2026-11-08","sr",["120252476899670730"]],["2026-11-08","sr",["120252763235650730"]],["2026-11-08","sr",["120252763235660730"]],["2026-11-08","sr",["_none"]],["2026-11-08","sr",["_none"]],["2026-11-09","sr",["120259426026520746"]],["2026-11-09","sr",["_none"]],["2026-11-09","sr",["120253657672010730"]],["2026-11-09","sr",["_none"]],["2026-11-09","sr",["_none"]],["2026-11-09","sr",["_none"]],["2026-11-09","sr",["_none"]],["2026-11-09","sr",["120253201249900730"]],["2026-11-09","sr",["120259611953530746"]],["2026-11-09","sr",["120253201249900730"]],["2026-11-09","sr",["120259611953530746"]],["2026-11-09","sr",["120248910794010730"]],["2026-11-09","sr",["120259610892040746"]],["2026-11-09","sr",["120253201249900730"]],["2026-11-09","sr",["120253201249900730"]],["2026-10-17","sr",["120251091282840730","120252763235660730"]],["2026-10-17","sr",["120251156560100730"]],["2026-10-17","sr",["120251091282840730"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["120253147503540730"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["120253201249900730"]],["2026-10-17","sr",["120252476899670730"]],["2026-10-17","sr",["120251156560100730"]],["2026-10-17","sr",["_none"]],["2026-10-17","sr",["120251156560100730"]],["2026-10-17","sr",["120252763235660730"]],["2026-10-17","sr",["120247848482840730"]],["2026-10-17","sr",["120251091282840730"]],["2026-10-17","sr",["120247848482840730","120253201249900730"]],["2026-10-18","sr",["120252763235660730","120253147503540730"]],["2026-10-18","sr",["120251091282840730"]],["2026-10-18","sr",["120251091282840730"]],["2026-10-18","sr",["120252763235660730"]],["2026-10-18","sr",["_none"]],["2026-10-18","sr",["120251091282840730","120259426026520746"]],["2026-10-18","sr",["120251091282840730"]],["2026-10-18","sr",["120253201249900730"]],["2026-10-18","sr",["120247848482840730"]],["2026-10-18","sr",["120253201249900730"]],["2026-10-18","sr",["120252763235660730"]],["2026-10-18","sr",["120252763235660730"]],["2026-10-18","sr",["120251156560100730"]],["2026-10-18","sr",["120251156560100730"]],["2026-10-18","sr",["120251156560100730"]],["2026-10-18","sr",["120251091282840730","120252763235650730","120252763235660730"]],["2026-10-18","sr",["120251156560100730"]],["2026-10-18","sr",["120251091282840730"]],["2026-10-18","sr",["120252763235650730"]],["2026-10-18","sr",["120251156560100730","120251531875880730","120252996628220730","120259409786450746","120259609457030746"]],["2026-10-18","sr",["_none"]],["2026-10-18","sr",["_none"]],["2026-10-18","sr",["120251156560100730"]],["2026-10-19","sr",["120252763235660730","120253147503540730"]],["2026-10-19","sr",["120251531875880730"]],["2026-10-19","sr",["120253201249900730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120247848482840730"]],["2026-10-19","sr",["120251531875880730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120253201249900730"]],["2026-10-19","sr",["_none"]],["2026-10-19","sr",["120252763235660730"]],["2026-10-19","sr",["120251091282840730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["_none"]],["2026-10-19","sr",["120247848482840730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120252763235660730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120251156560100730"]],["2026-10-19","sr",["120247848482840730"]],["2026-10-19","sr",["_none"]],["2026-10-19","sr",["_none"]],["2026-10-19","sr",["120253147503540730"]],["2026-10-19","sr",["120252763235660730"]],["2026-10-19","sr",["120253201249900730"]],["2026-10-19","sr",["120252763235660730"]],["2026-10-20","sr",["120253203426480730","120259426026520746"]],["2026-10-20","sr",["_none"]],["2026-10-20","sr",["120253201249900730"]],["2026-10-20","sr",["_none"]],["2026-10-20","sr",["120253201249900730"]],["2026-10-20","sr",["_none"]],["2026-10-20","sr",["120247848482840730"]],["2026-10-20","sr",["_none"]],["2026-10-20","sr",["120248910794010730","120252763235660730"]],["2026-10-20","sr",["120252763235660730"]],["2026-10-20","sr",["120251091282840730"]],["2026-10-20","sr",["120253147503540730"]],["2026-10-20","sr",["_none"]],["2026-10-20","sr",["120251156560100730"]],["2026-10-20","sr",["120251533142470730"]],["2026-10-20","sr",["120252996628220730"]],["2026-10-20","sr",["120252763235650730","120253147503540730"]],["2026-10-20","sr",["120252476899670730","120252513820480730"]],["2026-10-20","sr",["_none"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["120248910794010730"]],["2026-10-21","sr",["120252763235660730"]],["2026-10-21","sr",["120248910794010730"]],["2026-10-21","sr",["120251531875880730"]],["2026-10-21","sr",["120251091282840730","120252763235660730"]],["2026-10-21","sr",["120251091282840730"]],["2026-10-21","sr",["120251531875880730"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["120251156560100730"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["120248910794010730"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["120252763235660730"]],["2026-10-21","sr",["120253201249900730"]],["2026-10-21","sr",["120253201249900730"]],["2026-10-21","sr",["120251531875880730"]],["2026-10-21","sr",["120248910794010730"]],["2026-10-21","sr",["120259409644170746"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["_none"]],["2026-10-21","sr",["120251156560100730"]],["2026-10-21","sr",["120259405267970746","120252763235660730","120259426026520746"]],["2026-10-22","sr",["120252889625460730"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["_none"]],["2026-10-22","sr",["120253201249900730"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["120252889625460730"]],["2026-10-22","sr",["120259409786450746"]],["2026-10-22","sr",["120253201249900730","120251531875880730"]],["2026-10-22","sr",["120252996628220730"]],["2026-10-22","sr",["_none"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["120252763235660730"]],["2026-10-22","sr",["_none"]],["2026-10-22","sr",["120253147503540730"]],["2026-10-22","sr",["120252889625460730"]],["2026-10-22","sr",["120251091282840730"]],["2026-10-22","sr",["_none"]],["2026-10-22","sr",["120259409621020746"]],["2026-10-22","sr",["_none"]],["2026-10-22","sr",["120252476899670730"]],["2026-10-23","sr",["120251156560100730","120252497577200730"]],["2026-10-23","sr",["120259409786450746"]],["2026-10-23","sr",["120247848482840730"]],["2026-10-23","sr",["120253201249900730"]],["2026-10-23","sr",["120259425914620746"]],["2026-10-23","sr",["120252763235660730"]],["2026-10-23","sr",["120252889625460730"]],["2026-10-23","sr",["_none"]],["2026-10-23","sr",["120251156560100730"]],["2026-10-23","sr",["120252476899670730"]],["2026-10-23","sr",["120252763235660730"]],["2026-10-23","sr",["120252763235660730"]],["2026-10-23","sr",["120252476899670730"]],["2026-10-23","sr",["120252889625460730"]],["2026-10-23","sr",["120252763235660730"]],["2026-10-23","sr",["120251156560100730"]],["2026-10-23","sr",["_none"]],["2026-10-24","sr",["120252513820480730","120253201249900730"]],["2026-10-24","sr",["120253147503540730"]],["2026-10-24","sr",["120252763235660730","120259425914620746"]],["2026-10-24","sr",["120248910794010730"]],["2026-10-24","sr",["120259426026520746"]],["2026-10-24","sr",["120253147503540730"]],["2026-10-24","sr",["120259409321140746"]],["2026-10-24","sr",["120253201249900730"]],["2026-10-24","sr",["120252497577200730"]],["2026-10-24","sr",["120251156560100730"]],["2026-10-24","sr",["120251531875880730"]],["2026-10-24","sr",["_none"]],["2026-10-24","sr",["120253147503540730"]],["2026-10-24","sr",["120252763235650730"]],["2026-10-24","sr",["120253147503540730"]],["2026-10-24","sr",["120251156560100730"]],["2026-10-24","sr",["120259426026520746"]],["2026-10-24","sr",["120252889625460730"]],["2026-10-24","sr",["120251531875880730"]],["2026-10-24","sr",["120253201249900730"]],["2026-10-25","sr",["120253201249900730"]],["2026-10-25","sr",["120253201249900730"]],["2026-10-25","sr",["120252763235660730"]],["2026-10-25","sr",["120251531875880730"]],["2026-10-25","sr",["120251156560100730","120253201249900730","120259409786450746"]],["2026-10-25","sr",["_none"]],["2026-10-25","sr",["120247830168690730","120253201249900730","120259409786450746"]],["2026-10-25","sr",["120253201249900730"]],["2026-10-25","sr",["120251156560100730"]],["2026-10-25","sr",["120259409644170746"]],["2026-10-25","sr",["_none"]],["2026-10-25","sr",["120252476899670730"]],["2026-10-25","sr",["_none"]],["2026-10-25","sr",["120252763235660730"]],["2026-10-25","sr",["120251156560100730"]],["2026-10-25","sr",["120247848482840730"]],["2026-10-26","sr",["120253201249900730"]],["2026-10-26","sr",["120259409321140746"]],["2026-10-26","sr",["120247848482840730"]],["2026-10-26","sr",["120252763235660730"]],["2026-10-26","sr",["120252889625460730"]],["2026-10-26","sr",["120251156560100730"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["120248910794010730","120252763235650730","120253147503540730"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["120252763235650730"]],["2026-10-26","sr",["120252763235660730"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["120253201249900730"]],["2026-10-26","sr",["120253201249900730"]],["2026-10-26","sr",["_none"]],["2026-10-26","sr",["120251091282840730","120252763235660730","120259425914620746"]],["2026-10-26","sr",["120252996628220730"]],["2026-10-27","sr",["120253201249900730"]],["2026-10-27","sr",["120251156560100730"]],["2026-10-27","sr",["120251156560100730"]],["2026-10-27","sr",["120252889625460730"]],["2026-10-27","sr",["120252763235660730"]],["2026-10-27","sr",["120252889625460730"]],["2026-10-27","sr",["120251156560100730"]],["2026-10-27","sr",["120253482620630730"]],["2026-10-27","sr",["120259425914620746"]],["2026-10-27","sr",["120252763235660730"]],["2026-10-27","sr",["120259425914620746"]],["2026-10-27","sr",["120253147503540730"]],["2026-10-27","sr",["120252763235660730"]],["2026-10-27","sr",["120253482620630730"]],["2026-10-27","sr",["120252763235660730"]],["2026-10-27","sr",["120252763235660730"]],["2026-10-27","sr",["120253201249900730"]],["2026-10-27","sr",["120252497577200730"]],["2026-10-28","sr",["120251531875880730"]],["2026-10-28","sr",["_none"]],["2026-10-28","sr",["120253201249900730"]],["2026-10-28","sr",["120251156560100730"]],["2026-10-28","sr",["120252889625460730"]],["2026-10-28","sr",["120251156560100730"]],["2026-10-28","sr",["120253201249900730"]],["2026-10-28","sr",["120252763235660730"]],["2026-10-28","sr",["_none"]],["2026-10-28","sr",["120247848482840730"]],["2026-10-28","sr",["120253201249900730"]],["2026-10-28","sr",["120251531875880730"]],["2026-10-28","sr",["_none"]],["2026-10-28","sr",["120252763235660730"]],["2026-10-28","sr",["120252763235660730"]],["2026-10-28","sr",["120259426026520746"]],["2026-10-28","sr",["120252763235660730"]],["2026-10-28","sr",["120248910794010730"]],["2026-10-28","sr",["120248910794010730","120252889625460730"]],["2026-10-28","sr",["120259426026520746"]],["2026-10-28","sr",["120248910794010730"]],["2026-10-28","sr",["120252763235660730"]],["2026-10-28","sr",["_none"]],["2026-10-28","sr",["120252763235650730"]],["2026-10-28","sr",["120253147503540730"]],["2026-10-28","sr",["120251531875880730"]],["2026-10-28","sr",["120253201249900730"]],["2026-10-28","sr",["120251531875880730","120259409786450746"]],["2026-10-28","sr",["120251156560100730"]],["2026-10-28","sr",["120252889625460730"]],["2026-10-28","sr",["120251156560100730","120251531875880730"]],["2026-10-28","sr",["_none"]],["2026-10-29","sr",["_none"]],["2026-10-29","sr",["120251156560100730"]],["2026-10-29","sr",["120251156560100730"]],["2026-10-29","sr",["120253201249900730"]],["2026-10-29","sr",["120247848482840730"]],["2026-10-29","sr",["120251531875880730"]],["2026-10-29","sr",["120251050572330730","120252763235660730"]],["2026-10-29","sr",["120253201249900730"]],["2026-10-29","sr",["120259426026520746"]],["2026-10-29","sr",["120252763235660730"]],["2026-10-29","sr",["_none"]],["2026-10-29","sr",["120251091282840730","120252763235660730"]],["2026-10-29","sr",["120253147503540730"]],["2026-10-29","sr",["_none"]],["2026-10-29","sr",["120248910794010730","120252889625460730"]],["2026-10-29","sr",["120259409621020746"]],["2026-10-29","sr",["120252763235660730"]],["2026-10-29","sr",["120252763235660730","120259426026520746"]],["2026-10-29","sr",["120248910794010730","120259425914620746","120259610432400746"]],["2026-10-29","sr",["120252763235660730"]],["2026-10-29","sr",["120252763235660730"]],["2026-10-29","sr",["120253518876100730"]],["2026-10-29","sr",["120259425914620746"]],["2026-10-29","sr",["_none"]],["2026-10-29","sr",["120248910794010730"]],["2026-10-29","sr",["_none"]],["2026-10-29","sr",["120252763235660730","120259426026520746"]],["2026-10-29","sr",["120252497577200730"]],["2026-10-30","sr",["_none"]],["2026-10-30","sr",["120251156560100730"]],["2026-10-30","sr",["_none"]],["2026-10-30","sr",["120251531875880730","120253201249900730","120259409786450746"]],["2026-10-30","sr",["120252763235660730"]],["2026-10-30","sr",["_none"]],["2026-10-30","sr",["120247848482840730"]],["2026-10-30","sr",["120253201249900730"]],["2026-10-30","sr",["120253201249900730"]],["2026-10-30","sr",["120253201249900730"]],["2026-10-30","sr",["120253201249900730"]],["2026-10-30","sr",["_none"]],["2026-10-30","sr",["120252996628220730"]],["2026-10-30","sr",["_none"]],["2026-10-30","sr",["120252996628220730"]],["2026-10-31","sr",["120252763235660730"]],["2026-10-31","sr",["120253201249900730"]],["2026-10-31","sr",["120251091282840730"]],["2026-10-31","sr",["120253201249900730"]],["2026-10-31","sr",["120251531875880730"]],["2026-10-31","sr",["120251156560100730"]],["2026-10-31","sr",["120253201249900730"]],["2026-10-31","sr",["120253201249900730"]],["2026-10-31","sr",["120251091282840730"]],["2026-10-31","sr",["120252763235660730"]],["2026-10-31","sr",["120252763235660730"]],["2026-10-31","sr",["120251156560100730"]],["2026-10-31","sr",["120252763235660730"]],["2026-10-31","sr",["120253147503540730"]],["2026-10-31","sr",["_none"]],["2026-10-31","sr",["_none"]],["2026-10-31","sr",["120251156560100730"]],["2026-10-31","sr",["120251156560100730"]],["2026-10-31","sr",["_none"]],["2026-10-20","reg",["120253201249900730"]],["2026-10-20","reg",["120252763235660730"]],["2026-10-27","reg",["120251156560100730"]],["2026-10-27","reg",["120247848482840730"]],["2026-10-26","reg",["120252763235650730"]],["2026-10-27","reg",["120252763235660730"]],["2026-10-29","reg",["120248910794010730","120252889625460730"]],["2026-10-29","reg",["120259425914620746"]],["2026-10-29","reg",["120248910794010730"]],["2026-11-02","reg",["120253201249900730"]],["2026-11-01","reg",["_none"]],["2026-11-01","reg",["_none"]],["2026-11-04","reg",["_none"]],["2026-11-04","reg",["_none"]],["2026-11-05","reg",["120259610432400746"]],["2026-11-05","reg",["120253201249900730"]],["2026-11-09","reg",["120253201249900730"]],["2026-11-09","reg",["120253201249900730"]],["2026-11-01","reg",["_none"]],["2026-11-07","sub",["_none"]],["2026-11-02","reg",["_none"]],["2026-11-07","sub",["_none"]],["2026-11-02","reg",["120251156560100730"]],["2026-11-03","sub",["120251156560100730"]],["2026-11-02","reg",["120248910794010730"]],["2026-11-03","sub",["120248910794010730"]],["2026-11-02","reg",["_none"]],["2026-11-06","sub",["_none"]],["2026-11-04","reg",["120248910794010730","120252763235650730"]],["2026-11-03","reg",["120253147503540730"]],["2026-11-04","sub",["120253147503540730"]],["2026-11-03","reg",["120253201249900730"]],["2026-11-04","sub",["120253201249900730"]],["2026-11-04","reg",["_none"]],["2026-11-04","reg",["120252497577200730","120253201249900730"]],["2026-11-04","reg",["_none"]],["2026-11-05","sub",["_none"]],["2026-11-04","reg",["120252476899670730","120253201249900730"]],["2026-11-05","sub",["120252476899670730","120253201249900730"]],["2026-11-04","reg",["120259425914620746"]],["2026-11-05","sub",["120259425914620746"]],["2026-11-05","reg",["120259611953530746"]],["2026-11-07","sub",["120259611953530746"]],["2026-11-05","reg",["120251156560100730"]],["2026-11-06","sub",["120251156560100730"]],["2026-11-05","reg",["120259611953530746"]],["2026-11-06","sub",["120259611953530746"]],["2026-11-06","reg",["_none"]],["2026-11-07","sub",["_none"]],["2026-11-05","reg",["120253201249900730"]],["2026-11-07","sub",["120253201249900730"]],["2026-11-06","reg",["_none"]],["2026-11-07","sub",["_none"]],["2026-11-06","reg",["120253201249900730"]],["2026-11-06","sub",["120253201249900730"]],["2026-11-06","reg",["120259611953530746"]],["2026-11-07","sub",["120259611953530746"]],["2026-11-07","reg",["120259611953530746"]],["2026-11-08","sub",["120259611953530746"]],["2026-11-07","reg",["120252497577200730"]],["2026-11-07","reg",["120253201249900730"]],["2026-11-07","reg",["_none"]],["2026-11-08","sub",["_none"]],["2026-11-07","reg",["120247848482840730","120259611953530746"]],["2026-11-07","reg",["_none"]],["2026-11-08","sub",["_none"]],["2026-11-08","reg",["120252763235660730"]],["2026-11-08","reg",["120252497577200730"]],["2026-11-09","reg",["120259426026520746"]],["2026-11-09","reg",["120253201249900730"]],["2026-11-09","reg",["120253201249900730"]],["2026-10-17","reg",["120251091282840730","120252763235660730"]],["2026-10-17","reg",["_none"]],["2026-10-17","reg",["_none"]],["2026-10-17","reg",["120251091282840730"]],["2026-10-18","reg",["_none"]],["2026-10-18","reg",["120253201249900730"]],["2026-10-18","reg",["120252763235660730"]],["2026-10-19","reg",["120252763235660730"]],["2026-10-20","reg",["120247848482840730"]],["2026-10-20","reg",["120248910794010730","120252763235660730"]],["2026-10-20","reg",["120252763235660730"]],["2026-10-20","reg",["120253147503540730"]],["2026-10-20","reg",["120252763235650730","120253147503540730"]],["2026-10-21","reg",["120248910794010730"]],["2026-10-21","reg",["_none"]],["2026-10-21","reg",["120251156560100730"]],["2026-10-21","reg",["120259405267970746","120252763235660730","120259426026520746"]],["2026-10-22","reg",["120252763235660730"]],["2026-10-22","reg",["120252763235660730"]],["2026-10-22","reg",["_none"]],["2026-10-23","reg",["_none"]],["2026-10-24","reg",["120252889625460730"]],["2026-10-23","reg",["120252763235660730"]],["2026-10-24","reg",["_none"]],["2026-10-24","reg",["120253147503540730"]],["2026-10-24","reg",["120253147503540730"]],["2026-10-24","reg",["120259426026520746"]],["2026-10-25","reg",["120253201249900730"]],["2026-10-26","reg",["120253201249900730"]],["2026-10-26","reg",["120253201249900730"]],["2026-10-26","reg",["120251091282840730","120252763235660730","120259425914620746"]],["2026-10-27","reg",["120253201249900730"]],["2026-10-28","reg",["_none"]],["2026-10-28","reg",["120251156560100730","120251531875880730"]],["2026-10-28","reg",["_none"]],["2026-10-29","reg",["_none"]],["2026-10-30","reg",["120251531875880730","120253201249900730","120259409786450746"]],["2026-10-30","reg",["_none"]],["2026-11-01","sub",["_none"]],["2026-10-30","reg",["120253201249900730"]],["2026-10-30","reg",["120253201249900730"]],["2026-10-31","reg",["120251091282840730"]],["2026-10-31","reg",["120253147503540730"]],["2026-11-02","sub",["120253147503540730"]],["2026-10-31","reg",["120251156560100730"]],["2026-11-01","sub",["120251156560100730"]]];
+const AD_NAMES={"120251091282840730":["เน็ตบ้านทรู_TOL_Jluy_01_Clip","เน็ตบ้านทรู_TOL_Jluy_01_Clip","เน็ตบ้านทรู_TOL_Jluy_01_Clip_THAI"],"120252763235660730":["เน็ตบ้านทรู_TOL_SEP_01_699_Thai","เน็ตบ้านทรู_TOL_SEP_01_599/699","เน็ตบ้านทรู_TOL_SEP_01_599/699_Thai"],"120253147503540730":["เน็ตบ้านทรู_TOL_SEP_Thai_true id 600- Pic+Clip","เน็ตบ้านทรู_TOL_NOV_600 Trueid","เน็ตบ้านทรู_TOL_NOV_600 Trueid"],"120252763235650730":["เน็ตบ้านทรู_TOL_SEP_01_599_Thai","เน็ตบ้านทรู_TOL_SEP_01_599/699","เน็ตบ้านทรู_TOL_SEP_01_599/699_Thai"],"120253203426480730":["เน็ตบ้านทรู_TOL_OCT_THAI_499 ADMD","เน็ตบ้านทรู_TOL_OCT_THAI_499 ADMD","เน็ตบ้านทรู_TOL_OCT_THAI_499 ADMD"],"120248910794010730":["เน็ตบ้านทรู_TOL_JUN_02_Clip_Central","เน็ตบ้านทรู_TOL_JUN_02_Clip","เน็ตบ้านทรู_TOL_JUN_02_Clip_Central"],"120252889625460730":["เน็ตบ้านทรู_TOL_SEP_02_499/600","เน็ตบ้านทรู_TOL_SEP_02_499/600","เน็ตบ้านทรู_TOL_SEP_02_499/600"],"120251050572330730":["เน็ตบ้านทรู_TOL_JUN_02_กล้อง 2 ตัว 569/2 - Clip","เน็ตบ้านทรู_TOL_JUN_02_กล้อง 2 ตัว 569","เน็ตบ้านทรู_TOL_JUN_02_กล้อง 2 ตัว 569"],"120253603407820730":["เน็ตบ้านทรู_TOL_NOV_600 Trueid","เน็ตบ้านทรู_TOL_NOV_600 Trueid","เน็ตบ้านทรู_TOL_NOV_600 Trueid"],"120251091858740730":["เน็ตบ้านทรู_TOL_Jluy_01_Clip 3","เน็ตบ้านทรู_TOL_Jluy_01_Clip","เน็ตบ้านทรู_TOL_Jluy_01_Clip_THAI"],"120253661799940730":["เน็ตบ้านทรู_NOV_CLIP_ADMD","เน็ตบ้านทรู_NOV_CLIP_ADMD","เน็ตบ้านทรู_NOV_THAI_CLIP_ADMD"],"120253619379380730":["เน็ตบ้านทรู_NOV_499/600","เน็ตบ้านทรู_NOV_499/600","เน็ตบ้านทรู_NOV_Thai_499/600"],"120251156560100730":["ทรูภาคใต้_TOL_JUN_01_Clip 2","ทรูภาคใต้_TOL_JUN_01_499","ทรูภาคใต้_TOL_JUN_01_499"],"120253201249900730":["ทรูภาคใต้_TOL_OCT_SOUTH_499 ADMD inbox","ทรูภาคใต้_TOL_OCT_SOUTH_499 ADMD","ทรูภาคใต้_TOL_OCT_SOUTH_499 ADMD inbox"],"120252476899670730":["ทรูภาคใต้_TOL_AUG_03_499","ทรูภาคใต้_TOL_AUG_03_499","ทรูภาคใต้_TOL_AUG_03_THAI_499"],"120247848482840730":["TOL_APR_01_2 _Student","TOL_APR_01_2","TOL_APR_01_2 _Student"],"120251531875880730":["ทรูภาคใต้_TOL_JUN_02_South_699","ทรูภาคใต้_TOL_JUN_02_599/699","ทรูภาคใต้_TOL_JUN_02_South_599/699"],"120252996628220730":["ทรูภาคใต้_TOL_JUN_02_South_ประกัน 599","ทรูภาคใต้_TOL_JUN_02_599/699","ทรูภาคใต้_TOL_JUN_02_South_599/699"],"120251533142470730":["ทรูภาคใต้_TOL_JUN_02_Thai_599","ทรูภาคใต้_TOL_JUN_02_599/699","ทรูภาคใต้_TOL_JUN_02_Thai_599/699"],"120252513820480730":["ทรูภาคใต้_TOL_AUG_03_499","ทรูภาคใต้_TOL_AUG_03_499_2","ทรูภาคใต้_TOL_AUG_03_THAI_499"],"120252497577200730":["ทรูภาคใต้_TOL_AUG_03_499","ทรูภาคใต้_TOL_AUG_03_499_2","ทรูภาคใต้_TOL_AUG_03_THAI_499"],"120247830168690730":["TOL_May_03_Clip2_499","TOL_May_03_Clip2","TOL_May_03_Clip2"],"120253482620630730":["ทรูภาคใต้_TOL_JUN_01_Clip 2 -1","ทรูภาคใต้_TOL_JUN_01_499","ทรูภาคใต้_TOL_JUN_01_499"],"120253657672010730":["ทรูภาคใต้_NOV_CLIP_ADMD","ทรูภาคใต้_NOV_CLIP_ADMD","ทรูภาคใต้_NOV_South_CLIP_ADMD"],"120259426026520746":["TOL_Condo_499_TH_HostSpeaker","21Oct_Condo_499_PatTNG","TOL_Condo_499_Thailand"],"120259409644170746":["TOL_Flood_Oct_599_FL_MotionGraphic","21Oct_Flood_Oct_599_PatTNG","TOL_Flood_Oct_599_FloodLocation"],"120259409621020746":["TOL_Flood_Oct_599_TH_HostSpeaker","21Oct_Flood_Oct_599_PatTNG","TOL_Flood_Oct_599_Thailand"],"120259425914620746":["TOL_Condo_499_HPL_HostSpeaker","21Oct_Condo_499_PatTNG","TOL_Condo_499_HighPotentialLocation"],"120259409321140746":["TOL_Flood_Oct_599_TH_MotionGraphic","21Oct_Flood_Oct_599_PatTNG","TOL_Flood_Oct_599_Thailand"],"120259610432400746":["TOL_Insurance_OnTopHook","4Nov_Insurance_TestHook_PatTNG","TOL_Insurance_TestHook_PatTNG"],"120259409786450746":["TrueSouth_Flood_Oct_599_TH_MotionGraphic","21Oct_Flood_Oct_599_PatTNG","TrueSouth_Flood_Oct_599_Thailand"],"120259609457030746":["TrueSouth_Insurance_OnTopHook","4Nov_Insurance_TestHook_PatTNG","TrueSouth_Insurance_TestHook_PatTNG"],"120259611953530746":["TrueSouth_SSO","4Nov_SSO_PatTNG","TrueSouth_SSO_thailand"],"120253518876100730":["ทรูภาคใต้_OCT_ประกัน PKT-SKA","ทรูภาคใต้_OCT_ประกัน PKT-SKA","ทรูภาคใต้_OCT_ประกัน PKT-SKA"],"120253617848880730":["ทรูภาคใต้_NOV_South_499/600","ทรูภาคใต้_NOV_499/600","ทรูภาคใต้_NOV_South_499/600"],"120247771041510730":["TOL_May_03_Clip_499","TOL_May_03_Clip","TOL_May_03_Clip"],"120259610892040746":["TrueSouth_AfterSales_Thailand","4Nov_AfterSales_PatTNG","TrueSouth_AfterSales_Thailand"],"120259405267970746":["TOL_Flood_Oct_599_FL_HostSpeaker","21Oct_Flood_Oct_599_PatTNG","TOL_Flood_Oct_599_FloodLocation"]};
+const SERVER="Meta Ads", TOOL="ads_get_ad_entities", LOG_TOOL="ads_account_get_activity_logs", CR_TOOL="ads_get_creatives", PG_TOOL="ads_get_ad_account_pages";
+const MSG="actions:onsite_conversion.messaging_conversation_started_7d";
+const CPR="cost_per_action_type:onsite_conversion.messaging_conversation_started_7d";
+const METRIC_FIELDS=["amount_spent","impressions","cpm","reach","cpp","link_click","cost_per_link_click","clicks","ctr",MSG,CPR];
+const LEVEL_FIELDS={
+  campaign:["id","name","effective_status","start_time","stop_time"],
+  adset:["id","name","effective_status","campaign_id","start_time","end_time"],
+  ad:["id","name","effective_status","campaign_id","adset_id","created_time","creative_id"]
+};
+const STATUS_ORDER=["ACTIVE","IN_PROCESS","PENDING_REVIEW","PREAPPROVED","WITH_ISSUES","DISAPPROVED","PENDING_BILLING_INFO","CAMPAIGN_PAUSED","ADSET_PAUSED","AD_PAUSED","PAUSED","ARCHIVED","DELETED"];
+const COLS=[
+  {k:"name",h:"Name",l:true},{k:"page",h:"Page",l:true},{k:"status",h:"Status",l:true},{k:"start",h:"Start",l:true},{k:"end",h:"End",l:true},
+  {k:"days",h:"Days"},{k:"spd",h:"Spend/day"},{k:"spend",h:"Spend"},{k:"impr",h:"Impressions"},{k:"cpm",h:"CPM"},
+  {k:"reach",h:"Reach"},{k:"cpp",h:"CPP"},{k:"link",h:"Link clicks"},{k:"cpc",h:"CPC"},{k:"res",h:"Results"},{k:"cpr",h:"Cost/result"},{k:"ctr",h:"CTR"},
+  {k:"ipr",h:"Impr / 1 inbox"},{k:"rpr",h:"Reach / 1 inbox"},{k:"lpr",h:"Link clicks / 1 inbox"}
+];
+const NCOL=COLS.length;
+const convId=Array.from({length:20},()=>"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"[Math.floor(Math.random()*62)]).join("");
+
+const S={cmpKey:"cpr",cmpDir:1,acct:ACCOUNTS[0].id,view:"tree",dayMode:"daily",daySort:"date",sortKey:"spd",sortDir:-1,
+  flatSortKey:"date",adfKey:"sub",adfDir:1,adfOnly:"all",flatSortDir:-1,flatLevel:"ad",status:new Set(),pages:new Set(),q:"",cmpOrder:"best",
+  crm:{src:"snapshot",agg:CRM_SNAPSHOT,aggAd:CRM_SNAPSHOT_AD,ev:CRM_SNAPSHOT_EV},openKids:new Set(),openDays:new Set(),
+  data:{},loading:{},flatLimit:400};
+const $=id=>document.getElementById(id);
+const store={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+
+function bkkToday(){return new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Bangkok",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date())}
+function addDays(s,n){const d=new Date(s+"T00:00:00Z");d.setUTCDate(d.getUTCDate()+n);return d.toISOString().slice(0,10)}
+const minDay=(a,b)=>a<b?a:b,clampDay=(x,lo,hi)=>x<lo?lo:x>hi?hi:x;
+function bkkYesterday(){
+  const p=new Intl.DateTimeFormat("en-CA",{timeZone:"Asia/Bangkok",year:"numeric",month:"2-digit",day:"2-digit"}).format(new Date());
+  const d=new Date(p+"T00:00:00Z");d.setUTCDate(d.getUTCDate()-1);return d.toISOString().slice(0,10);
+}
+$("since").value="2026-10-01";$("until").value=bkkYesterday();
+const savedAcct=store.get("tmh.acct");if(ACCOUNTS.some(a=>a.id===savedAcct))S.acct=savedAcct;
+
+function num(v){
+  if(v==null||v==="")return null;
+  if(typeof v==="object")return v.value==null?null:parseFloat(v.value);
+  const n=parseFloat(String(v).replace(/[%,]/g,""));return isNaN(n)?null:n;
+}
+function perRes(m){m.ipr=m.res?m.impr/m.res:null;m.rpr=m.res&&m.reach!=null?m.reach/m.res:null;m.lpr=m.res?m.link/m.res:null;return m}
+function metrics(r){return perRes({spend:num(r.amount_spent)||0,impr:num(r.impressions)||0,cpm:num(r.cpm),reach:num(r.reach),cpp:num(r.cpp),
+  link:num(r.link_click)||0,cpc:num(r.cost_per_link_click),clicks:num(r.clicks)||0,ctr:num(r.ctr),res:num(r[MSG])||0,cpr:num(r[CPR])})}
+function ratios(m){m.cpm=m.impr?m.spend/m.impr*1000:null;m.cpc=m.link?m.spend/m.link:null;m.ctr=m.impr?m.clicks/m.impr*100:null;m.cpr=m.res?m.spend/m.res:null;m.cpp=m.reach?m.spend/m.reach*1000:null;return perRes(m)}
+
+/* ---------- status history (from the account's activity log) ---------- */
+const LABEL2ST={"active":"ACTIVE","inactive":"PAUSED","paused":"PAUSED","deleted":"DELETED","archived":"ARCHIVED","disapproved":"DISAPPROVED","with issues":"WITH_ISSUES","in review":"PENDING_REVIEW","pending review":"PENDING_REVIEW"};
+function normLabel(s){if(!s)return null;const k=String(s).trim().toLowerCase();if(k.startsWith("pending process"))return null;return LABEL2ST[k]||String(s).toUpperCase().replace(/\s+/g,"_")}
+function parseLogDate(s){
+  const m=/(\d{1,2})\/(\d{1,2})\/(\d{4})(?:\D+(\d{1,2}):(\d{2})\s*([AP]M))?/i.exec(String(s||"").replace(/ /g," "));
+  if(!m)return null;let h=m[4]?+m[4]%12:0;if(m[6]&&m[6].toUpperCase()==="PM")h+=12;
+  const p=n=>String(n).padStart(2,"0");return{d:`${m[3]}-${p(m[1])}-${p(m[2])}`,t:`${m[3]}-${p(m[1])}-${p(m[2])}T${p(h)}:${m[5]||"00"}`};
+}
+function buildHistory(entries){
+  const by=new Map();
+  entries.forEach((e,i)=>{
+    let x=e.extra_data;if(typeof x==="string"){try{x=JSON.parse(x)}catch(_){x=null}}
+    if(!x||x.type!=="run_status")return;
+    const when=parseLogDate(e.datetime);if(!when)return;
+    if(!by.has(e.object_id))by.set(e.object_id,[]);
+    by.get(e.object_id).push({t:when.t,d:when.d,seq:-i,from:normLabel(x.old_value),to:normLabel(x.new_value)});
+  });
+  by.forEach(list=>list.sort((a,b)=>a.t<b.t?-1:a.t>b.t?1:a.seq-b.seq));
+  return by;
+}
+const OWN_FROM_EFF={CAMPAIGN_PAUSED:"ACTIVE",ADSET_PAUSED:"ACTIVE"};
+function ownOn(n,date,hist){
+  const cur=OWN_FROM_EFF[n.status]||n.status;
+  const ev=hist&&hist.get(n.id);if(!ev||!ev.length)return cur;
+  let st=null;for(const e of ev){if(e.d<=date){if(e.to)st=e.to}else break}
+  if(st)return st;
+  for(const e of ev){if(e.d>date&&e.from)return e.from}
+  return cur;
+}
+function effOn(n,date){
+  const d=S.data[S.acct];const hist=d&&d.hist;
+  if(!hist)return n.status;
+  const own=ownOn(n,date,hist);if(own!=="ACTIVE")return own;
+  const nodes=d.byId;
+  if(n.lvl==="ad"){const s=nodes.get(n.parent);if(s&&ownOn(s,date,hist)==="PAUSED")return"ADSET_PAUSED";
+    const c=s&&nodes.get(s.parent);if(c&&ownOn(c,date,hist)==="PAUSED")return"CAMPAIGN_PAUSED"}
+  if(n.lvl==="adset"){const c=nodes.get(n.parent);if(c&&ownOn(c,date,hist)==="PAUSED")return"CAMPAIGN_PAUSED"}
+  return"ACTIVE";
+}
+/* status shown on a summary row: cumulative view = current status; otherwise status on the last day of the chosen range */
+function dispStatus(n){const d=S.data[S.acct];return S.dayMode==="cum"||!d?n.status:effOn(n,d.until)}
+function dayStatus(n,date){return S.dayMode==="cum"?n.status:effOn(n,date)}
+
+/* ---------- fetching ---------- */
+let mcp=null;
+async function callAll(input,refresh,label,cacheOverride){
+  let rows=[],cursor=null,page=0;
+  do{
+    const inp=cursor?{...input,cursor}:input;
+    const res=await mcp.callTool(SERVER,TOOL,inp,{cache:cacheOverride||(refresh?{refresh:true,staleTime:0,gcTime:86400000}:{staleTime:300000,gcTime:86400000})});
+    let p=res.payload;if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){}}
+    let ents=p&&p.ad_entities;if(typeof ents==="string"){try{ents=JSON.parse(ents)}catch(e){ents=[]}}
+    if(Array.isArray(ents))rows=rows.concat(ents);
+    cursor=(p&&p.pagination&&p.pagination.next_cursor)||null;page++;
+    setProg(label,rows.length+" แถว"+(cursor?"…":""));
+  }while(cursor&&page<40);
+  return rows;
+}
+/* Meta times out (Bad Gateway) when one call covers a long, busy history, so read it in week-long pieces,
+   split a failing or full piece into single days, and retry a failing day once. Past pieces never change, so they are cached longer. */
+async function fetchLogs(acct,since,refresh){
+  const day=86400000,start=Date.parse(since+"T00:00:00+07:00"),now=Date.now(),today=bkkDate(new Date(now).toISOString());
+  const iso=t=>new Date(t).toISOString().replace(/\.\d{3}Z$/,"Z");
+  const call=(a,b)=>{const past=bkkDate(new Date(b-1).toISOString())<today;
+    return mcp.callTool(SERVER,LOG_TOOL,{ad_account_id:acct,event_category:"status",start_time:iso(a),end_time:iso(b),limit:1000,
+      advertiser_job:"report_measure_or_look_up",client_conversation_id:convId},
+      {cache:past?{staleTime:7*86400000,gcTime:14*86400000}:refresh?{refresh:true,staleTime:0,gcTime:86400000}:{staleTime:300000,gcTime:86400000}})
+    .then(res=>{let p=res.payload;if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){}}
+      let rows=p&&p.result;if(typeof rows==="string"){try{rows=JSON.parse(rows)}catch(e){rows=[]}}return Array.isArray(rows)?rows:[]})};
+  const pieces=[];for(let t=start;t<now;t+=7*day)pieces.push([t,Math.min(t+7*day,now)]);
+  const all=[];let failed=0,full=0,done=0;
+  async function piece([a,b],depth){
+    try{const rows=await call(a,b);
+      if(rows.length>=1000&&b-a>day){for(let t=a;t<b;t+=day)await piece([t,Math.min(t+day,b)],depth+1);return}
+      if(rows.length>=1000)full++;all.push(...rows)}
+    catch(e){
+      if(b-a>day){for(let t=a;t<b;t+=day)await piece([t,Math.min(t+day,b)],depth+1);return}
+      if(depth<3){await new Promise(r=>setTimeout(r,800));return piece([a,b],3)}
+      failed++}
+  }
+  const queue=pieces.slice();
+  await Promise.all([0,1,2].map(async()=>{while(queue.length){const p=queue.shift();await piece(p,0);done++;setProg("ประวัติสถานะ",`${done}/${pieces.length} สัปดาห์ · ${all.length} รายการ`)}}));
+  const seen=new Set(),rows=all.filter(r=>{const k=r.object_id+"|"+r.datetime+"|"+r.extra_data;if(seen.has(k))return false;seen.add(k);return true});
+  if(failed&&!rows.length)return{ok:false,rows:[],note:"ดึงประวัติสถานะจาก Meta ไม่ได้ (Meta ตอบกลับผิดพลาด) ตอนนี้แสดงเป็นสถานะปัจจุบันทุกวัน กด “รีเฟรช” เพื่อลองใหม่"};
+  return{ok:true,rows,note:failed?`ดึงประวัติสถานะไม่ครบ ${failed} วัน (Meta ตอบกลับผิดพลาด) สถานะของวันนั้นอาจไม่ตรง กด “รีเฟรช” เพื่อลองใหม่`:full?"ประวัติสถานะบางวันมีเกิน 1,000 รายการ สถานะของวันนั้นอาจไม่ครบ":""};
+}
+function cacheOpt(refresh){return{cache:refresh?{refresh:true,staleTime:0,gcTime:86400000}:{staleTime:300000,gcTime:86400000}}}
+function unwrap(res){let p=res.payload;if(typeof p==="string"){try{p=JSON.parse(p)}catch(e){}}return p||{}}
+async function attachPages(acct,d,refresh){
+  const names=new Map();
+  try{
+    let cursor=null,i=0;
+    do{const p=unwrap(await mcp.callTool(SERVER,PG_TOOL,{ad_account_id:acct,limit:100,client_conversation_id:convId,advertiser_job:"report_measure_or_look_up",...(cursor?{cursor}:{})},cacheOpt(refresh)));
+      (p.pages||[]).forEach(x=>names.set(String(x.page_id),x.page_name));cursor=p.next_cursor||null;i++}while(cursor&&i<10);
+  }catch(e){}
+  const crIds=[...new Set(d.ads.map(a=>a.creative).filter(Boolean))];
+  const cr2page=new Map();
+  try{
+    for(let i=0;i<crIds.length;i+=100){
+      const p=unwrap(await mcp.callTool(SERVER,CR_TOOL,{creative_ids:crIds.slice(i,i+100),fields:["id","effective_object_story_id","object_story_id"],
+        client_conversation_id:convId,advertiser_job:"report_measure_or_look_up"},cacheOpt(refresh)));
+      (p.ad_creatives||[]).forEach(c=>{const sid=c.effective_object_story_id||c.object_story_id;if(sid)cr2page.set(String(c.id),String(sid).split("_")[0])});
+      setProg("เพจ",cr2page.size+" ครีเอทีฟ");
+    }
+  }catch(e){d.pageNote="ดึงชื่อเพจไม่ได้ ("+((e&&e.code)||"error")+")"}
+  d.pageNames=names;
+  d.ads.forEach(a=>{const pid=a.creative&&cr2page.get(String(a.creative));if(pid)a.pages.add(pid)});
+  d.sets.forEach(s=>s.kids.forEach(a=>a.pages.forEach(x=>s.pages.add(x))));
+  d.camps.forEach(c=>c.kids.forEach(s=>s.pages.forEach(x=>c.pages.add(x))));
+}
+function pageNames(n){const d=S.data[S.acct];if(!d||!d.pageNames)return[];return[...n.pages].map(id=>d.pageNames.get(id)||("Page "+id))}
+function pageLabel(n){const a=pageNames(n);if(!a.length)return"";return a.length>2?a.slice(0,2).join(", ")+" +"+(a.length-2):a.join(", ")}
+function pageTag(n){const l=pageLabel(n);return l?`<span class="pg" title="${esc(pageNames(n).join(" · "))}">${esc(l)}</span>`:""}
+/* ---------- CRM funnel: inbox → register → sub (from the SSO Google Sheets) ---------- */
+function longestString(o,depth){if(typeof o==="string")return o;if(!o||typeof o!=="object"||depth>6)return"";
+  let best="";for(const v of Object.values(o)){const x=longestString(v,(depth||0)+1);if(x.length>best.length)best=x}return best}
+function parseCSV(text){
+  const rows=[];let row=[],f="",q=false;
+  for(let i=0;i<text.length;i++){const c=text[i];
+    if(q){if(c==='"'){if(text[i+1]==='"'){f+='"';i++}else q=false}else f+=c}
+    else if(c==='"')q=true;else if(c===","){row.push(f);f=""}
+    else if(c==="\n"||c==="\r"){if(c==="\r"&&text[i+1]==="\n")i++;row.push(f);rows.push(row);row=[];f=""}
+    else f+=c}
+  if(f!==""||row.length){row.push(f);rows.push(row)}
+  return rows.filter(r=>r.some(x=>x!==""));
+}
+function sheetSections(text){
+  const parts=text.split(/^## Sheet name:.*$/m);return parts.map(x=>x.trim()).filter(Boolean);
+}
+function tableWith(text,col){
+  for(const sec of sheetSections(text)){const rows=parseCSV(sec);if(!rows.length)continue;
+    const hi=rows.findIndex(r=>r.includes(col));if(hi<0||hi>3)continue;
+    const h=rows[hi];return rows.slice(hi+1).map(r=>{const o={};h.forEach((k,i)=>o[k]=(r[i]||"").trim());return o})}
+  return null;
+}
+function bkkDate(s){const t=Date.parse(s);if(isNaN(t))return String(s).slice(0,10);return new Date(t+7*3600000).toISOString().slice(0,10)}
+function ymd(s){s=String(s||"").trim();if(/^\d{8}$/.test(s))return s.slice(0,4)+"-"+s.slice(4,6)+"-"+s.slice(6,8);return s.slice(0,10)}
+/* A ledger keeps every SR and every connected asset ever seen, so rows that later drop out of the sheets still count,
+   and each record is counted once: SRs by SR No, registers by Asset Number (earliest register wins), subs by Asset Number
+   (earliest Connect APPOINT_DAY wins). Asset numbers are stored only as a short SHA-256 hash.
+   Per SR: p = page from Sub Channel, d = SR Open day, u = Updated At day (register day), ad = adsId (wins over Sub Channel). */
+async function h16(s){const b=await crypto.subtle.digest("SHA-256",new TextEncoder().encode(String(s).trim()));
+  return [...new Uint8Array(b)].slice(0,8).map(x=>x.toString(16).padStart(2,"0")).join("")}
+async function extractRecords(srRows,rcRows){
+  const sr={},subs={},hc=new Map(),odd=[];const H=async a=>{if(!hc.has(a))hc.set(a,await h16(a));return hc.get(a)};
+  for(const r of srRows){
+    const no=String(r["SR No"]||"").trim();if(!no)continue;
+    const ad=(String(r["adsId"]||"").match(/\d{12,}/g)||[]).join(",");
+    const isFb=String(r["Channel"]||"").toLowerCase()==="facebook";
+    const pid=isFb?CRM_PAGES[String(r["Sub Channel"]||"").trim()]:null;
+    if(!isFb&&!ad)continue;   /* every Facebook SR (the summary counts them all), plus any SR an ad brought in */
+    const nums=(String(r["Asset Number"]||"").match(/\d{6,}/g)||[]);const hs=[];
+    for(const a of nums){hs.push(await H(a));if(a.length!==10)odd.push({no,p:pid,d:bkkDate(r["SR Open"]),len:a.length,tail:a.slice(-4)})}
+    const u=r["Updated At"]?bkkDate(r["Updated At"]):bkkDate(r["SR Open"]),a=[...new Set(hs)],au={};a.forEach(h=>au[h]=u);
+    const c=String(r["Issue"]||"").trim()==="ปิดการขายได้";
+    sr[no]={p:pid||"",d:bkkDate(r["SR Open"]),u,a,au,ad,c,cu:c?u:""};
+  }
+  for(const r of rcRows){
+    if(String(r.SUBS_STATUS||"").toLowerCase()!=="connect"||!r.APPOINT_DAY||!r.ASSET_NUM)continue;
+    const h=await H(String(r.ASSET_NUM).trim()),d=ymd(r.APPOINT_DAY);if(!subs[h]||d<subs[h].d)subs[h]={d};
+  }
+  return{sr,subs,odd};
+}
+const assetsOf=r=>Array.isArray(r.a)?r.a:(r.a?[r.a]:[]);
+/* merge one SR: never drop assets; the register day (u) is fixed the first time assets appear; adsId from the sheet wins */
+function mergeRec(o,n){
+  if(!o)return{rec:n,newReg:assetsOf(n).length,changed:true};
+  const oa=assetsOf(o),na=assetsOf(n).filter(h=>!oa.includes(h));const rec={...o,a:[...oa,...na],au:{...(o.au||{})}};let changed=na.length>0;
+  /* register day of an asset = Updated At of the row on the day the asset first appeared; later edits never move it */
+  na.forEach(h=>{rec.au[h]=(n.au&&n.au[h])||n.u||n.d});
+  oa.forEach(h=>{if(!rec.au[h]){rec.au[h]=(n.au&&n.au[h])||o.u||n.u||o.d;changed=true}});
+  if(!rec.u&&n.u){rec.u=n.u;changed=true}
+  /* "ปิดการขายได้" sticks once seen; its register day is the Updated At of the first time it was seen closed */
+  if(n.c&&!o.c){rec.c=true;rec.cu=n.cu||n.u||n.d;changed=true}
+  if(o.c===undefined&&n.c===false){rec.c=false;changed=true}
+  if(n.ad&&n.ad!==o.ad){rec.ad=n.ad;changed=true}
+  if(!rec.p&&n.p){rec.p=n.p;changed=true}
+  return{rec,newReg:na.length,changed};
+}
+function mergeLedger(base,add){
+  const ch={sr:{},subs:{},nSr:0,nReg:0,nSub:0};
+  for(const no in add.sr){const o=base.sr[no],m=mergeRec(o,add.sr[no]);
+    if(m.changed){ch.sr[no]=m.rec;if(!o)ch.nSr++;ch.nReg+=m.newReg}}
+  for(const h in add.subs){const n=add.subs[h],o=base.subs[h];
+    if(!o){ch.subs[h]=n;ch.nSub++}else if(n.d<o.d)ch.subs[h]=n}
+  return ch;
+}
+function applyChanges(base,ch){const out={sr:{...base.sr},subs:{...base.subs}};
+  for(const no in ch.sr)out.sr[no]=ch.sr[no];for(const h in ch.subs)out.subs[h]=ch.subs[h];return out}
+/* the page an ad lives on (from its creative); filled as account data loads */
+const AD_PAGE=new Map();
+function refreshAdPages(){Object.values(S.data).forEach(d=>d&&d.ads&&d.ads.forEach(a=>{const p=[...a.pages][0];if(p)AD_PAGE.set(a.id,p)}))}
+const adsOf=r=>r&&r.ad?String(r.ad).split(","):[];
+function pageOfSr(r){const ads=adsOf(r);return(ads.length&&AD_PAGE.get(ads[0]))||r.p||""}
+const regDay=(r,h)=>(r.au&&r.au[h])||r.u||r.d;
+/* an SR that lists several ads in adsId gives full credit (1) to every one of them; ev keeps each SR/register/sub once,
+   so totals and campaign/ad set rows count a person once even when several of its ads share the credit */
+let EV=[];
+function bumpAd(o,r,day,k){let ads=adsOf(r);if(!day)return;if(!ads.length)ads=["_none"];EV.push([day,k,ads]);
+  ads.forEach(ad=>{const x=((o[ad]=o[ad]||{})[day]=o[ad][day]||{sr:0,reg:0,sub:0});x[k]++})}
+function aggregateLedger(L){
+  const agg={},aggAd={};EV=[];
+  const bump=(o,key,day,k)=>{if(!key||!day)return;((o[key]=o[key]||{})[day]=o[key][day]||{sr:0,reg:0,sub:0})[k]++};
+  const first={};
+  Object.keys(L.sr).sort().forEach(no=>{const r=L.sr[no];const pg=pageOfSr(r);
+    if(pg)bump(agg,pg,r.d,"sr");bumpAd(aggAd,r,r.d,"sr");
+    assetsOf(r).forEach(h=>{const f=first[h];if(!f||regDay(r,h)<regDay(f,h))first[h]=r})});
+  const tot={sr:Object.keys(L.sr).length,reg:0,sub:0};
+  /* Issue = ปิดการขายได้ with no Asset Number yet still counts as 1 register (it moves to its asset once one is filled in) */
+  Object.keys(L.sr).forEach(no=>{const r=L.sr[no];if(!r.c||assetsOf(r).length)return;const ru=r.cu||r.u||r.d,pg=pageOfSr(r);
+    if(pg)bump(agg,pg,ru,"reg");bumpAd(aggAd,r,ru,"reg");tot.reg++});
+  for(const a in first){const f=first[a],pg=pageOfSr(f),ru=regDay(f,a);
+    if(pg)bump(agg,pg,ru,"reg");bumpAd(aggAd,f,ru,"reg");tot.reg++;
+    const s=L.subs[a];if(s){if(pg)bump(agg,pg,s.d,"sub");bumpAd(aggAd,f,s.d,"sub");tot.sub++}}
+  return{agg,aggAd,tot,ev:EV};
+}
+/* ---------- ledger storage (artifact db): crm/sr-YYYY-MM {m:{srNo:{p,d,u,a,au,ad}}}, crm/subs {m:{hash:{d}}}, crm/meta ---------- */
+let db=null,canWrite=false;
+const LG={sr:{},subs:{},meta:null,ready:false,err:null};
+let liveRecs=null,lastSync=null;
+function initLedger(){
+  if(!db){recomputeCrm();return}
+  const t=setTimeout(()=>{if(!LG.ready){LG.err="ยังติดต่อที่เก็บข้อมูลไม่ได้";render()}},10000);
+  db.collection("crm").onSnapshot(snap=>{
+    const sr={};let subs={},meta=null;
+    snap.docs.forEach(doc=>{const x=doc.data()||{};
+      if(doc.id.startsWith("sr-"))Object.assign(sr,x.m||{});else if(doc.id==="subs")subs=x.m||{};else if(doc.id==="meta")meta=x});
+    LG.sr=sr;LG.subs=subs;LG.meta=meta;
+    if(!snap.metadata.fromCache){LG.ready=true;LG.err=null;clearTimeout(t)}
+    recomputeCrm();maybeSync();
+  },e=>{clearTimeout(t);LG.err="ที่เก็บข้อมูลใช้ไม่ได้ ("+e.code+")";recomputeCrm()});
+}
+let syncing=false;
+async function maybeSync(){
+  if(syncing||!db||!canWrite||!LG.ready||!liveRecs)return;
+  const ch=mergeLedger(LG,liveRecs);
+  if(!Object.keys(ch.sr).length&&!Object.keys(ch.subs).length){if(!lastSync){lastSync={at:new Date(),nSr:0,nReg:0,nSub:0};render()}return}
+  syncing=true;
+  try{
+    const lock=await db.doc("crm/lock").acquire({holder:convId,ttlMs:60000});
+    if(!lock.acquired){syncing=false;return}
+    const byMonth={};for(const no in ch.sr){const mo=ch.sr[no].d.slice(0,7);(byMonth[mo]=byMonth[mo]||{})[no]=liveRecs.sr[no]||ch.sr[no]}
+    for(const mo in byMonth){const ref=db.doc("crm/sr-"+mo);const cur=await ref.get();const m={...((cur.exists&&cur.data().m)||{})};
+      for(const no in byMonth[mo]){m[no]=mergeRec(m[no],byMonth[mo][no]).rec}
+      await ref.set({m})}
+    if(Object.keys(ch.subs).length){const ref=db.doc("crm/subs");const cur=await ref.get();const m={...((cur.exists&&cur.data().m)||{})};
+      for(const h in ch.subs){const o=m[h],n=ch.subs[h];if(!o||n.d<o.d)m[h]=n}await ref.set({m})}
+    await db.doc("crm/meta").set({lastSync:new Date().toISOString(),added:{sr:ch.nSr,reg:ch.nReg,sub:ch.nSub}});
+    lastSync={at:new Date(),nSr:ch.nSr,nReg:ch.nReg,nSub:ch.nSub};
+  }catch(e){LG.err="บันทึกไม่สำเร็จ ("+((e&&e.code)||"error")+")"}
+  syncing=false;render();
+}
+let adPageN=-1;
+function recomputeCrm(quiet){
+  refreshAdPages();adPageN=AD_PAGE.size;
+  let L={sr:{},subs:{}},src="snapshot";
+  if(LG.ready&&Object.keys(LG.sr).length){L={sr:LG.sr,subs:LG.subs};src="ledger"}
+  if(liveRecs){L=applyChanges(L,mergeLedger(L,liveRecs));src=src==="ledger"?"ledger+live":"live"}
+  if(src==="snapshot"){S.crm={...S.crm,src,agg:CRM_SNAPSHOT,aggAd:CRM_SNAPSHOT_AD,ev:CRM_SNAPSHOT_EV,tot:null}}
+  else{const r=aggregateLedger(L);S.crm={...S.crm,src,agg:r.agg,aggAd:r.aggAd,ev:r.ev,tot:r.tot}}
+  if(!quiet)render();
+}
+/* read both Google Sheets in full: download as .xlsx (all tabs) and parse with SheetJS */
+function b64ToBytes(s){const bin=atob(s.replace(/\s/g,""));const u=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)u[i]=bin.charCodeAt(i);return u}
+function findB64(o,depth){if(typeof o==="string")return o.length>200&&/^[A-Za-z0-9+/=\s]+$/.test(o.slice(0,400))?o:"";
+  if(!o||typeof o!=="object"||(depth||0)>6)return"";let best="";for(const v of Object.values(o)){const x=findB64(v,(depth||0)+1);if(x.length>best.length)best=x}return best}
+async function downloadSheet(fileId,opt){
+  const res=await mcp.callTool(GD_SERVER,"download_file_content",{fileId,exportMimeType:"application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"},opt);
+  const b=findB64(res.payload!=null?res.payload:res);if(!b)throw{code:"parse",message:"ไม่ได้ไฟล์จาก Google Drive"};
+  if(!window.XLSX)throw{code:"parse",message:"โหลดตัวอ่านไฟล์ Excel ไม่ได้"};
+  return XLSX.read(b64ToBytes(b),{type:"array"});
+}
+function rowsWith(wb,col){
+  for(const name of wb.SheetNames){const rows=XLSX.utils.sheet_to_json(wb.Sheets[name],{defval:"",raw:false});
+    if(rows.length&&Object.prototype.hasOwnProperty.call(rows[0],col))return rows.map(r=>{const o={};for(const k in r)o[String(k).trim()]=String(r[k]).trim();return o})}
+  return null;
+}
+async function loadCrm(refresh){
+  if(!mcp)return;
+  try{
+    const opt={cache:refresh?{refresh:true,staleTime:0,gcTime:3600000}:{staleTime:600000,gcTime:3600000}};
+    const [a,b]=await Promise.all([downloadSheet(CRM_FILES.crm,opt),downloadSheet(CRM_FILES.regis,opt)]);
+    const sr=rowsWith(a,"SR No"),rc=rowsWith(b,"ASSET_NUM");
+    if(!sr||!rc)throw{code:"parse",message:"หาแท็บ ServiceRequests หรือคอลัมน์ ASSET_NUM ไม่เจอ"};
+    liveRecs=await extractRecords(sr,rc);S.crm.err=null;S.crm.at=new Date();S.crm.rows={sr:sr.length,rc:rc.length};
+  }catch(e){S.crm.err=(e&&(e.message||e.code))||"error"}
+  recomputeCrm();maybeSync();
+}
+function crmFor(pid,since,until){const t={sr:0,reg:0,sub:0};const by=S.crm.agg[pid]||{};
+  for(const day in by)if(day>=since&&day<=until){t.sr+=by[day].sr;t.reg+=by[day].reg;t.sub+=by[day].sub}return t}
+const prog={};
+function setProg(k,v){prog[k]=v;const el=$("progress");el.hidden=false;el.innerHTML=Object.entries(prog).map(([a,b])=>`<span>${a}: <i>${b}</i></span>`).join("")}
+
+async function loadAll(refresh){
+  const since=$("since").value,until=$("until").value;
+  if(!since||!until||since>until){showMsg("เลือกช่วงวันที่ให้ถูกต้อง (ตั้งแต่ ≤ ถึง)","err");return}
+  S.loading.ALL=true;render();
+  for(const id of REAL_IDS){const d=S.data[id];if(refresh||!d||d.key!==id+"|"+since+"|"+until)await loadAccount(id,refresh)}
+  const parts=REAL_IDS.map(id=>S.data[id]);
+  if(parts.every(d=>d&&d.key.endsWith("|"+since+"|"+until))){
+    const acc=sumMetrics(parts.map(d=>d.acc).filter(Boolean));
+    acc.reach=parts.reduce((t,d)=>t+((d.acc&&d.acc.reach)||0),0);ratios(acc);
+    const hist=new Map(),names=new Map();
+    parts.forEach(d=>{if(d.hist)d.hist.forEach((v,k)=>hist.set(k,v));if(d.pageNames)d.pageNames.forEach((v,k)=>names.set(k,v))});
+    const camps=parts.flatMap(d=>d.camps),sets=parts.flatMap(d=>d.sets),ads=parts.flatMap(d=>d.ads);
+    S.data.ALL={key:"ALL|"+since+"|"+until,until,acc,reachApprox:true,camps,sets,ads,
+      byId:new Map([...camps,...sets,...ads].map(n=>[n.id,n])),hist:parts.some(d=>d.hist)?hist:null,pageNames:names,loadedAt:new Date()};
+  }
+  S.loading.ALL=false;render();
+}
+async function loadAccount(acct,refresh){
+  if(acct==="ALL")return loadAll(refresh);
+  if(!mcp){showMsg("หน้านี้ต้องเปิดใน claude.ai และอนุญาตให้ใช้ Meta Ads connector จึงจะดึงข้อมูลได้","err");return}
+  const since=$("since").value,until=$("until").value;
+  if(!since||!until||since>until){showMsg("เลือกช่วงวันที่ให้ถูกต้อง (ตั้งแต่ ≤ ถึง)","err");return}
+  const key=acct+"|"+since+"|"+until;
+  S.loading[acct]=true;render();
+  for(const k in prog)delete prog[k];
+  showMsg("กำลังดึงข้อมูลจาก Meta Ads… ครั้งแรกจะมีหน้าต่างขออนุญาตใช้ connector");
+  const base={ad_account_id:acct,time_range:JSON.stringify({since,until}),include_additional_context:false,
+    reporting_purpose:["metric_lookup"],advertiser_job:"report_measure_or_look_up",client_conversation_id:convId,limit:500};
+  const spendFilter=[{field:"amount_spent",operator:"GREATER_THAN",value:["0"]}];
+  /* daily rows: days before the last refresh (minus one day Meta may still adjust) are kept from earlier pulls;
+     a refresh only re-reads from there to today. Older days come in calendar-month pieces so they stay cached. */
+  const today=bkkToday(),last=store.get("tmh.last."+acct);
+  const cut=clampDay(addDays(last||today,-1),since,addDays(until,1));
+  const pieces=[];for(let a=since;a<cut;){const mEnd=addDays(a.slice(0,8)+"01",40).slice(0,8)+"01";const b=addDays(minDay(mEnd,cut),-1);pieces.push([a,b,true]);a=addDays(b,1)}
+  if(cut<=until)pieces.push([cut,until,false]);
+  const old={staleTime:30*86400000,gcTime:60*86400000};
+  const jobs=[];
+  for(const lvl of ["campaign","adset","ad"]){
+    jobs.push(callAll({...base,level:lvl,time_increment:"all_days",filtering:spendFilter,fields:[...LEVEL_FIELDS[lvl],...METRIC_FIELDS]},refresh,lvl+" รวม"));
+    jobs.push(Promise.all(pieces.map(([a,b,isOld])=>callAll({...base,time_range:JSON.stringify({since:a,until:b}),level:lvl,time_increment:"1",filtering:spendFilter,fields:["id",...METRIC_FIELDS]},refresh,lvl+" รายวัน",isOld?old:null))).then(x=>x.flat()));
+  }
+  jobs.push(callAll({...base,level:"ad_account",time_increment:"all_days",fields:METRIC_FIELDS},refresh,"บัญชี"));
+  const logJob=Promise.resolve({ok:false,rows:[],note:""});   /* status shown is the current one, so the activity log is not needed */
+  try{
+    const [cT,cD,sT,sD,aT,aD,acc]=await Promise.all(jobs);
+    const logs=await logJob;
+    const b=build(cT,cD,sT,sD,aT,aD);
+    S.data[acct]={key,until,acc:acc[0]?metrics(acc[0]):null,...b,byId:new Map([...b.camps,...b.sets,...b.ads].map(n=>[n.id,n])),
+      hist:logs.ok?buildHistory(logs.rows):null,logNote:logs.note,loadedAt:new Date()};
+    await attachPages(acct,S.data[acct],refresh);
+    if(refresh||!last)store.set("tmh.last."+acct,today);
+    if(logs.note)showMsg(logs.note);else hideMsg();
+  }catch(e){handleErr(e)}
+  S.loading[acct]=false;render();
+}
+async function ensureBoth(){
+  if(S._ensuring||!mcp)return;S._ensuring=true;
+  try{for(const id of REAL_IDS){const since=$("since").value,until=$("until").value,d=S.data[id];
+    if(!S.loading[id]&&(!d||d.key!==id+"|"+since+"|"+until))await loadAccount(id,false)}}
+  finally{S._ensuring=false;render()}
+}
+function handleErr(e){
+  const c=e&&e.code;
+  const map={
+    needs_reauth:"การเชื่อมต่อ Meta Ads หมดอายุ ให้เชื่อมต่อใหม่ที่ claude.ai Settings → Connectors แล้วกดโหลดอีกครั้ง",
+    server_not_connected:"ยังไม่ได้เพิ่ม Meta Ads connector ให้เพิ่มที่ claude.ai Settings → Connectors",
+    selection_required:"มี Meta Ads connector มากกว่าหนึ่งตัว ให้เลือกตัวที่ใช้ในหน้าต่างที่ claude.ai แสดง แล้วกดโหลดอีกครั้ง",
+    not_in_manifest:"ยังไม่ได้อนุญาตให้หน้านี้ใช้ Meta Ads เปิดสิทธิ์ได้ที่เมนู Permissions ของ artifact",
+    approval_required:"ต้องอนุญาตให้หน้านี้ใช้ Meta Ads ก่อน กดโหลดข้อมูลแล้วเลือก Allow",
+    consent_required:"ต้องอนุญาตให้หน้านี้ใช้ Meta Ads ก่อน กดโหลดข้อมูลแล้วเลือก Allow",
+    blocked_by_policy:"องค์กรของคุณไม่อนุญาตเครื่องมือนี้สำหรับบัญชีนี้",
+    server_unavailable:"Meta Ads ไม่ตอบสนองชั่วคราว รอสักครู่แล้วกดโหลดอีกครั้ง",
+    tool_error:"Meta Ads ตอบกลับว่าเกิดข้อผิดพลาด: "+((e&&e.message)||"")
+  };
+  showMsg(map[c]||("ดึงข้อมูลไม่สำเร็จ ("+(c||"error")+") "+((e&&e.message)||"")),"err");
+}
+function showMsg(t,cls){const el=$("msg");el.textContent=t;el.className="status"+(cls?" "+cls:"");el.hidden=false}
+function hideMsg(){$("msg").hidden=true}
+
+function build(cT,cD,sT,sD,aT,aD){
+  const nodes=new Map();
+  const mk=(lvl,r)=>({id:r.id,lvl,name:r.name||r.id,status:r.effective_status||"—",
+    schedStart:r.start_time||null,schedEnd:r.stop_time||r.end_time||null,
+    parent:lvl==="adset"?r.campaign_id:lvl==="ad"?r.adset_id:null,creative:r.creative_id||null,created:r.created_time||null,pages:new Set(),total:metrics(r),days:[],kids:[]});
+  cT.forEach(r=>nodes.set(r.id,mk("campaign",r)));
+  sT.forEach(r=>nodes.set(r.id,mk("adset",r)));
+  aT.forEach(r=>nodes.set(r.id,mk("ad",r)));
+  for(const rows of [cD,sD,aD])rows.forEach(r=>{const n=nodes.get(r.id);if(!n)return;const m=metrics(r);
+    if(m.spend>0||m.impr>0)n.days.push({date:r.date_start,m})});
+  const camps=[],sets=[],ads=[];
+  nodes.forEach(n=>{
+    n.days.sort((a,b)=>a.date<b.date?-1:1);
+    const act=n.days.filter(d=>d.m.spend>0);
+    n.nDays=act.length;n.first=n.days[0]?n.days[0].date:null;n.last=n.days.length?n.days[n.days.length-1].date:null;
+    n.spd=n.nDays?n.total.spend/n.nDays:null;
+    (n.lvl==="campaign"?camps:n.lvl==="adset"?sets:ads).push(n);
+  });
+  sets.forEach(s=>{const p=nodes.get(s.parent);if(p)p.kids.push(s)});
+  ads.forEach(a=>{const p=nodes.get(a.parent);if(p)p.kids.push(a)});
+  return{camps,sets,ads};
+}
+
+/* ---------- formatting ---------- */
+const nf0=new Intl.NumberFormat("en-US",{maximumFractionDigits:0});
+const nf2=new Intl.NumberFormat("en-US",{minimumFractionDigits:2,maximumFractionDigits:2});
+const nf1=new Intl.NumberFormat("en-US",{minimumFractionDigits:1,maximumFractionDigits:1});
+const fmt={money:v=>v==null?"–":"฿"+nf2.format(v),int:v=>v==null?"–":nf0.format(v),pct:v=>v==null?"–":nf2.format(v)+"%",ratio:v=>v==null?"–":nf1.format(v)};
+const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+function fd(s){if(!s)return"";const y=s.slice(0,4),m=+s.slice(5,7),d=+s.slice(8,10);return d+" "+MON[m-1]+" "+y.slice(2)}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function hl(name){const t=esc(name);if(!S.q)return t;const i=name.toLowerCase().indexOf(S.q);if(i<0)return t;
+  return esc(name.slice(0,i))+"<mark>"+esc(name.slice(i,i+S.q.length))+"</mark>"+esc(name.slice(i+S.q.length))}
+function pill(s){return `<span class="pill s-${esc(s)}">${esc(s.replace(/_/g," "))}</span>`}
+
+const CRM_PAGE_NAMES={"694326127098793":"ทรูภาคใต้","993241830549021":"เน็ตบ้านทรูฯ สมัครง่าย"};
+/* ---------- view state ---------- */
+Object.assign(S,{view:"perf",dayMode:"cum",days:new Set(),sort:"spend_hi",onlyReg:false,onlyCon:false,
+  openAll:true,toggled:new Set(),openDays:new Set(),calLevel:"ad",calSort:"best",calKey:null,calDir:1,calQ:""});
+{const v=store.get("tmh.view");if(v==="perf"||v==="cal"||v==="win")S.view=v}
+S.bench=store.get("tmh.bench")==="all"?"all":"range";
+
+/* ---------- small helpers ---------- */
+function sumMetrics(list){const a={spend:0,impr:0,link:0,clicks:0,res:0};list.forEach(m=>{for(const k in a)a[k]+=m[k]||0});return ratios({...a,reach:null})}
+function withReach(m,reach,approx){m.reach=reach;ratios(m);m.approxReach=!!approx;return m}
+function daysBetween(a,b){return Math.round((Date.parse(b)-Date.parse(a))/86400000)+1}
+function rangeOf(d){const [, ds, du]=d.key.split("|");return{ds,du}}
+function crmRange(ds,du){const t={sr:0,reg:0,sub:0};(S.crm.ev||[]).forEach(([day,k])=>{if(day>=ds&&day<=du)t[k]++});return t}
+function leafAds(n){return n.lvl==="ad"?[n]:n.kids.flatMap(leafAds)}
+function adCrmP(id,pred){const t={sr:0,reg:0,sub:0};const by=(S.crm.aggAd||{})[id];if(!by)return t;
+  for(const day in by)if(pred(day)){const x=by[day];t.sr+=x.sr||0;t.reg+=x.reg||0;t.sub+=x.sub||0}return t}
+/* an SR listing several ads gives each ad full credit; a campaign / ad set counts each SR once */
+function groupCrmP(ids,pred){const t={sr:0,reg:0,sub:0};(S.crm.ev||[]).forEach(([day,k,ads])=>{if(pred(day)&&ads.some(a=>ids.has(a)))t[k]++});return t}
+const div=(a,b)=>a!=null&&b?a/b:null;
+const maxDay=(a,b)=>!a?b:!b?a:a>b?a:b;
+function cmp(a,b,dir){if(a==null&&b==null)return 0;if(a==null)return 1;if(b==null)return-1;return(a<b?-1:a>b?1:0)*dir}
+function pageOK(n){if(!S.pages.size)return true;for(const p of n.pages)if(S.pages.has(p))return true;return false}
+function searchOK(n,q){if(!q)return true;const d=S.data[S.acct];let x=n;
+  if(/^\d{5,}$/.test(q)&&leafAds(n).some(a=>a.id.includes(q)))return true;
+  while(x){if(x.name.toLowerCase().includes(q)||x.id===q)return true;x=d&&x.parent?d.byId.get(x.parent):null}return false}
+function hlq(name,q){const t=esc(name);if(!q)return t;const i=name.toLowerCase().indexOf(q);if(i<0)return t;
+  return esc(name.slice(0,i))+"<mark>"+esc(name.slice(i,i+q.length))+"</mark>"+esc(name.slice(i+q.length))}
+function statusPill(n){return n.status==="ACTIVE"?`<span class="pill s-on">Active</span>`:`<span class="pill s-off" title="${esc(n.status.replace(/_/g," "))}">Inactive ปัจจุบัน</span>`}
+function parentName(d,n){const b=d.byId;if(n.lvl==="adset")return(b.get(n.parent)||{}).name||"";
+  if(n.lvl==="ad"){const s=b.get(n.parent);const c=s&&b.get(s.parent);return[c&&c.name,s&&s.name].filter(Boolean).join(" › ")}return""}
+
+/* real start / end / age of a campaign, ad set or ad */
+function nodeDates(n,d){
+  const b=d.byId,set=n.lvl==="ad"?b.get(n.parent):n.lvl==="adset"?n:null,camp=n.lvl==="campaign"?n:b.get((set||{}).parent);
+  const day=t=>t?bkkDate(t):null,today=bkkToday();
+  let start=n.lvl==="ad"?maxDay(day(set&&set.schedStart),day(n.created)):day(n.schedStart);
+  start=start||n.first;
+  const schedEnd=(n.lvl==="campaign"?day(n.schedEnd):day(set&&set.schedEnd))||day(camp&&camp.schedEnd);
+  let end,kind;
+  if(n.status==="ACTIVE"&&schedEnd&&schedEnd>=today){end=schedEnd;kind="sched"}
+  else if(n.status==="ACTIVE"){end=today;kind="open"}
+  else{end=n.last;kind="stop"}
+  const age=start&&end?Math.max(1,daysBetween(start,minDay(end,today))):null;
+  return{start,end,kind,age};
+}
+
+/* ---------- Active Ads Performance: model ---------- */
+function inSel(date,ds,du){return date>=ds&&date<=du&&(S.dayMode==="cum"||!S.days.size||S.days.has(date))}
+function adMetrics(a,ds,du){
+  if(S.dayMode==="cum")return a.total;
+  const dd=a.days.filter(x=>inSel(x.date,ds,du)&&x.m.spend>0);
+  return withReach(sumMetrics(dd.map(x=>x.m)),dd.reduce((t,x)=>t+(x.m.reach||0),0),dd.length>1);
+}
+const SORTS={spend_hi:["spend",-1],spend_lo:["spend",1],start_new:["start",-1],start_old:["start",1],cpr_hi:["cpr",-1],cpr_lo:["cpr",1]};
+function sortRows(rows){const [k,dir]=SORTS[S.sort]||SORTS.spend_hi;
+  return rows.sort((a,b)=>cmp(k==="start"?a.dt.start:a.m[k],k==="start"?b.dt.start:b.m[k],dir)||cmp(a.m.spend,b.m.spend,-1))}
+function perfModel(d){
+  const {ds,du}=rangeOf(d),pred=day=>inSel(day,ds,du),q=S.q;
+  const adRow=new Map();
+  d.ads.forEach(a=>{if(!pageOK(a)||!searchOK(a,q))return;const m=adMetrics(a,ds,du);if(!(m.spend>0))return;
+    const c=adCrmP(a.id,pred);if(S.onlyReg&&!c.reg)return;if(S.onlyCon&&!c.sub)return;adRow.set(a.id,{n:a,m,c,dt:nodeDates(a,d)})});
+  const grp=n=>{
+    const kids=n.lvl==="campaign"?n.kids.map(grp).filter(Boolean):n.kids.map(a=>adRow.get(a.id)).filter(Boolean);
+    if(!kids.length)return null;
+    const leaf=n.lvl==="campaign"?kids.flatMap(k=>k.kids):kids;
+    const whole=S.dayMode==="cum"&&leafAds(n).every(a=>adRow.has(a.id));
+    const m=whole?n.total:withReach(sumMetrics(leaf.map(k=>k.m)),leaf.reduce((t,k)=>t+(k.m.reach||0),0),true);
+    return{n,m,c:groupCrmP(new Set(leaf.map(k=>k.n.id)),pred),dt:nodeDates(n,d),kids:sortRows(kids)};
+  };
+  return{camps:sortRows(d.camps.map(grp).filter(Boolean)),ads:[...adRow.values()],ds,du,pred};
+}
+
+/* ---------- top: funnel per page + consolidated summary (always both accounts, date range only) ---------- */
+function bothParts(){const since=$("since").value,until=$("until").value;
+  return REAL_IDS.map(id=>S.data[id]).filter(d=>d&&d.key.endsWith("|"+since+"|"+until))}
+function fstep2(label,val,max,prev,cls,cost,costLabel){
+  const w=val>0&&max>0?Math.max(2,Math.log10(val+1)/Math.log10(max+1)*100):0;
+  const conv=prev!=null&&prev>0&&val!=null?nf1.format(val/prev*100)+"%":"";
+  return `<div class="fstep ${cls}"><span class="lab">${label}</span><div class="fbar"><i style="width:${w}%"></i></div>`+
+    `<span class="cnt">${val==null?"–":fmt.int(val)}${conv?`<small>${conv}</small>`:""}</span>`+
+    `<span class="cost">${cost==null?"–":fmt.money(cost)}<small>${costLabel}</small></span></div>`;
+}
+function renderTopFunnel(){
+  const box=$("topFunnel"),since=$("since").value,until=$("until").value;
+  if(!since||!until||since>until){box.innerHTML="";return}
+  const parts=bothParts(),have=parts.length>0,ads=parts.flatMap(d=>d.ads);
+  let h=`<div class="funnels">`;
+  for(const pid of CRM_PAGE_IDS){
+    const mine=ads.filter(a=>a.pages.has(pid));
+    const m=sumMetrics(mine.map(a=>a.total)),reach=mine.reduce((t,a)=>t+(a.total.reach||0),0);
+    const c=crmFor(pid,since,until),sp=m.spend,max=m.impr||c.sr||1;
+    const nm=(parts.find(d=>d.pageNames&&d.pageNames.get(pid))||{pageNames:new Map()}).pageNames.get(pid)||CRM_PAGE_NAMES[pid];
+    h+=`<div class="fcard"><div class="fc-head"><h3 title="${esc(nm)}">${esc(nm)}</h3><span class="fspend">${have?fmt.money(sp):"–"}<small>${mine.length} โฆษณา</small></span></div>`+
+      fstep2("Impression",have?m.impr:null,max,null,"meta-s",have&&m.impr?sp/m.impr*1000:null,"CPM")+
+      fstep2("Reach ≈",have?reach:null,max,have?m.impr:null,"meta-s",have&&reach?sp/reach*1000:null,"/ 1,000 reach")+
+      fstep2("Link click",have?m.link:null,max,have?reach:null,"meta-s",have&&m.link?sp/m.link:null,"CPC")+
+      fstep2("Inbox",have?m.res:null,max,have?m.link:null,"meta-s",have&&m.res?sp/m.res:null,"/ inbox")+
+      fstep2("Register",c.reg,max,have?m.res:null,"crm-s",have&&c.reg?sp/c.reg:null,"/ register")+
+      fstep2("Connect",c.sub,max,c.reg,"crm-s2",have&&c.sub?sp/c.sub:null,"/ connect")+`</div>`;
+  }
+  box.innerHTML=h+`</div>`;
+  $("funnelMeta").textContent=parts.length<REAL_IDS.length?"กำลังโหลดข้อมูลโฆษณา…":`${fd(since)} – ${fd(until)}`;
+}
+function kbox(label,val,sub,cls,below){
+  return `<div class="kcol"><div class="kpi ${cls||""}"><span>${label}</span><b>${val}</b>${sub?`<small>${sub}</small>`:""}</div>`+
+    (below?`<div class="kpi kf"><span>${below[0]}</span><b>${below[1]}</b></div>`:"")+`</div>`;
+}
+function flowFor(m,c,hasCrm){
+  const lctr=m.impr?m.link/m.impr*100:null,na=`<small>ไม่มีข้อมูล CRM</small>`;
+  return `<div class="kflow">`+kbox("Spend",fmt.money(m.spend),"","k-sp")+
+    kbox("Impression",fmt.int(m.impr),`CPM ${fmt.money(m.cpm)}`,"k-g1",["Impression / 1 inbox",fmt.ratio(m.ipr)])+
+    kbox("Reach ≈",fmt.int(m.reach),`${fmt.money(m.cpp)} / 1,000`,"k-g2",["Reach / 1 inbox",fmt.ratio(m.rpr)])+
+    kbox("Link click",fmt.int(m.link),`CPC ${fmt.money(m.cpc)} · CTR ${fmt.pct(lctr)}`,"k-g3",["Link click / 1 inbox",fmt.ratio(m.lpr)])+
+    kbox("Result (Inbox)",fmt.int(m.res),`${fmt.money(m.cpr)} / inbox`,"k-g4")+
+    (hasCrm?kbox("Register",fmt.int(c.reg),`${fmt.money(div(m.spend,c.reg))} / register`,"k-g5")+kbox("Connect",fmt.int(c.sub),`${fmt.money(div(m.spend,c.sub))} / connect`,"k-g6")
+      :kbox("Register","–","ไม่มีข้อมูล CRM","k-g5")+kbox("Connect","–","ไม่มีข้อมูล CRM","k-g6"))+`</div>`;
+}
+function renderPageSplit(){
+  const since=$("since").value,until=$("until").value,parts=bothParts();
+  if(!parts.length){$("pageSplit").innerHTML=`<div class="empty">กำลังโหลดข้อมูล…</div>`;$("pagesMeta").textContent="";return}
+  const names=new Map();parts.forEach(d=>d.pageNames&&d.pageNames.forEach((v,k)=>names.set(k,v)));
+  const by=new Map();parts.flatMap(d=>d.ads).forEach(a=>{const ps=a.pages.size?[...a.pages]:["?"];ps.forEach(p=>{if(!by.has(p))by.set(p,[]);by.get(p).push(a)})});
+  const rows=[...by.entries()].map(([p,ads])=>({p,ads,m:withReach(sumMetrics(ads.map(a=>a.total)),ads.reduce((t,a)=>t+(a.total.reach||0),0),true)}))
+    .sort((a,b)=>(CRM_PAGE_IDS.has(b.p)-CRM_PAGE_IDS.has(a.p))||b.m.spend-a.m.spend);
+  $("pagesMeta").textContent=`${rows.length} เพจ · ${fd(since)} – ${fd(until)} · 2 บัญชี`;
+  $("pageSplit").innerHTML=rows.map(r=>{const nm=r.p==="?"?"ไม่ทราบเพจ":names.get(r.p)||CRM_PAGE_NAMES[r.p]||"Page "+r.p,crm=CRM_PAGE_IDS.has(r.p);
+    return `<div class="pblock"><div class="pb-head"><h3>${esc(nm)}</h3><span>${r.ads.length} โฆษณา</span></div>${flowFor(r.m,crm?crmFor(r.p,since,until):null,crm)}</div>`}).join("");
+}
+function renderSummary(){
+  const since=$("since").value,until=$("until").value,parts=bothParts();
+  const nd=since&&until&&since<=until?daysBetween(since,until):0;
+  $("sumTitle").textContent=`สรุปรวม ${nd} วัน`;
+  $("sumMeta").textContent=parts.length<REAL_IDS.length?"กำลังโหลด…":`${fd(since)} – ${fd(until)} · 2 บัญชี`;
+  if(!parts.length){$("kpis").innerHTML=`<div class="empty">กำลังโหลดข้อมูล…</div>`;return}
+  const m=withReach(sumMetrics(parts.map(d=>d.acc).filter(Boolean)),parts.reduce((t,d)=>t+((d.acc&&d.acc.reach)||0),0),true);
+  const c=crmRange(since,until),lctr=m.impr?m.link/m.impr*100:null;
+  $("kpis").innerHTML=`<div class="kflow">`+
+    kbox("Spend",fmt.money(m.spend),`${nd} วัน`,"k-sp")+
+    kbox("Impression",fmt.int(m.impr),`CPM ${fmt.money(m.cpm)}`,"k-g1",["Impression / 1 inbox",fmt.ratio(m.ipr)])+
+    kbox("Reach ≈",fmt.int(m.reach),`${fmt.money(m.cpp)} / 1,000`,"k-g2",["Reach / 1 inbox",fmt.ratio(m.rpr)])+
+    kbox("Link click",fmt.int(m.link),`CPC ${fmt.money(m.cpc)} · CTR ${fmt.pct(lctr)}`,"k-g3",["Link click / 1 inbox",fmt.ratio(m.lpr)])+
+    kbox("Result (Inbox)",fmt.int(m.res),`${fmt.money(m.cpr)} / inbox`,"k-g4")+
+    kbox("Register",fmt.int(c.reg),`${fmt.money(div(m.spend,c.reg))} / register`,"k-g5")+
+    kbox("Connect",fmt.int(c.sub),`${fmt.money(div(m.spend,c.sub))} / connect`,"k-g6")+`</div>`;
+}
+
+/* ---------- Active Ads Performance: table ---------- */
+const PCOLS=[
+  {k:"name",h:"Campaign / Ad set / Ad",l:1},{k:"start",h:"Start",l:1},{k:"end",h:"End",l:1},{k:"age",h:"Days"},
+  {k:"spend",h:"Spend",g:"sp"},{k:"impr",h:"Impression",g:"g1"},{k:"cpm",h:"CPM",g:"g1"},{k:"reach",h:"Reach",g:"g2"},
+  {k:"link",h:"Link click",g:"g3"},{k:"cpc",h:"CPC",g:"g3"},{k:"res",h:"Result",g:"g4"},{k:"cpr",h:"Cost / result",g:"g4"},
+  {k:"reg",h:"Register",g:"g5"},{k:"cpreg",h:"฿ / Register",g:"g5"},{k:"sub",h:"Connect",g:"g6"},{k:"cpsub",h:"฿ / Connect",g:"g6"},
+  {k:"ipr",h:"Impr / inbox",g:"g7"},{k:"rpr",h:"Reach / inbox",g:"g7"},{k:"lpr",h:"Link / inbox",g:"g7"},{k:"ipreg",h:"Inbox / Register",g:"g7"},{k:"ipsub",h:"Inbox / Connect",g:"g7"}];
+const PGROUPS=[["",4,""],["sp",1,"ค่าใช้จ่าย"],["g1",2,"Impression"],["g2",1,"Reach"],["g3",2,"Link click"],["g4",2,"Inbox"],["g5",2,"Register"],["g6",2,"Connect"],["g7",5,"สูตรต่อ 1 inbox / 1 sub"]];
+const isOpen=id=>S.openAll?!S.toggled.has(id):S.toggled.has(id);
+function costCell(spend,cnt,g){
+  if(cnt)return `<td class="num ${g}">${fmt.money(spend/cnt)}</td>`;
+  return `<td class="num ${g} zero" title="ยังไม่มีในช่วงนี้">0<small>ใช้ไป ${fmt.money(spend)}</small></td>`;
+}
+function cellsFor(m,c){
+  const rp=m.approxReach?"≈":"";
+  return `<td class="num sp">${fmt.money(m.spend)}</td><td class="num g1">${fmt.int(m.impr)}</td><td class="num g1">${fmt.money(m.cpm)}</td>`+
+    `<td class="num g2">${m.reach==null?"–":rp+fmt.int(m.reach)}</td><td class="num g3">${fmt.int(m.link)}</td><td class="num g3">${fmt.money(m.cpc)}</td>`+
+    `<td class="num g4">${fmt.int(m.res)}</td><td class="num g4">${fmt.money(m.cpr)}</td>`+
+    `<td class="num g5"><b>${fmt.int(c.reg)}</b></td>`+costCell(m.spend,c.reg,"g5")+`<td class="num g6"><b>${fmt.int(c.sub)}</b></td>`+costCell(m.spend,c.sub,"g6")+
+    `<td class="num g7">${fmt.ratio(m.ipr)}</td><td class="num g7">${m.reach==null?"–":rp+fmt.ratio(m.rpr)}</td><td class="num g7">${fmt.ratio(m.lpr)}</td>`+
+    `<td class="num g7">${fmt.ratio(div(m.res,c.reg))}</td><td class="num g7">${fmt.ratio(div(m.res,c.sub))}</td>`;
+}
+const ENDCAP={sched:"ตามกำหนด · ยังรัน",open:"ยังรัน · ไม่มีวันจบ",stop:"วันสุดท้ายที่จ่าย"};
+function rowHtml(r,model){
+  const n=r.n,lv=n.lvl==="campaign"?"C":n.lvl==="adset"?"S":"A",pad=n.lvl==="campaign"?0:n.lvl==="adset"?18:36;
+  let ctl="";
+  if(r.kids)ctl=`<button class="caret" data-kid="${n.id}" aria-expanded="${isOpen(n.id)}" aria-label="แสดง/ซ่อน">${isOpen(n.id)?"▾":"▸"}</button>`;
+  else if(S.dayMode==="daily")ctl=`<button class="caret" data-day="${n.id}" aria-expanded="${S.openDays.has(n.id)}" title="แถวรายวัน">${S.openDays.has(n.id)?"▾":"▸"}</button>`;
+  else ctl=`<span class="caret empty"></span>`;
+  const idl=n.lvl==="ad"?"Ad ID":n.lvl==="adset"?"Ad set ID":"Campaign ID";
+  let h=`<tr class="${n.lvl}"><td class="l nm"><div class="name" style="padding-left:${pad}px">${ctl}<span class="lvl">${lv}</span><div class="nmw">`+
+    `<span class="t" title="${esc(n.name)}">${hlq(n.name,S.q)}</span><span class="idl">${idl} <code>${esc(n.id)}</code></span>`+
+    `<span class="tags">${pageTag(n)}${statusPill(n)}</span></div></div></td>`+
+    `<td class="l"><div class="dates">${r.dt.start?fd(r.dt.start):"–"}</div></td>`+
+    `<td class="l"><div class="dates">${r.dt.end?fd(r.dt.end):"–"}<small>${ENDCAP[r.dt.kind]}</small></div></td>`+
+    `<td class="num">${r.dt.age==null?"–":fmt.int(r.dt.age)}</td>`+cellsFor(r.m,r.c)+`</tr>`;
+  if(r.kids&&isOpen(n.id))h+=r.kids.map(k=>rowHtml(k,model)).join("");
+  if(!r.kids&&S.dayMode==="daily"&&S.openDays.has(n.id)){
+    n.days.filter(x=>inSel(x.date,model.ds,model.du)&&x.m.spend>0).forEach(x=>{
+      h+=`<tr class="day"><td class="l"><div class="name" style="padding-left:${pad+60}px">${fd(x.date)}</div></td><td></td><td></td><td></td>`+
+        cellsFor(x.m,adCrmP(n.id,day=>day===x.date))+`</tr>`});
+  }
+  return h;
+}
+function renderTable(d){
+  const model=perfModel(d);
+  $("thead").innerHTML=`<tr class="grp">${PGROUPS.map(([g,span,t])=>`<th colspan="${span}" class="${g}">${t}</th>`).join("")}</tr>`+
+    `<tr>${PCOLS.map(c=>`<th class="${c.l?"l":""} ${c.g||""}">${c.h}</th>`).join("")}</tr>`;
+  const nAds=model.ads.length;
+  /* consolidated row: only what the filters show; a person is counted once even if several shown ads share the credit */
+  if(nAds){
+    const filtered=S.pages.size||S.q||S.onlyReg||S.onlyCon||S.dayMode==="daily";
+    const m=!filtered&&d.acc?d.acc:withReach(sumMetrics(model.ads.map(r=>r.m)),model.ads.reduce((t,r)=>t+(r.m.reach||0),0),true);
+    const c=groupCrmP(new Set(model.ads.map(r=>r.n.id)),model.pred);
+    const nd=S.dayMode==="daily"&&S.days.size?S.days.size:daysBetween(model.ds,model.du);
+    $("tfoot").innerHTML=`<tr class="total"><td class="l"><div class="name"><div class="nmw"><span class="t">รวมที่แสดง</span><span class="idl">${model.camps.length} campaign · ${nAds} ad</span></div></div></td>`+
+      `<td class="l"><div class="dates">${fd(model.ds)}</div></td><td class="l"><div class="dates">${fd(model.du)}</div></td><td class="num">${fmt.int(nd)}</td>`+cellsFor(m,c)+`</tr>`;
+  }else $("tfoot").innerHTML="";
+  $("tbody").innerHTML=model.camps.length?model.camps.map(r=>rowHtml(r,model)).join(""):
+    `<tr><td class="l empty" colspan="${PCOLS.length}">ไม่มีโฆษณาที่ active ตามตัวกรองนี้</td></tr>`;
+  const acct=ACCOUNTS.find(a=>a.id===S.acct);
+  $("tableTitle").textContent="Active Ads · "+(acct?acct.label:"");
+  $("tableMeta").textContent=`${model.camps.length} campaign · ${nAds} ad`+(S.dayMode==="daily"&&S.days.size?` · ${S.days.size} วันที่เลือก`:"");
+}
+function renderDayPick(d){
+  const f=$("dayPickField");f.hidden=S.dayMode!=="daily";if(f.hidden)return;
+  const {ds,du}=rangeOf(d),on=new Set();
+  d.ads.forEach(a=>a.days.forEach(x=>{if(x.m.spend>0&&x.date>=ds&&x.date<=du)on.add(x.date)}));
+  const days=[...on].sort();
+  $("dayPick").innerHTML=days.map(x=>`<button class="dchip" data-dd="${x}" aria-pressed="${S.days.has(x)}">${fd(x)}</button>`).join("")||`<span class="muted">ไม่มีวันที่มีการใช้จ่าย</span>`;
+  $("dayAll").setAttribute("aria-pressed",!S.days.size);
+}
+function renderPageChips(d){
+  const ids=new Set();(d?d.ads:[]).forEach(a=>a.pages.forEach(p=>ids.add(p)));
+  const names=(d&&d.pageNames)||new Map();
+  const html=[...ids].sort((a,b)=>(names.get(a)||a).localeCompare(names.get(b)||b)).map(p=>
+    `<button class="chip" data-pg="${p}" aria-pressed="${S.pages.has(p)}">${esc(names.get(p)||CRM_PAGE_NAMES[p]||"Page "+p)}</button>`).join("");
+  $("pageChips").innerHTML=html||`<span class="muted">–</span>`;$("calPages").innerHTML=html||`<span class="muted">–</span>`;
+}
+
+/* ---------- Ad Calibration ---------- */
+const CAL_METRICS=[
+  {k:"ipr",h:"Impr / 1 inbox",f:"ratio"},{k:"rpr",h:"Reach / 1 inbox",f:"ratio"},{k:"lpr",h:"Link click / 1 inbox",f:"ratio"},{k:"cpr",h:"Cost / 1 inbox",f:"money"}];
+const VORD={best:0,good:1,new:2,watch:3,cut:4};
+const VLAB={best:"ดีที่สุด",good:"ดี",new:"ยังเก็บข้อมูล",watch:"เฝ้าดู",cut:"ควรปิด"};
+function verdict(r,T){
+  const sp=r.m.spend,cpi=r.m.cpr,sub=r.c.sub,reg=r.c.reg,cps=r.cps,A=(T.cps||{}).avg,I=(T.cpr||{}).avg;
+  const budget=A||(I?I*15:null);
+  if(sub&&A&&cps<=A)return["best",`฿/connect ถูกกว่า${T.lab||"เฉลี่ย"} (${fmt.money(A)})`];
+  if(sub&&A&&cps>=2*A)return["cut",`฿/connect แพงกว่า${T.lab||"เฉลี่ย"} ${nf1.format(cps/A)} เท่า`];
+  if(!sub&&budget&&sp>=1.5*budget)return["cut",`ใช้ไป ${nf1.format(sp/budget)} เท่าของ ฿/connect ${T.lab||"เฉลี่ย"} ยังไม่ได้ connect`];
+  if(!sub&&!reg&&budget&&sp>=budget)return["cut",`ใช้เกิน ฿/connect ${T.lab||"เฉลี่ย"} ยังไม่มีทั้ง register และ connect`];
+  if(!r.m.res&&I&&sp>=3*I)return["cut",`ใช้ไป ${fmt.money(sp)} ยังไม่มี inbox`];
+  if(sub)return["good",`ได้ connect แต่แพงกว่า${T.lab||"เฉลี่ย"}`];
+  if(budget&&sp>=0.5*budget)return["watch",`ใช้ไปเกินครึ่งของ ฿/connect ${T.lab||"เฉลี่ย"} ยังไม่ได้ connect`];
+  if(I&&cpi&&cpi>=1.5*I)return["watch","฿/inbox แพงกว่าเส้นปิด"];
+  if(reg||(I&&cpi&&cpi<=I))return["good",reg?"มี register รอ connect":`฿/inbox ดีกว่า${T.lab||"เฉลี่ย"}`];
+  return["new","ใช้เงินยังน้อย"];
+}
+function track(v,t,lowerBetter){
+  if(v==null)return `<div class="track"></div>`;
+  const max=Math.max(t.cut*1.3,v*1.02,t.avg*2)||1,w=Math.min(v/max,1)*100;
+  const cls=v<=t.best?"good":v>=t.cut?"bad":"mid";
+  const p=x=>Math.min(x/max*100,100);
+  return `<div class="track"><i class="fill ${cls}" style="width:${w}%"></i><b class="mk avg" style="left:${p(t.avg)}%"></b><b class="mk best" style="left:${p(t.best)}%"></b><b class="mk cut" style="left:${p(t.cut)}%"></b></div>`;
+}
+const CAL_Q=[["best","ตัวไหนดีที่สุด"],["res","Inbox เยอะสุด"],["cpi","Inbox ถูกสุด"],["reg","Register เยอะสุด"],["cpreg","Register ถูกสุด"],["sub","Connect (Sub) เยอะสุด"],["cps","Connect (Sub) ถูกสุด"],["cut","ตัวไหนควรปิด"]];
+/* all-time benchmark: Meta ratios over the account's whole life; register / connect costs over the CRM window (the sheets start 1 Oct 26) */
+const CRM_START="2026-10-01";
+const BENCH={};
+async function loadBench(acct,refresh){
+  if(!mcp)return;const today=bkkToday(),key=acct+"|"+today;
+  if(!refresh&&BENCH[acct]&&BENCH[acct].key===key)return;
+  BENCH[acct]={key,loading:true};
+  const opt={cache:refresh?{refresh:true,staleTime:0,gcTime:86400000}:{staleTime:6*3600000,gcTime:86400000}};
+  const base={ad_account_id:acct,include_additional_context:false,reporting_purpose:["metric_lookup"],advertiser_job:"report_measure_or_look_up",client_conversation_id:convId};
+  try{
+    const [life,win,ads]=await Promise.all([
+      callAll({...base,level:"ad_account",date_preset:"maximum",fields:METRIC_FIELDS},refresh,"benchmark",opt.cache),
+      callAll({...base,level:"ad_account",time_range:JSON.stringify({since:CRM_START,until:today}),fields:METRIC_FIELDS},refresh,"benchmark",opt.cache),
+      callAll({...base,level:"ad",limit:500,time_range:JSON.stringify({since:CRM_START,until:today}),filtering:[{field:"amount_spent",operator:"GREATER_THAN",value:["0"]}],fields:["id","amount_spent"]},refresh,"benchmark",opt.cache)]);
+    BENCH[acct]={key,life:life[0]?metrics(life[0]):null,win:win[0]?metrics(win[0]):null,ids:new Set(ads.map(a=>a.id))};
+  }catch(e){BENCH[acct]={key,err:(e&&(e.message||e.code))||"error"}}
+  delete prog.benchmark;if(!Object.keys(prog).length)$("progress").hidden=true;
+  render();
+}
+function benchFor(d,pred){
+  /* returns {m, crm, label} for the chosen benchmark */
+  const {ds,du}=rangeOf(d);
+  if(S.bench!=="all"){const m=d.acc||sumMetrics(d.ads.map(a=>a.total));return{m,mc:m,crm:groupCrmP(new Set(d.ads.map(a=>a.id)),pred),label:`ช่วงที่เลือก ${fd(ds)} – ${fd(du)}`}}
+  const ids=S.acct==="ALL"?REAL_IDS:[S.acct],B=ids.map(id=>BENCH[id]);
+  ids.forEach(id=>{if(!BENCH[id]||BENCH[id].key!==id+"|"+bkkToday())loadBench(id,false)});
+  if(B.some(b=>!b||b.loading))return{loading:true};
+  if(B.some(b=>b.err||!b.life))return{err:(B.find(b=>b.err)||{}).err||"ไม่มีข้อมูล"};
+  const sumL=list=>withReach(sumMetrics(list),list.reduce((t,x)=>t+(x.reach||0),0),list.length>1);
+  const m=ids.length>1?sumL(B.map(b=>b.life)):B[0].life,mc=ids.length>1?sumL(B.map(b=>b.win)):B[0].win;
+  const all=new Set();B.forEach(b=>b.ids.forEach(x=>all.add(x)));
+  return{m,mc,crm:groupCrmP(all,day=>day>=CRM_START),label:`All time · Register/Connect ตั้งแต่ ${fd(CRM_START)}`};
+}
+function renderCal(d){
+  const {ds,du}=rangeOf(d),pred=day=>day>=ds&&day<=du,lvl=S.calLevel;
+  const W=S.calMode==="win"?winForCalibration():null;
+  if(W&&(W.loading||W.err||W.empty)){$("calBox").innerHTML=`<div class="empty card">${W.loading?"กำลังคำนวณจากแท็บ Winning…":W.err?"ดึงข้อมูล Winning ไม่ได้ ("+esc(W.err)+")":"ยังไม่ได้กรอกงบที่เหลือและเป้า Connect ในแท็บ Winning Performance Benchmark ("+monLabel(W.month)+" · "+esc(winPageName(W.page))+")"}</div>`;return}
+  const wp=W?winPageIds(W.page):null;
+  const list=(lvl==="campaign"?d.camps:lvl==="adset"?d.sets:d.ads).filter(n=>(W?wp.some(p=>n.pages.has(p)):pageOK(n))&&searchOK(n,S.calQ));
+  const BM=W?{m:{},mc:{},crm:{sr:0,reg:0,sub:0},label:W.label}:benchFor(d,pred);
+  if(BM.loading||BM.err){$("calBox").innerHTML=`<div class="empty card">${BM.loading?"กำลังดึงค่าอ้างอิง All time…":"ดึงค่าอ้างอิง All time ไม่ได้ ("+esc(BM.err)+")"}</div>`;return}
+  const A=ratios({...BM.m}),allC=BM.crm,rangeC=groupCrmP(new Set(d.ads.map(a=>a.id)),pred);
+  const th=avg=>avg?{avg,best:avg*0.75,cut:avg*1.5}:null;
+  const T=W?{ipr:th(W.k.mon.ipr),rpr:th(W.k.mon.rpr),lpr:th(W.k.mon.lpr),cpr:th(W.k.mon.cpr),cps:th(W.k.cps)||{avg:null},cpreg:th(W.k.cpreg)||{avg:null}}
+    :{ipr:th(A.ipr),rpr:th(A.rpr),lpr:th(A.lpr),cpr:th(A.cpr),cps:th(div(BM.mc.spend,allC.sub))||{avg:null},cpreg:th(div(BM.mc.spend,allC.reg))||{avg:null}};
+  const AVG=W?"เป้า":"เฉลี่ย";T.lab=AVG;
+  let rows=list.map(n=>{const m=n.total,c=lvl==="ad"?adCrmP(n.id,pred):groupCrmP(new Set(leafAds(n).map(a=>a.id)),pred);
+    const r={n,m,c,cps:div(m.spend,c.sub),cpreg:div(m.spend,c.reg)};const v=verdict(r,T);r.v=v[0];r.why=v[1];return r});
+  const cnt={best:0,good:0,new:0,watch:0,cut:0},cutSpend=rows.filter(r=>r.v==="cut").reduce((t,r)=>t+r.m.spend,0);
+  rows.forEach(r=>cnt[r.v]++);
+  const val=(r,k)=>k==="reg"||k==="sub"?r.c[k]:k==="cps"||k==="cpreg"?r[k]:k==="cpr"?(r.m.res?r.m.cpr:null):r.m[k];
+  if(S.calKey){const k=S.calKey,dir=S.calDir;rows.sort((a,b)=>cmp(val(a,k),val(b,k),dir)||cmp(a.m.spend,b.m.spend,-1))}
+  else{const s=S.calSort;
+    if(s==="cut")rows=rows.filter(r=>r.v==="cut"||r.v==="watch").sort((a,b)=>VORD[b.v]-VORD[a.v]||b.m.spend-a.m.spend);
+    else if(s==="sub")rows.sort((a,b)=>b.c.sub-a.c.sub||cmp(a.cps,b.cps,1)||b.c.reg-a.c.reg);
+    else if(s==="cps")rows.sort((a,b)=>cmp(a.cps,b.cps,1)||b.c.reg-a.c.reg||cmp(a.m.cpr,b.m.cpr,1));
+    else if(s==="reg")rows.sort((a,b)=>b.c.reg-a.c.reg||cmp(a.cpreg,b.cpreg,1));
+    else if(s==="cpreg")rows.sort((a,b)=>cmp(a.cpreg,b.cpreg,1)||b.c.reg-a.c.reg);
+    else if(s==="res")rows.sort((a,b)=>b.m.res-a.m.res||cmp(a.m.cpr,b.m.cpr,1));
+    else if(s==="cpi")rows.sort((a,b)=>cmp(val(a,"cpr"),val(b,"cpr"),1)||b.m.res-a.m.res);
+    else rows.sort((a,b)=>VORD[a.v]-VORD[b.v]||cmp(a.cps,b.cps,1)||cmp(a.m.cpr,b.m.cpr,1))}
+  const maxReg=Math.max(1,...rows.map(r=>r.c.reg)),maxSub=Math.max(1,...rows.map(r=>r.c.sub));
+  const lvlName={campaign:"Campaign",adset:"Ad set",ad:"Ad"}[lvl];
+  let h=`<div class="benchnote"><b>ค่าอ้างอิง</b> ${esc(BM.label)}</div><div class="qchips" role="group" aria-label="คำถามที่ใช้บ่อย">${CAL_Q.map(([k,t])=>`<button data-cq="${k}" aria-pressed="${!S.calKey&&S.calSort===k}">${t}</button>`).join("")}</div>`;
+  h+=`<div class="vstrip">`+["best","good","watch","cut","new"].map(v=>`<div class="vs v-${v}"><span>${VLAB[v]}</span><b>${cnt[v]}</b>${v==="cut"&&cutSpend?`<small>ใช้ไป ${fmt.money(cutSpend)}</small>`:""}</div>`).join("")+`</div>`;
+  const bm=(t,f)=>t&&t.avg?`<span class="bm"><i class="lg avg"></i>${AVG} ${f(t.avg)}</span><span class="bm"><i class="lg best"></i>Best ≤ ${f(t.best)}</span><span class="bm"><i class="lg cut"></i>ปิด ≥ ${f(t.cut)}</span>`:`<span class="bm">ยังไม่มีค่าอ้างอิง</span>`;
+  const head=(k,t,inner)=>{const on=S.calKey===k;return `<div class="ch${on?" on":""}" data-ck="${k}" tabindex="0">${t}${on?(S.calDir>0?" ↑":" ↓"):""}<small>${inner}</small></div>`};
+  h+=`<div class="cal-scroll"><div class="cgrid"><div class="ch nm">${lvlName} <small>${rows.length} รายการ · ${fd(ds)} – ${fd(du)}</small></div>`+
+    CAL_METRICS.map(c=>head(c.k,c.h,bm(T[c.k],c.f==="money"?fmt.money:fmt.ratio))).join("")+
+    head("reg","Register",`รวม ${fmt.int(rangeC.reg)} ในช่วงนี้<br>${T.cpreg.avg?(W?"฿/register เป้า ":"฿/register อ้างอิง ")+fmt.money(T.cpreg.avg):""}`)+head("sub","Connect",`รวม ${fmt.int(rangeC.sub)} ในช่วงนี้`)+head("cps","Cost / Connect",bm(T.cps,fmt.money));
+  if(!rows.length)h+=`<div class="empty" style="grid-column:1/-1">ไม่มีรายการตามตัวกรองนี้</div>`;
+  rows.forEach(r=>{const n=r.n,par=parentName(d,n);
+    h+=`<div class="crow"><div class="ent"><span class="vb v-${r.v}" title="${esc(r.why)}">${VLAB[r.v]}</span><span class="t" title="${esc(n.name)}">${hlq(n.name,S.calQ)}</span>`+
+      (par?`<span class="par">${esc(par)}</span>`:"")+`<span class="idl"><code>${esc(n.id)}</code></span><span class="tags">${pageTag(n)}${statusPill(n)}<span class="spent">${fmt.money(r.m.spend)}</span></span><span class="why">${esc(r.why)}</span></div>`;
+    CAL_METRICS.forEach(c=>{const v=r.m.res?r.m[c.k]:null,t=T[c.k];
+      h+=`<div class="mc"><span class="v">${v==null?"ยังไม่มี inbox":c.f==="money"?fmt.money(v):fmt.ratio(v)}${c.k==="cpr"?`<small>${fmt.int(r.m.res)} inbox</small>`:""}</span>${t?track(v,t):""}</div>`});
+    h+=`<div class="mc"><span class="v">${fmt.int(r.c.reg)}<small>${r.cpreg!=null?fmt.money(r.cpreg)+" / register · ":""}${r.m.res?nf1.format(r.c.reg/r.m.res*100)+"% ของ inbox":""}</small></span><div class="track"><i class="fill reg" style="width:${r.c.reg/maxReg*100}%"></i></div></div>`;
+    h+=`<div class="mc"><span class="v">${fmt.int(r.c.sub)}<small>${r.c.reg?nf1.format(r.c.sub/r.c.reg*100)+"% ของ register":""}</small></span><div class="track"><i class="fill sub" style="width:${r.c.sub/maxSub*100}%"></i></div></div>`;
+    h+=`<div class="mc"><span class="v">${r.cps!=null?fmt.money(r.cps):`<em>0 connect · ใช้ไป ${fmt.money(r.m.spend)}</em>`}</span>${r.cps!=null&&T.cps.avg?track(r.cps,T.cps):""}</div></div>`});
+  h+=`</div></div><div class="legend"><b>ค่าอ้างอิง: ${esc(BM.label)}</b><span><i class="lg avg"></i>${W?"เป้าจาก Winning calculator":"เฉลี่ยบัญชี"}</span><span><i class="lg best"></i>เส้น Best = ดีกว่า${AVG} 25%</span><span><i class="lg cut"></i>เส้นปิดแอด = แย่กว่า${AVG} 50%</span></div>`+
+    `<details class="rules"><summary>เกณฑ์ที่ใช้ตัดสิน</summary><ul>`+
+    `<li><b>ดีที่สุด</b> ได้ connect และ ฿/connect ไม่เกินค่าเฉลี่ยบัญชี</li>`+
+    `<li><b>ควรปิด</b> ใช้เงินเกิน 1.5 เท่าของ ฿/connect เฉลี่ยแต่ยังไม่ได้ connect · หรือใช้เกิน 1 เท่าแต่ไม่มีทั้ง register และ connect · หรือ ฿/connect แพงกว่าเฉลี่ย 2 เท่า</li>`+
+    `<li><b>เฝ้าดู</b> ใช้เงินเกินครึ่งของ ฿/connect เฉลี่ยแต่ยังไม่ได้ connect · หรือ ฿/inbox เลยเส้นปิดแอด</li>`+
+    `<li><b>ยังเก็บข้อมูล</b> ใช้เงินยังน้อยเกินกว่าจะตัดสิน</li></ul></details>`;
+  $("calBox").innerHTML=h;
+}
+
+/* ---------- Winning Performance Benchmark (monthly, both ad accounts, the two CRM pages) ---------- */
+const WIN_PAGE_FULL={"694326127098793":"ทรูภาคใต้","993241830549021":"เน็ตบ้าน True สมัครง่าย ติดตั้งเร็ว โปรลับ โปรพิเศษ"};
+const WIN_PAGES=[["both","ทั้ง 2 เพจ"],["694326127098793",null],["993241830549021",null]];
+Object.assign(S,{winMonth:null,winPage:store.get("tmh.win.page")||"both",calMode:store.get("tmh.cal.mode")==="win"?"win":"orig"});
+const WINDATA={};           // key acct|since|until -> {ads:[{id,pages,m}], names}
+const WIN_IN={};            // key month|page -> {budget,target,ceiling,cpreg,cpi}
+const monthEnd=m=>{const d=new Date(m+"-01T00:00:00Z");d.setUTCMonth(d.getUTCMonth()+1);d.setUTCDate(0);return d.toISOString().slice(0,10)};
+const monthAdd=(m,n)=>{const d=new Date(m+"-01T00:00:00Z");d.setUTCMonth(d.getUTCMonth()+n);return d.toISOString().slice(0,7)};
+const TH_MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const monLabel=m=>TH_MON[+m.slice(5,7)-1]+m.slice(2,4);
+function winMonths(){const out=[];for(let m=CRM_START.slice(0,7);m<=bkkToday().slice(0,7);m=monthAdd(m,1))out.push(m);return out}
+function winPageName(p){if(p==="both")return"ทั้ง 2 เพจ";for(const d of Object.values(WINDATA))if(d&&d.names&&d.names.get(p))return d.names.get(p);return WIN_PAGE_FULL[p]||p}
+function winPageIds(p){return p==="both"?[...CRM_PAGE_IDS]:[p]}
+/* windows: current = 1st of month → today (or month end for a past month); baseline = full earlier months that have CRM data, else the 30 days before the month */
+function winWindows(month){
+  const today=bkkToday(),m1=month+"-01",mE=monthEnd(month),cur=[m1,minDay(today,mE)];
+  const base=[];for(let m=monthAdd(month,-1);m>=CRM_START.slice(0,7)&&base.length<6;m=monthAdd(m,-1))base.push([m+"-01",monthEnd(m),m]);
+  return{cur,base,fallback:base.length?null:[addDays(m1,-30),addDays(m1,-1)],m1,mE,daysIn:daysBetween(m1,mE),elapsed:daysBetween(m1,cur[1])};
+}
+async function winFetch(acct,since,until,refresh){
+  const key=acct+"|"+since+"|"+until;if(!refresh&&WINDATA[key])return WINDATA[key];
+  WINDATA[key]=WINDATA[key]||null;
+  const past=until<addDays(bkkToday(),-1),opt=past&&!refresh?{staleTime:7*86400000,gcTime:14*86400000}:null;
+  const rows=await callAll({ad_account_id:acct,include_additional_context:false,reporting_purpose:["metric_lookup"],advertiser_job:"report_measure_or_look_up",client_conversation_id:convId,
+    level:"ad",time_range:JSON.stringify({since,until}),time_increment:"all_days",filtering:[{field:"amount_spent",operator:"GREATER_THAN",value:["0"]}],
+    fields:["id","creative_id",...METRIC_FIELDS]},refresh,"winning",opt);
+  const d={ads:rows.map(r=>({id:r.id,creative:r.creative_id||null,pages:new Set(),m:metrics(r)})),sets:[],camps:[]};
+  await attachPages(acct,d,false);
+  WINDATA[key]={ads:d.ads,names:d.pageNames};return WINDATA[key];
+}
+const WIN_LOADING=new Set();
+async function winLoad(month,refresh){
+  const w=winWindows(month),wins=[w.cur,...w.base.map(b=>[b[0],b[1]]),...(w.fallback?[w.fallback]:[])];
+  const jobs=[];for(const acct of REAL_IDS)for(const [a,b] of wins){const k=acct+"|"+a+"|"+b;if(refresh||!WINDATA[k]){if(WIN_LOADING.has(k)&&!refresh)continue;WIN_LOADING.add(k);
+    jobs.push(winFetch(acct,a,b,refresh).catch(e=>{WINDATA[k]={err:(e&&(e.message||e.code))||"error"}}).finally(()=>WIN_LOADING.delete(k)))}}
+  if(jobs.length){render();await Promise.all(jobs);delete prog.winning;delete prog["เพจ"];if(!Object.keys(prog).length)$("progress").hidden=true;render()}
+}
+/* totals for a window: Meta from ads on the chosen page(s), CRM from those pages */
+function winTotals(since,until,page){
+  const ids=winPageIds(page),parts=REAL_IDS.map(a=>WINDATA[a+"|"+since+"|"+until]);
+  if(parts.some(p=>p===undefined||p===null))return{loading:true};
+  if(parts.some(p=>p.err))return{err:parts.find(p=>p.err).err};
+  const ads=parts.flatMap(p=>p.ads).filter(a=>ids.some(id=>a.pages.has(id)));
+  const m=withReach(sumMetrics(ads.map(a=>a.m)),ads.reduce((t,a)=>t+(a.m.reach||0),0),true);
+  const c={sr:0,reg:0,sub:0};ids.forEach(p=>{const x=crmFor(p,since,until);c.sr+=x.sr;c.reg+=x.reg;c.sub+=x.sub});
+  const crmOk=until>=CRM_START;
+  return{m,c,crmOk,nAds:ads.length};
+}
+function winModel(month,page){
+  const w=winWindows(month),cur=winTotals(w.cur[0],w.cur[1],page);
+  const bw=w.base.length?w.base:[[w.fallback[0],w.fallback[1],null]];
+  const bt=bw.map(b=>winTotals(b[0],b[1],page));
+  if(cur.loading||bt.some(b=>b.loading))return{loading:true,w};
+  if(cur.err||bt.some(b=>b.err))return{err:cur.err||bt.find(b=>b.err).err,w};
+  /* baseline = average month: each metric summed per month, then averaged over the months available */
+  const n=bt.length,avg=k=>bt.reduce((t,b)=>t+(b.m[k]||0),0)/n;
+  const bm=withReach(ratios({spend:avg("spend"),impr:avg("impr"),link:avg("link"),clicks:avg("clicks"),res:avg("res"),reach:null}),avg("reach"),true);
+  const bc={sr:bt.reduce((t,b)=>t+b.c.sr,0)/n,reg:bt.reduce((t,b)=>t+b.c.reg,0)/n,sub:bt.reduce((t,b)=>t+b.c.sub,0)/n};
+  const crmBase=bt.every(b=>b.crmOk)&&w.base.length>0;
+  if(!bc.sub)bc.sub=null;   /* the Regis&Connect sheet only starts 1 Nov 26: an empty month means no data, not zero */
+  const baseLabel=w.base.length?`เฉลี่ยต่อเดือน (${w.base.map(b=>monLabel(b[2])).reverse().join(", ")})`:`30 วันก่อนหน้า (${fd(w.fallback[0])} – ${fd(w.fallback[1])})`;
+  return{w,cur,base:{m:bm,c:bc,crmOk:crmBase,label:baseLabel,months:w.base.length||0}};
+}
+function winInputs(month,page){return WIN_IN[month+"|"+page]||{}}
+/* the calculator: everything derived from remaining budget + connect target (+ optional overrides) */
+function winCalc(model,inp){
+  const {w,cur,base}=model,M=cur.m,C=cur.c,left=w.daysIn-w.elapsed;
+  const runSub=w.elapsed?C.sub/w.elapsed*w.daysIn:null,runReg=w.elapsed?C.reg/w.elapsed*w.daysIn:null;
+  const target=+inp.target||null,budget=+inp.budget||null;
+  const gapActual=target!=null?target-C.sub:null,gapRun=target!=null&&runSub!=null?target-runSub:null;
+  const need=target!=null?Math.max(0,target-C.sub):null;
+  const cpsReq=budget&&need?budget/need:null;
+  const cps=+inp.ceiling||cpsReq;
+  /* conversion rates: this month if it has enough, else the baseline */
+  const conv=(a,b,ba,bb)=>a>=3&&b>0?a/b:(bb>0&&ba>0?ba/bb:(b>0?a/b:null));
+  const subPerReg=conv(C.sub,C.reg,base.c.sub,base.c.reg),regPerInbox=conv(C.reg,M.res,base.c.reg,base.m.res);
+  const cpreg=+inp.cpreg||(cps&&subPerReg?cps*subPerReg:null);
+  const cpi=+inp.cpi||(cpreg&&regPerInbox?cpreg*regPerInbox:null);
+  /* delivery costs: this month's CPM / CPP / CPC (fall back to baseline) */
+  const cpm=M.cpm||base.m.cpm,cpp=M.cpp||base.m.cpp,cpc=M.cpc||base.m.cpc;
+  const mon=cpi?{ipr:cpm?cpi/cpm*1000:null,rpr:cpp?cpi/cpp*1000:null,lpr:cpc?cpi/cpc:null,cpr:cpi}:null;
+  const expSub=budget&&cps?budget/cps:null;
+  return{left,runSub,runReg,target,budget,gapActual,gapRun,need,cpsReq,cps,cpreg,cpi,subPerReg,regPerInbox,mon,expSub,
+    curCps:div(M.spend,C.sub),curCpreg:div(M.spend,C.reg),curCpi:M.cpr,cpm,cpp,cpc};
+}
+function winForCalibration(){
+  const month=S.winMonth||bkkToday().slice(0,7),page=S.winPage,model=winModel(month,page);
+  if(model.loading){winLoad(month,false);return{loading:true}}
+  if(model.err)return{err:model.err};
+  const k=winCalc(model,winInputs(month,page));
+  if(!k.mon)return{empty:true,month,page};
+  return{month,page,k,label:`Winning calculator · ${monLabel(month)} · ${winPageName(page)}`};
+}
+function cmpCell(label,curV,baseV,f,lowerBetter,note){
+  let delta="";if(curV!=null&&baseV){const p=(curV-baseV)/baseV*100,good=lowerBetter?p<=0:p>=0;
+    delta=`<span class="dl ${Math.abs(p)<0.5?"":good?"up":"down"}">${p>0?"+":""}${nf1.format(p)}%</span>`}
+  return `<tr><td class="l">${label}${note?`<small>${note}</small>`:""}</td><td class="num">${curV==null?"–":f(curV)}</td><td class="num">${baseV==null?"–":f(baseV)}</td><td class="num">${delta||"–"}</td></tr>`;
+}
+function renderWin(){
+  const months=winMonths();if(!S.winMonth||!months.includes(S.winMonth))S.winMonth=months[months.length-1];
+  const month=S.winMonth,page=S.winPage;
+  $("winMonth").innerHTML=months.map(m=>`<button data-wm="${m}" aria-pressed="${m===month}">${monLabel(m)}</button>`).join("");
+  $("winPages").innerHTML=WIN_PAGES.map(([p])=>`<button class="tab" role="tab" data-wp="${p}" aria-selected="${p===page}">${esc(winPageName(p))}<small>${p==="both"?"2 เพจ · 2 บัญชี":"2 บัญชี"}</small></button>`).join("");
+  const model=winModel(month,page);
+  if(model.loading){winLoad(month,false);$("winBody").innerHTML=`<div class="empty card">กำลังดึงข้อมูลรายเดือน…</div>`;return}
+  if(model.err){$("winBody").innerHTML=`<div class="empty card">ดึงข้อมูลไม่ได้ (${esc(model.err)}) กด Refresh Data เพื่อลองใหม่</div>`;return}
+  const {w,cur,base}=model,M=cur.m,C=cur.c,inp=winInputs(month,page),k=winCalc(model,inp);
+  const isCur=month===bkkToday().slice(0,7);
+  let h=`<details class="sec" data-sec="win1" open><summary><h2>ผลงานเดือน ${monLabel(month)}</h2><span>${fd(w.cur[0])} – ${fd(w.cur[1])} · ${w.elapsed}/${w.daysIn} วัน</span></summary><div class="sec-body"><div class="wflow">`+
+    `<div class="kpi k-g5"><span>Current Register</span><b>${fmt.int(C.reg)}</b><small>Run rate ≈ ${fmt.int(k.runReg)} ทั้งเดือน</small></div><span class="arrow">›</span>`+
+    `<div class="kpi k-g6"><span>Current Connect (Sub)</span><b>${fmt.int(C.sub)}</b><small>${fmt.money(k.curCps)} / connect</small></div><span class="arrow">›</span>`+
+    `<div class="kpi k-run"><span>Run rate Connect ถึงสิ้นเดือน</span><b>${k.runSub==null?"–":fmt.int(Math.round(k.runSub))}</b><small>${isCur?`จากเฉลี่ย ${nf1.format(C.sub/w.elapsed)} / วัน · เหลือ ${k.left} วัน`:"เดือนที่จบแล้ว"}</small></div></div></div></details>`;
+  // winning formula comparison
+  const bm=base.m,bc=base.c,ok=base.crmOk;
+  const pr=x=>x*w.elapsed/w.daysIn; // baseline pro-rated to the same number of days
+  h+=`<details class="sec" data-sec="win2" open><summary><h2>Winning formula</h2><span>${monLabel(month)} ถึงวันนี้ เทียบ ${esc(base.label)}</span></summary><div class="sec-body"><div class="wtables">`+
+    `<div class="tablebox wt"><table><thead><tr><th class="l">ยอดรวม</th><th>เดือนนี้ถึงวันนี้</th><th>ค่าเฉลี่ย (ปรับเป็น ${w.elapsed} วัน)</th><th>ต่าง</th></tr></thead><tbody>`+
+    cmpCell("Spend",M.spend,pr(bm.spend),fmt.money,false)+cmpCell("Impression",M.impr,pr(bm.impr),fmt.int,false)+cmpCell("Reach ≈",M.reach,pr(bm.reach),fmt.int,false)+
+    cmpCell("Link click",M.link,pr(bm.link),fmt.int,false)+cmpCell("Inbox",M.res,pr(bm.res),fmt.int,false)+
+    cmpCell("Register",C.reg,ok?pr(bc.reg):null,v=>nf1.format(v).replace(/\.0$/,""),false)+cmpCell("Connect",C.sub,ok&&bc.sub?pr(bc.sub):null,v=>nf1.format(v).replace(/\.0$/,""),false)+
+    `</tbody></table></div><div class="tablebox wt"><table><thead><tr><th class="l">สูตร 1 sub</th><th>เดือนนี้</th><th>ค่าเฉลี่ย</th><th>ต่าง</th></tr></thead><tbody>`+
+    cmpCell("Impression / 1 inbox",M.ipr,bm.ipr,fmt.ratio,true)+cmpCell("Reach / 1 inbox",M.rpr,bm.rpr,fmt.ratio,true)+cmpCell("Link click / 1 inbox",M.lpr,bm.lpr,fmt.ratio,true)+
+    cmpCell("Cost / 1 inbox",M.cpr,bm.cpr,fmt.money,true)+cmpCell("Inbox / 1 register",div(M.res,C.reg),ok?div(bm.res,bc.reg):null,fmt.ratio,true)+
+    cmpCell("Register / 1 connect",div(C.reg,C.sub),ok&&bc.sub?div(bc.reg,bc.sub):null,fmt.ratio,true)+
+    cmpCell("Cost / register",k.curCpreg,ok?div(bm.spend,bc.reg):null,fmt.money,true)+cmpCell("Cost / connect",k.curCps,ok&&bc.sub?div(bm.spend,bc.sub):null,fmt.money,true)+
+    `</tbody></table></div></div>${!ok?`<p class="wnote">ช่วงอ้างอิงยังไม่มีข้อมูล CRM ช่อง Register / Connect ของค่าเฉลี่ยจึงว่าง</p>`:!bc.sub?`<p class="wnote">ชีต Regis&amp;Connect เริ่ม 1 Nov 26 เดือนอ้างอิงจึงยังไม่มี Connect</p>`:""}</div></details>`;
+  // calculator
+  const fv=x=>x==null||x===""?"":x;
+  h+=`<details class="sec" data-sec="win3" open><summary><h2>Winning Performance calculator</h2><span>เป้าหมายถึง ${fd(w.mE)} · เหลือ ${k.left} วัน</span></summary><div class="sec-body">`+
+    `<div class="wform"><label class="field"><span>งบประมาณที่เหลือ (฿)</span><input type="number" min="0" step="100" data-wi="budget" value="${fv(inp.budget)}" placeholder="เช่น 50000"></label>`+
+    `<label class="field"><span>เป้า Connect ทั้งเดือน</span><input type="number" min="0" step="1" data-wi="target" value="${fv(inp.target)}" placeholder="เช่น 40"></label>`+
+    `<label class="field"><span>เพดาน ฿ / connect <em>ไม่บังคับ</em></span><input type="number" min="0" step="10" data-wi="ceiling" value="${fv(inp.ceiling)}" placeholder="${k.cpsReq?nf0.format(k.cpsReq):"อัตโนมัติ"}"></label>`+
+    `<label class="field"><span>฿ / register <em>ไม่บังคับ</em></span><input type="number" min="0" step="10" data-wi="cpreg" value="${fv(inp.cpreg)}" placeholder="${k.cps&&k.subPerReg?nf0.format(k.cps*k.subPerReg):"อัตโนมัติ"}"></label>`+
+    `<label class="field"><span>฿ / inbox <em>ไม่บังคับ</em></span><input type="number" min="0" step="1" data-wi="cpi" value="${fv(inp.cpi)}" placeholder="${k.cpi&&!inp.cpi?nf0.format(k.cpi):"อัตโนมัติ"}"></label>`+
+    `<button class="btn" id="winClear">ล้างค่า</button></div>`;
+  if(!k.target||!k.budget){h+=`<div class="empty">กรอกงบที่เหลือและเป้า Connect เพื่อคำนวณ</div></div></details>`;$("winBody").innerHTML=h;return}
+  const gap=(v,lab)=>`<div class="kpi ${v>0?"k-bad":"k-good"}"><span>${lab}</span><b>${v>0?"ขาด "+fmt.int(Math.ceil(v)):"เกินเป้า "+fmt.int(Math.floor(-v))}</b><small>${v>0?"connect":"connect"}</small></div>`;
+  const vs=(need,now,lab)=>need&&now?`<small class="${now<=need?"ok":"bad"}">ตอนนี้ ${fmt.money(now)} · ${now<=need?"ทำได้แล้ว":"ต้องลดลง "+nf0.format((1-need/now)*100)+"%"}</small>`:`<small>${lab}</small>`;
+  h+=`<div class="wgrid">`+gap(k.gapActual,"ขาดจากเป้า (ณ วันนี้)")+gap(k.gapRun,"ขาดจากเป้า (ตาม run rate)")+
+    `<div class="kpi k-g6"><span>ต้องได้อีก</span><b>${fmt.int(k.need)}</b><small>connect ใน ${k.left} วัน (${k.left?nf1.format(k.need/k.left):"–"} / วัน)</small></div>`+
+    `<div class="kpi k-g6"><span>฿ / connect ที่ต้องทำได้</span><b>${fmt.money(k.cps)}</b>${vs(k.cps,k.curCps,"")}${inp.ceiling&&k.cpsReq?`<small>จากงบ: ${fmt.money(k.cpsReq)} · ใช้เพดานแทน</small>`:""}</div>`+
+    `<div class="kpi k-g5"><span>฿ / register ที่ต้องทำได้</span><b>${fmt.money(k.cpreg)}</b>${vs(k.cpreg,k.curCpreg,k.subPerReg?`register → connect ${nf0.format(k.subPerReg*100)}%`:"")}</div>`+
+    `<div class="kpi k-g4"><span>฿ / inbox ที่ต้องทำได้</span><b>${fmt.money(k.cpi)}</b>${vs(k.cpi,k.curCpi,k.regPerInbox?`inbox → register ${nf1.format(k.regPerInbox*100)}%`:"")}</div>`+
+    (inp.ceiling&&k.expSub!=null?`<div class="kpi"><span>ถ้าทำได้ตามเพดาน งบที่เหลือจะได้</span><b>${fmt.int(Math.floor(k.expSub))}</b><small>connect · รวมทั้งเดือน ${fmt.int(Math.floor(k.expSub)+C.sub)}</small></div>`:"")+`</div>`;
+  if(k.mon){const mo=k.mon,row=(lab,v,now,f)=>`<div class="kpi kf"><span>${lab}</span><b>≤ ${v==null?"–":f(v)}</b><small>${now==null?"":"ตอนนี้ "+f(now)+(v!=null?(now<=v?" · ผ่าน":" · ยังไม่ผ่าน"):"")}</small></div>`;
+    h+=`<h3 class="wh">ตัวเลขที่ต้อง monitor ต่อ 1 inbox</h3><div class="wgrid">`+
+      row("Impression / 1 inbox",mo.ipr,M.ipr,fmt.ratio)+row("Reach / 1 inbox",mo.rpr,M.rpr,fmt.ratio)+row("Link click / 1 inbox",mo.lpr,M.lpr,fmt.ratio)+row("Cost / 1 inbox",mo.cpr,M.cpr,fmt.money)+
+      `</div><p class="wnote">คิดจาก CPM ${fmt.money(k.cpm)} · ฿${nf0.format(k.cpp||0)} / 1,000 reach · CPC ${fmt.money(k.cpc)} ของเดือนนี้ · ใช้เป็นเส้น benchmark ในแท็บ Ad Calibration (โหมด Winning)</p>`}
+  h+=`</div></details>`;
+  $("winBody").innerHTML=h;
+  document.querySelectorAll("#winBody details.sec").forEach(el=>{const kk="tmh.sec."+el.dataset.sec;if(store.get(kk)==="0")el.open=false;el.addEventListener("toggle",()=>store.set(kk,el.open?"1":"0"))});
+}
+/* inputs are shared through the artifact db when the viewer can edit, otherwise kept in this browser */
+let winTimer=null;
+function saveWinInput(month,page,field,val){
+  const key=month+"|"+page;WIN_IN[key]={...(WIN_IN[key]||{}),[field]:val===""?null:+val};
+  try{store.set("tmh.win.in",JSON.stringify(WIN_IN))}catch(e){}
+  clearTimeout(winTimer);winTimer=setTimeout(()=>{render();
+    if(db&&canWrite)db.doc("winning/inputs").set({m:WIN_IN}).catch(()=>{})},500);
+}
+try{Object.assign(WIN_IN,JSON.parse(store.get("tmh.win.in")||"{}"))}catch(e){}
+function initWinShared(){if(!db)return;try{db.doc("winning/inputs").onSnapshot(s=>{const x=s.exists?(s.data()||{}).m||{}:{};Object.assign(WIN_IN,x);if(S.view==="win"&&!document.activeElement.matches("#winBody input"))render();else if(S.view==="cal")render()},()=>{})}catch(e){}}
+
+/* ---------- page shell ---------- */
+function crmShort(){
+  const c=S.crm;
+  if(c.src.startsWith("ledger"))return(c.err||LG.err?"⚠ ชีต: ใช้ข้อมูลที่บันทึกไว้":"ชีตอัปเดตแล้ว")+(lastSync&&(lastSync.nSr||lastSync.nReg||lastSync.nSub)?` · +${lastSync.nSr} SR ใหม่`:"");
+  if(c.src==="live")return"ชีตสด (ยังไม่ได้บันทึก)";
+  return"ชีต: ใช้ไฟล์ที่แนบมา";
+}
+function crmTitle(){
+  const c=S.crm,t=c.tot||{},p=[];
+  if(c.tot)p.push(`บันทึกสะสม ${fmt.int(t.sr)} SR · ${fmt.int(t.reg)} register · ${fmt.int(t.sub)} connect`);
+  if(LG.meta&&LG.meta.lastSync)p.push("บันทึกล่าสุด "+new Date(LG.meta.lastSync).toLocaleString("th-TH",{timeZone:"Asia/Bangkok",dateStyle:"medium",timeStyle:"short"}));
+  if(c.err)p.push("ดึงชีตสดไม่ได้: "+c.err);if(LG.err)p.push(LG.err);
+  return p.join("\n");
+}
+function render(){
+  const since=$("since").value,until=$("until").value;
+  if(AD_PAGE.size!==adPageN||Object.values(S.data).some(x=>x&&x.ads&&x.ads.some(a=>a.pages.size&&!AD_PAGE.has(a.id))))recomputeCrm(true);
+  document.querySelectorAll("#viewSeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.v===S.view));
+  const perf=S.view==="perf",win=S.view==="win",cal=S.view==="cal",calWin=cal&&S.calMode==="win";
+  document.querySelectorAll(".perf-only").forEach(el=>el.hidden=!perf);document.querySelectorAll(".cal-only").forEach(el=>el.hidden=!cal);
+  document.querySelectorAll(".win-only").forEach(el=>el.hidden=!win);$("controls").hidden=win;
+  if(cal){document.querySelectorAll(".cal-orig").forEach(el=>el.hidden=calWin);document.querySelectorAll(".cal-win").forEach(el=>el.hidden=!calWin)}
+  document.querySelectorAll("#calMode button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.cm===S.calMode));
+  if(calWin)$("calWinNote").textContent=`${monLabel(S.winMonth||bkkToday().slice(0,7))} · ${winPageName(S.winPage)} · รวม 2 บัญชี`;
+  $("viewTitle").textContent=perf?"Active Ads Performance":win?"Winning Performance Benchmark":"Ad Calibration";
+  if(win)$("viewSub").textContent="รายเดือน · 2 บัญชีโฆษณา · เป้าหมายถึงสิ้นเดือน";
+  if(!win)$("viewSub").textContent=perf?"โฆษณาที่ active ในช่วงวันที่เลือก · Spend → Inbox → Register → Connect":"เทียบทุกตัวกับค่าเฉลี่ยบัญชี · ตัวไหนดี ตัวไหนควรปิด";
+  const busy=!!(S.loading.ALL||REAL_IDS.some(id=>S.loading[id]));
+  $("refresh").disabled=busy;$("refresh").classList.toggle("spin",busy);
+  const dd=S.data.ALL||S.data[S.acct];
+  $("updAt").textContent=dd&&dd.loadedAt?new Date(dd.loadedAt).toLocaleString("th-TH",{timeZone:"Asia/Bangkok",dateStyle:"medium",timeStyle:"short"}):"–";
+  $("updSrc").textContent=crmShort();$("updSrc").title=crmTitle();
+  $("tabs").innerHTML=ACCOUNTS.map(a=>`<button class="tab" role="tab" data-a="${a.id}" aria-selected="${a.id===S.acct}">${esc(a.label)}<small>${a.id==="ALL"?"Consolidated":a.id}</small></button>`).join("");
+  $("acctSel").innerHTML=ACCOUNTS.map(a=>`<option value="${a.id}"${a.id===S.acct?" selected":""}>${esc(a.label)}</option>`).join("");
+  document.querySelectorAll("#daySeg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.d===S.dayMode));
+  $("sortSel").value=S.sort;$("onlyReg").setAttribute("aria-pressed",S.onlyReg);$("onlyCon").setAttribute("aria-pressed",S.onlyCon);$("calLevel").value=S.calLevel;$("bench").value=S.bench;
+  if(win){renderWin();return}
+  if(perf){renderTopFunnel();renderSummary();renderPageSplit()}
+  const dk=calWin?"ALL":S.acct,d=S.data[dk],ok=d&&d.key===dk+"|"+since+"|"+until;
+  renderPageChips(d);
+  if(!d){$("tfoot").innerHTML="";$("tbody").innerHTML=`<tr><td class="l empty" colspan="${PCOLS.length}">${busy?"กำลังโหลดข้อมูล…":"ยังไม่มีข้อมูล"}</td></tr>`;$("thead").innerHTML="";
+    $("calBox").innerHTML=`<div class="empty card">${busy?"กำลังโหลดข้อมูล…":"ยังไม่มีข้อมูล"}</div>`;return}
+  $("staleNote").hidden=ok;
+  if(perf){renderDayPick(d);renderTable(d)}else renderCal(d);
+}
+
+/* ---------- events ---------- */
+document.querySelectorAll("details.sec").forEach(el=>{const k="tmh.sec."+el.dataset.sec;if(store.get(k)==="0")el.open=false;
+  el.addEventListener("toggle",()=>store.set(k,el.open?"1":"0"))});
+$("viewSeg").addEventListener("click",e=>{const b=e.target.closest("[data-v]");if(b){S.view=b.dataset.v;store.set("tmh.view",S.view);render()}});
+$("tabs").addEventListener("click",e=>{const b=e.target.closest("[data-a]");if(!b)return;S.acct=b.dataset.a;store.set("tmh.acct",S.acct);S.pages.clear();render()});
+$("acctSel").onchange=e=>{S.acct=e.target.value;store.set("tmh.acct",S.acct);S.pages.clear();render()};
+let dateTimer=null;
+function onDates(){clearTimeout(dateTimer);S.days.clear();render();dateTimer=setTimeout(()=>{const a=$("since").value,b=$("until").value;if(a&&b&&a<=b)loadAll(false)},700)}
+$("since").addEventListener("change",onDates);$("until").addEventListener("change",onDates);
+$("quick").addEventListener("click",e=>{const b=e.target.closest("[data-q]");if(!b)return;const y=bkkYesterday();
+  $("until").value=y;$("since").value=b.dataset.q==="month"?bkkToday().slice(0,8)+"01":addDays(y,-(+b.dataset.q)+1);if($("since").value>y)$("since").value=y;onDates()});
+$("refresh").onclick=async()=>{if(S.loading.ALL||REAL_IDS.some(id=>S.loading[id]))return;loadCrm(true);if(S.view==="win"&&S.winMonth)winLoad(S.winMonth,true);if(S.bench==="all")REAL_IDS.forEach(id=>loadBench(id,true));await loadAll(true)};
+$("daySeg").addEventListener("click",e=>{const b=e.target.closest("[data-d]");if(b){S.dayMode=b.dataset.d;render()}});
+$("dayPick").addEventListener("click",e=>{const b=e.target.closest("[data-dd]");if(!b)return;const x=b.dataset.dd;S.days.has(x)?S.days.delete(x):S.days.add(x);render()});
+$("dayAll").onclick=()=>{S.days.clear();render()};
+$("sortSel").onchange=e=>{S.sort=e.target.value;render()};
+$("onlyReg").onclick=()=>{S.onlyReg=!S.onlyReg;render()};
+$("onlyCon").onclick=()=>{S.onlyCon=!S.onlyCon;render()};
+$("expandAll").onclick=()=>{S.openAll=true;S.toggled.clear();if(S.dayMode==="daily"){const d=S.data[S.acct];if(d)d.ads.forEach(a=>S.openDays.add(a.id))}render()};
+$("collapseAll").onclick=()=>{S.openAll=false;S.toggled.clear();S.openDays.clear();render()};
+let qTimer=null;$("q").addEventListener("input",e=>{clearTimeout(qTimer);qTimer=setTimeout(()=>{S.q=e.target.value.trim().toLowerCase();render()},200)});
+let cqTimer=null;$("calQ").addEventListener("input",e=>{clearTimeout(cqTimer);cqTimer=setTimeout(()=>{S.calQ=e.target.value.trim().toLowerCase();render()},200)});
+function onPage(e){const b=e.target.closest("[data-pg]");if(!b)return;const p=b.dataset.pg;S.pages.has(p)?S.pages.delete(p):S.pages.add(p);render()}
+$("pageChips").addEventListener("click",onPage);$("calPages").addEventListener("click",onPage);
+$("calLevel").onchange=e=>{S.calLevel=e.target.value;render()};
+$("calMode").addEventListener("click",e=>{const b=e.target.closest("[data-cm]");if(!b)return;S.calMode=b.dataset.cm;store.set("tmh.cal.mode",S.calMode);
+  if(S.calMode==="win"&&!S.data.ALL)loadAll(false);render()});
+$("winMonth").addEventListener("click",e=>{const b=e.target.closest("[data-wm]");if(b){S.winMonth=b.dataset.wm;render()}});
+$("winPages").addEventListener("click",e=>{const b=e.target.closest("[data-wp]");if(b){S.winPage=b.dataset.wp;store.set("tmh.win.page",S.winPage);render()}});
+$("winBody").addEventListener("input",e=>{const i=e.target.closest("[data-wi]");if(i)saveWinInput(S.winMonth,S.winPage,i.dataset.wi,i.value)});
+$("winBody").addEventListener("click",e=>{if(e.target.id==="winClear"){WIN_IN[S.winMonth+"|"+S.winPage]={};saveWinInput(S.winMonth,S.winPage,"budget","");}});
+$("winChannel").disabled=true;
+$("bench").onchange=e=>{S.bench=e.target.value;store.set("tmh.bench",S.bench);render()};
+$("tbody").addEventListener("click",e=>{
+  const k=e.target.closest("[data-kid]");if(k){const id=k.dataset.kid;S.toggled.has(id)?S.toggled.delete(id):S.toggled.add(id);render();return}
+  const d=e.target.closest("[data-day]");if(d){const id=d.dataset.day;S.openDays.has(id)?S.openDays.delete(id):S.openDays.add(id);render()}});
+$("calBox").addEventListener("click",e=>{
+  const q=e.target.closest("[data-cq]");if(q){S.calSort=q.dataset.cq;S.calKey=null;render();return}
+  const h=e.target.closest("[data-ck]");if(h){const k=h.dataset.ck,hi=k==="reg"||k==="sub";
+    if(S.calKey===k)S.calDir*=-1;else{S.calKey=k;S.calDir=hi?-1:1}render()}});
+$("calBox").addEventListener("keydown",e=>{if(e.key!=="Enter"&&e.key!==" ")return;const h=e.target.closest("[data-ck]");if(h){e.preventDefault();h.click()}});
+
+render();
+/* ======================= Apps Script adapter: all data comes from Code.gs ======================= */
+function api(fn){const args=[].slice.call(arguments,1);return new Promise((res,rej)=>{
+  const runner=google.script.run.withSuccessHandler(res).withFailureHandler(e=>rej({code:"server",message:(e&&e.message)||String(e)}));
+  runner[fn](...args)})}
+async function loadAccount(acct,refresh){
+  if(acct==="ALL")return loadAll(refresh);
+  const since=$("since").value,until=$("until").value;
+  if(!since||!until||since>until){showMsg("เลือกช่วงวันที่ให้ถูกต้อง (ตั้งแต่ ≤ ถึง)","err");return}
+  const key=acct+"|"+since+"|"+until;
+  S.loading[acct]=true;render();
+  try{
+    const r=await api("getAccount",acct,since,until,!!refresh);
+    const b=build(r.cT,r.cD,r.sT,r.sD,r.aT,r.aD);
+    const d={key,until,acc:r.acc?metrics(r.acc):null,...b,byId:new Map([...b.camps,...b.sets,...b.ads].map(n=>[n.id,n])),hist:null,loadedAt:new Date(r.fetchedAt)};
+    d.pageNames=new Map(Object.entries(r.pageNames||{}));
+    d.ads.forEach(a=>{const p=r.adPage[a.id];if(p)a.pages.add(p)});
+    d.sets.forEach(s=>s.kids.forEach(a=>a.pages.forEach(x=>s.pages.add(x))));
+    d.camps.forEach(c=>c.kids.forEach(s=>s.pages.forEach(x=>c.pages.add(x))));
+    S.data[acct]=d;hideMsg();
+  }catch(e){showMsg("ดึงข้อมูลจาก Meta ไม่สำเร็จ: "+e.message,"err")}
+  S.loading[acct]=false;render();
+}
+async function loadAll(refresh){
+  const since=$("since").value,until=$("until").value;
+  if(!since||!until||since>until){showMsg("เลือกช่วงวันที่ให้ถูกต้อง (ตั้งแต่ ≤ ถึง)","err");return}
+  S.loading.ALL=true;render();
+  await Promise.all(REAL_IDS.map(id=>{const d=S.data[id];return refresh||!d||d.key!==id+"|"+since+"|"+until?loadAccount(id,refresh):null}));
+  const parts=REAL_IDS.map(id=>S.data[id]);
+  if(parts.every(d=>d&&d.key.endsWith("|"+since+"|"+until))){
+    const acc=sumMetrics(parts.map(d=>d.acc).filter(Boolean));acc.reach=parts.reduce((t,d)=>t+((d.acc&&d.acc.reach)||0),0);ratios(acc);
+    const names=new Map();parts.forEach(d=>d.pageNames&&d.pageNames.forEach((v,k)=>names.set(k,v)));
+    const camps=parts.flatMap(d=>d.camps),sets=parts.flatMap(d=>d.sets),ads=parts.flatMap(d=>d.ads);
+    S.data.ALL={key:"ALL|"+since+"|"+until,until,acc,reachApprox:true,camps,sets,ads,byId:new Map([...camps,...sets,...ads].map(n=>[n.id,n])),hist:null,pageNames:names,
+      loadedAt:new Date(Math.min(...parts.map(d=>+d.loadedAt)))};
+  }
+  S.loading.ALL=false;render();
+}
+async function loadCrm(refresh){
+  try{const r=await api("getCrm",!!refresh);
+    LG.sr=r.sr||{};LG.subs=r.subs||{};LG.meta=r.meta;LG.ready=true;LG.err=null;S.crm.err=r.err||null;
+    if(r.added)lastSync={at:new Date(),...r.added};
+  }catch(e){S.crm.err=e.message}
+  recomputeCrm();
+}
+async function loadBench(acct,refresh){
+  const today=bkkToday(),key=acct+"|"+today;
+  if(!refresh&&BENCH[acct]&&BENCH[acct].key===key)return;
+  BENCH[acct]={key,loading:true};
+  try{const r=await api("getBench",acct,!!refresh);
+    BENCH[acct]={key,life:r.life?metrics(r.life):null,win:r.win?metrics(r.win):null,ids:new Set(r.ids||[])}}
+  catch(e){BENCH[acct]={key,err:e.message}}
+  render();
+}
+async function winFetch(acct,since,until,refresh){
+  const key=acct+"|"+since+"|"+until;if(!refresh&&WINDATA[key])return WINDATA[key];
+  WINDATA[key]=WINDATA[key]||null;
+  const r=await api("getAdTotals",acct,since,until,!!refresh);
+  WINDATA[key]={ads:r.ads.map(x=>({id:x.id,pages:new Set(x.page?[x.page]:[]),m:metrics(x)})),names:new Map(Object.entries(r.pageNames||{}))};
+  return WINDATA[key];
+}
+let winSaveTimer=null;
+function saveWinInput(month,page,field,val){
+  const key=month+"|"+page;WIN_IN[key]={...(WIN_IN[key]||{}),[field]:val===""?null:+val};
+  if(field==="budget"&&val===""&&!Object.values(WIN_IN[key]).some(v=>v!=null))WIN_IN[key]={};
+  clearTimeout(winSaveTimer);winSaveTimer=setTimeout(()=>{render();api("setWinInput",key,WIN_IN[key]).catch(()=>{})},600);
+}
+function initWinShared(){api("getWinInputs").then(x=>{Object.assign(WIN_IN,x||{});render()}).catch(()=>{})}
+function crmShort(){
+  if(S.crm.err)return"⚠ อ่านชีตไม่ได้ ใช้ข้อมูลที่บันทึกไว้";
+  if(!LG.ready)return"กำลังอ่านชีต…";
+  return"ชีตอัปเดตแล้ว"+(lastSync&&(lastSync.nSr||lastSync.nReg||lastSync.nSub)?` · +${lastSync.nSr} SR ใหม่`:"");
+}
+/* boot */
+mcp={};db=null;canWrite=false;
+render();
+initWinShared();
+loadCrm(false);
+loadAll(false);
+</script>
+
+</body>
+</html>
