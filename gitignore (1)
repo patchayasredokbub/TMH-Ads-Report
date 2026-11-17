@@ -1,0 +1,8 @@
+# ข้อมูลลูกค้า (เลข SR / asset ที่แฮช) ห้ามขึ้น GitHub
+Seed.gs
+*seed*
+# ไฟล์สิทธิ์ของ clasp (มีรหัสเข้าบัญชี Google)
+.clasprc.json
+# ไฟล์ลับอื่น ๆ
+.env
+*.token
