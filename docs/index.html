@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TMH Ads Report</title>
+<!-- ลิงก์ dashboard จริง (Apps Script /exec): เปลี่ยนแค่บรรทัด DASHBOARD_URL ด้านล่างเมื่อมีลิงก์ใหม่ -->
+<script>
+  var DASHBOARD_URL = "https://script.google.com/macros/s/AKfycbzgmz0-UqrFHR1dPWhkCaCLqHViC1vT7s0Rdd6F1HlWISiQrsmXPg6w8mgKryOQB50c/exec";
+  location.replace(DASHBOARD_URL);
+</script>
+<style>
+  body{margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui,-apple-system,"Segoe UI",sans-serif;background:#eef5fd;color:#152238}
+  a{color:#1a73e8;font-weight:600}
+</style>
+</head>
+<body>
+  <p>กำลังเปิด TMH Ads Report… ถ้าไม่เปิดเอง <a id="go" href="#">กดที่นี่</a></p>
+  <script>document.getElementById("go").href = DASHBOARD_URL;</script>
+</body>
+</html>
